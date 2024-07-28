@@ -115,21 +115,23 @@ class Doctor(models.Model):
     def __str__(self):
         return f"{self.user.firstname} {self.user.lastname} - {self.specialization}"
     
-# class Appointments(models.Model):
-#     appointmentid = models.AutoField(
-#         db_column='appointmentid', primary_key=True)
-#     patientid = models.ForeignKey(
-#         'Patients', models.DO_NOTHING, db_column='patientid', blank=True, null=True)
-#     doctorid = models.ForeignKey(
-#         'Doctors', models.DO_NOTHING, db_column='doctorid', blank=True, null=True)
-#     appointmentdate = models.DateTimeField(
-#         db_column='appointmentdate', blank=True, null=True)
-#     description = models.TextField(
-#         db_column='description', blank=True, null=True)
+class Appointment(models.Model):
+    appointment_id = models.AutoField(primary_key=True)
+    patient = models.ForeignKey(
+        Patient, on_delete=models.CASCADE, related_name='appointments')
+    doctor = models.ForeignKey(
+        Doctor, on_delete=models.CASCADE, related_name='appointments')
+    appointment_date = models.DateTimeField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
 
-#     class Meta:
-#         managed = True
-#         db_table = 'appointments'
+    class Meta:
+        managed = True
+        db_table = 'appointments'
+
+    def __str__(self):
+        return f"Appointment {self.appointment_id} with {self.doctor.user.firstname} {self.doctor.user.lastname} and {self.patient.user.firstname} {self.patient.user.lastname} on {self.appointment_date}"
+
+
 
 
 # class Exams(models.Model):
