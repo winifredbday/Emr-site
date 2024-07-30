@@ -122,7 +122,7 @@ export default function Sidebar() {
         <IconButton variant="soft" color="primary" size="sm">
           <BrightnessAutoRoundedIcon />
         </IconButton>
-        <Typography level="title-lg">Acme Co.</Typography>
+        <Typography level="title-lg">Maloney</Typography>
         <ColorSchemeToggle sx={{ ml: 'auto' }} />
       </Box>
       <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
@@ -168,7 +168,7 @@ export default function Sidebar() {
             <ListItemButton selected>
               <ShoppingCartRoundedIcon />
               <ListItemContent>
-                <Typography level="title-sm">Orders</Typography>
+                <Typography level="title-sm">Patients</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
@@ -278,27 +278,7 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
         </List>
-        <Card
-          invertedColors
-          variant="soft"
-          color="warning"
-          size="sm"
-          sx={{ boxShadow: 'none' }}
-        >
-          <Stack direction="row" justifyContent="space-between" alignItems="center">
-            <Typography level="title-sm">Used space</Typography>
-            <IconButton size="sm">
-              <CloseRoundedIcon />
-            </IconButton>
-          </Stack>
-          <Typography level="body-xs">
-            Your team has used 80% of your available space. Need more?
-          </Typography>
-          <LinearProgress variant="outlined" value={80} determinate sx={{ my: 1 }} />
-          <Button size="sm" variant="solid">
-            Upgrade plan
-          </Button>
-        </Card>
+        
       </Box>
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
