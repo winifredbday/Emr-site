@@ -1,7 +1,10 @@
-import SignUp from './pages/auth/SignUp';
-import SignIn from './pages/auth/SignIn';
-import Dashboard from './pages/Dashboard';
-import Messages from './pages/messages/Messages'
+import { lazy } from 'react';
+
+
+const SignUp = lazy(() => import('./pages/auth/SignUp'));
+const SignIn = lazy(() => import('./pages/auth/SignIn'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Messages = lazy(() => import('./pages/messages/Messages'));
 
 
 const routes = [

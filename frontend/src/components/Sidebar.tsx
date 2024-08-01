@@ -23,9 +23,9 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils/utils';
+import { useLocation } from 'react-router-dom';
 
 function Toggler({
   defaultExpanded = false,
@@ -60,6 +60,7 @@ function Toggler({
 }
 
 export default function Sidebar() {
+  const location = useLocation();
   return (
     <Sheet
       className="Sidebar"
@@ -141,7 +142,11 @@ export default function Sidebar() {
           }}
         >
            <ListItem>
-            <ListItemButton>
+            <ListItemButton
+              role="menuitem"
+              component="a"
+              href="/"
+              selected={location.pathname === '/' ? true : false}>
               <DashboardRoundedIcon />
               <ListItemContent>
                 <Typography level="title-sm">Dashboard</Typography>
@@ -198,7 +203,8 @@ export default function Sidebar() {
             <ListItemButton
               role="menuitem"
               component="a"
-              href="/joy-ui/getting-started/templates/messages/"
+              href="/messages"
+              selected={location.pathname === '/messages' ? true : false}
             >
               <QuestionAnswerRoundedIcon />
               <ListItemContent>
