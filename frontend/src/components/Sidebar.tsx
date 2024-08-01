@@ -2,30 +2,24 @@ import * as React from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import Card from '@mui/joy/Card';
 import Chip from '@mui/joy/Chip';
 import Divider from '@mui/joy/Divider';
 import IconButton from '@mui/joy/IconButton';
 import Input from '@mui/joy/Input';
-import LinearProgress from '@mui/joy/LinearProgress';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemButton, { listItemButtonClasses } from '@mui/joy/ListItemButton';
 import ListItemContent from '@mui/joy/ListItemContent';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
-import Stack from '@mui/joy/Stack';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
-import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
+import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
 import AssignmentRoundedIcon from '@mui/icons-material/AssignmentRounded';
 import QuestionAnswerRoundedIcon from '@mui/icons-material/QuestionAnswerRounded';
-import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import SupportRoundedIcon from '@mui/icons-material/SupportRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -146,16 +140,7 @@ export default function Sidebar() {
             '--ListItem-radius': (theme) => theme.vars.radius.sm,
           }}
         >
-          <ListItem>
-            <ListItemButton>
-              <HomeRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Home</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
+           <ListItem>
             <ListItemButton>
               <DashboardRoundedIcon />
               <ListItemContent>
@@ -164,14 +149,19 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
 
+
           <ListItem>
-            <ListItemButton selected>
-              <ShoppingCartRoundedIcon />
+            <ListItemButton>
+              <PersonRoundedIcon/>
               <ListItemContent>
-                <Typography level="title-sm">Patients</Typography>
+                <Typography level="title-sm">Profile</Typography>
               </ListItemContent>
             </ListItemButton>
           </ListItem>
+
+         
+
+          
 
           <ListItem nested>
             <Toggler
@@ -179,7 +169,7 @@ export default function Sidebar() {
                 <ListItemButton onClick={() => setOpen(!open)}>
                   <AssignmentRoundedIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Tasks</Typography>
+                    <Typography level="title-sm">Clinic</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
@@ -189,16 +179,16 @@ export default function Sidebar() {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>All tasks</ListItemButton>
+                  <ListItemButton>Patients</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Backlog</ListItemButton>
+                  <ListItemButton>Appointments</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>In progress</ListItemButton>
+                  <ListItemButton>Exams</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Done</ListItemButton>
+                  <ListItemButton>Prescriptions</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -224,9 +214,9 @@ export default function Sidebar() {
             <Toggler
               renderToggle={({ open, setOpen }) => (
                 <ListItemButton onClick={() => setOpen(!open)}>
-                  <GroupRoundedIcon />
+                  <AttachMoneyRoundedIcon />
                   <ListItemContent>
-                    <Typography level="title-sm">Users</Typography>
+                    <Typography level="title-sm">Finance</Typography>
                   </ListItemContent>
                   <KeyboardArrowDownIcon
                     sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
@@ -241,14 +231,14 @@ export default function Sidebar() {
                     component="a"
                     href="/joy-ui/getting-started/templates/profile-dashboard/"
                   >
-                    My profile
+                    Accounts
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Create a new user</ListItemButton>
+                  <ListItemButton>Bills</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Roles & permission</ListItemButton>
+                  <ListItemButton>Payment Method</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -287,9 +277,9 @@ export default function Sidebar() {
           size="sm"
           src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
         />
-        <Box sx={{ minWidth: 0, flex: 1 }}>
-          <Typography level="title-sm">Siriwat K.</Typography>
-          <Typography level="body-xs">siriwatk@test.com</Typography>
+        <Box sx={{ minWidth: 0, boxSizing: 'border-box', flex: 1 }}>
+          <Typography level="title-sm">Yhung Hydrus</Typography>
+          <Typography level="body-xs" sx={{fontSize: '10px'}}>dehydrus223@gmail.com</Typography>
         </Box>
         <IconButton size="sm" variant="plain" color="neutral">
           <LogoutRoundedIcon />
