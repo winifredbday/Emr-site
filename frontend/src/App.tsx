@@ -6,7 +6,7 @@ import Header from './components/Header';
 import { CssVarsProvider } from '@mui/joy/styles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
-import LoadingSpinner from './components/LoadingSpinner';
+import CircularProgress from '@mui/joy/CircularProgress';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
             <Header />
             <Sidebar />
             <div className="content" style={{ flex: 1 }}>
-              <Suspense fallback={<LoadingSpinner/>}>
+              <Suspense fallback={<CircularProgress sx={{ display: 'flex', height: '100vh', justifyContent: 'center', width: '100%', alignItems: 'center'}} />}>
                 <Routes>
                   {routes.map(({ path, component: Component }, index) => (
                     <Route key={index} path={path} element={<Component />} />
