@@ -134,7 +134,7 @@ export default function SignIn() {
                 </Typography>
                 <Typography level="body-sm">
                   New to company?{' '}
-                  <Link href="#replace-with-a-link" level="title-sm">
+                  <Link href="/signup" level="title-sm">
                     Sign up!
                   </Link>
                 </Typography>

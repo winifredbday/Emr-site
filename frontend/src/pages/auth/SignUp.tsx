@@ -191,7 +191,7 @@ export default function SignUp() {
                 
                 <Typography level="body-sm">
                   Already have an account?{' '}
-                  <Link href="#replace-with-a-link" level="title-sm">
+                  <Link href="signin" level="title-sm">
                     Sign in!
                   </Link>
                 </Typography>

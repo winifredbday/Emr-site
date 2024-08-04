@@ -322,7 +322,7 @@ export default function Sidebar() {
           <Typography level="title-sm">Yhung Hydrus</Typography>
           <Typography level="body-xs" sx={{fontSize: '10px'}}>dehydrus223@gmail.com</Typography>
         </Box>
-        <IconButton size="sm" variant="plain" color="neutral">
+        <IconButton size="sm" variant="plain" color="neutral" onClick={() => location.pathname='/signin'}>
           <LogoutRoundedIcon />
         </IconButton>
       </Box>
