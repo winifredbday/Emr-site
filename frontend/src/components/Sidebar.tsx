@@ -194,14 +194,33 @@ export default function Sidebar() {
                     href="/patients"
                     selected={location.pathname === '/patients' ? true : false}>Patients</ListItemButton>
                 </ListItem>
-                <ListItem>
-                  <ListItemButton>Appointments</ListItemButton>
+                <ListItem sx={{ mt: 0.5 }}>
+                  <ListItemButton
+                    role="menuitem"
+                    component="a"
+                    href="/staff"
+                    selected={location.pathname === '/staff' ? true : false}>Staff List</ListItemButton>
+                </ListItem>
+                <ListItem sx={{ mt: 0.5 }}>
+                  <ListItemButton
+                    role="menuitem"
+                    component="a"
+                    href="/appointments"
+                    selected={location.pathname === '/appointments' ? true : false}>Appointments</ListItemButton>
+                </ListItem>
+                <ListItem sx={{ mt: 0.5 }}>
+                  <ListItemButton
+                    role="menuitem"
+                    component="a"
+                    href="/treatments"
+                    selected={location.pathname === '/treatments' ? true : false}>Treatments</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Exams</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton>Prescriptions</ListItemButton>
+                  <ListItemButton
+                    role="menuitem"
+                    component="a"
+                    href="/prescriptions"
+                    selected={location.pathname === '/prescriptions' ? true : false}>Prescriptions</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
@@ -243,16 +262,24 @@ export default function Sidebar() {
                   <ListItemButton
                     role="menuitem"
                     component="a"
-                    href="/joy-ui/getting-started/templates/profile-dashboard/"
-                  >
+                    href="/accounts"
+                    selected={location.pathname === '/accounts' ? true : false}>
                     Accounts
                   </ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Bills</ListItemButton>
+                  <ListItemButton
+                    role="menuitem"
+                    component="a"
+                    href="/revenue"
+                    selected={location.pathname === '/revenue' ? true : false}>Revenue</ListItemButton>
                 </ListItem>
                 <ListItem>
-                  <ListItemButton>Payment Method</ListItemButton>
+                  <ListItemButton
+                    role="menuitem"
+                    component="a"
+                    href="/payment-method"
+                    selected={location.pathname === '/payment-method' ? true : false}>Payment Method</ListItemButton>
                 </ListItem>
               </List>
             </Toggler>
