@@ -43,7 +43,7 @@ const rows = [
     type: 'PartTime',
     assigned_treatment: 'Dental Service',
     staff: {
-      initial: 'O',
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
       name: 'Olivia Ryhe',
       email: 'olivia@email.com',
       phone: '+233244750745',
@@ -57,7 +57,7 @@ const rows = [
     type: 'FullTime',
     assigned_treatment: 'Out-Patient Care',
     staff: {
-      initial: 'S',
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
       name: 'Steve Hampton',
       email: 'steve.hamp@email.com',
       phone: '+233244750745',
@@ -71,7 +71,7 @@ const rows = [
     type: 'FullTime',
     assigned_treatment: 'Brain Tumor Surgery',
     staff: {
-      initial: 'C',
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
       name: 'Ciaran Murray',
       email: 'ciaran.murray@email.com',
       phone: '+233244750745',
@@ -84,7 +84,7 @@ const rows = [
     type: 'Suspended',
     assigned_treatment: 'Fibroid Surgical Removal',
     staff: {
-      initial: 'M',
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
       name: 'Maria Macdonald',
       email: 'maria.mc@email.com',
       phone: '+233244750745',
@@ -97,7 +97,7 @@ const rows = [
     type: 'PartTime',
     assigned_treatment: 'Injured Rehabilitation',
     staff: {
-      initial: 'C',
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
       name: 'Charles Fulton',
       email: 'fulton@email.com',
       phone: '+233244750745',
@@ -110,7 +110,7 @@ const rows = [
     type: 'FullTime',
     assigned_treatment: 'Delivery Ward',
     staff: {
-      initial: 'J',
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
       name: 'Jay Hooper',
       email: 'hooper@email.com',
       phone: '+233244750745',
@@ -123,7 +123,7 @@ const rows = [
     type: 'PartTime',
     assigned_treatment: 'Out-Patient Ward',
     staff: {
-      initial: 'J',
+      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
       name: 'Jackie Conner',
       email: 'jackie@email.com',
       phone: '+233244750745',
@@ -341,7 +341,7 @@ export default function StaffTable() {
               <tr key={row.id}>
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Avatar size="sm">{row.staff.initial}</Avatar>
+                    <Avatar size="sm" src={row.staff.avatar}/>
                     <div>
                       <Typography level="body-xs">{row.staff.name}</Typography>
                       <Typography level="body-xs" sx={{fontSize: '10px', fontWeight: 'bold'}}>{row.staff.portfolio}</Typography>
