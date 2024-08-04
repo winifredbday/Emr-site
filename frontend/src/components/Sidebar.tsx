@@ -156,7 +156,11 @@ export default function Sidebar() {
 
 
           <ListItem>
-            <ListItemButton>
+            <ListItemButton
+              role="menuitem"
+              component="a"
+              href="/profile"
+              selected={location.pathname === '/profile' ? true : false}>
               <PersonRoundedIcon/>
               <ListItemContent>
                 <Typography level="title-sm">Profile</Typography>
