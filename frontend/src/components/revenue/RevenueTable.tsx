@@ -307,7 +307,7 @@ export default function RevenueTable() {
         </Select>
       </FormControl>
       <FormControl size="sm">
-        <FormLabel>Customer</FormLabel>
+        <FormLabel>Patient</FormLabel>
         <Select size="sm" placeholder="All">
           <Option value="all">All</Option>
           <Option value="olivia">Olivia Rhye</Option>
@@ -374,7 +374,7 @@ export default function RevenueTable() {
         }}
       >
         <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for order</FormLabel>
+          <FormLabel>Search for invoice</FormLabel>
           <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} />
         </FormControl>
         {renderFilters()}
@@ -446,7 +446,7 @@ export default function RevenueTable() {
               </th>
               <th style={{ width: 140, padding: '12px 6px' }}>Date</th>
               <th style={{ width: 140, padding: '12px 6px' }}>Status</th>
-              <th style={{ width: 240, padding: '12px 6px' }}>Customer</th>
+              <th style={{ width: 240, padding: '12px 6px' }}>Patient</th>
               <th style={{ width: 140, padding: '12px 6px' }}> </th>
             </tr>
           </thead>

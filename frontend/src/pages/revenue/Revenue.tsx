@@ -54,10 +54,10 @@ export default function Revenue() {
             fontSize={12}
             fontWeight={500}
           >
-            Dashboard
+            Finance
           </Link>
           <Typography color="primary" fontWeight={500} fontSize={12}>
-            Orders
+            Revenue
           </Typography>
         </Breadcrumbs>
       </Box>
@@ -73,7 +73,7 @@ export default function Revenue() {
         }}
       >
         <Typography level="h2" component="h1">
-          Orders
+          Revenue
         </Typography>
         <Button
           color="primary"
