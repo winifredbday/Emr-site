@@ -188,7 +188,11 @@ export default function Sidebar() {
             >
               <List sx={{ gap: 0.5 }}>
                 <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton>Patients</ListItemButton>
+                  <ListItemButton
+                    role="menuitem"
+                    component="a"
+                    href="/patients"
+                    selected={location.pathname === '/patients' ? true : false}>Patients</ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton>Appointments</ListItemButton>
