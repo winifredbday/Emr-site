@@ -12,13 +12,13 @@ import DialogContent from '@mui/joy/DialogContent';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import ModalClose from '@mui/joy/ModalClose';
 import Select from '@mui/joy/Select';
-
+import Divider from '@mui/joy/Divider';
 interface AddPatientModalProps{
     open: boolean;
     onClose: () => void;
 }
 export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
- 
+  const [height, setHeight] = React.useState('metres');
   return (
     <React.Fragment>
      
@@ -71,19 +71,48 @@ export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
                       </Stack>
                         
                   </FormControl>
-                  <FormControl>
-                    <FormLabel>Social Security No.</FormLabel>
-                    <Input size="sm" type='text' placeholder="SSN" />
+                  <FormControl sx={{Width:70}} >
+                    <FormLabel>Height</FormLabel>
+                    <Input
+                      type='number'
+                      placeholder="1.62"
+                      sx={{fontSize:"14px", width: 200}}
+                      startDecorator={{ feet: 'ft', metres: 'm', centimetres: 'cm' }[height]}
+                      endDecorator={
+                        <React.Fragment>
+                          <Divider orientation="vertical" />
+                          <Select
+                            variant="plain"
+                            value={height}
+                            onChange={(_, value) => setHeight(value!)}
+                            slotProps={{
+                              listbox: {
+                                variant: 'outlined',
+                              },
+                            }}
+                            sx={{ mr: -1.5, fontSize: '14px', '&:hover': { bgcolor: 'transparent' } }}
+                          >
+                            <Option value="feet" sx={{fontSize: '14px'}}>Feet</Option>
+                            <Option value="metres" sx={{fontSize: '14px'}}>Metres</Option>
+                            <Option value="centimetres" sx={{fontSize: '14px'}}>Centimetres</Option>
+                          </Select>
+                        </React.Fragment>
+                      }
+                    
+                    />
                   </FormControl>
               </Stack>
-              <Stack spacing={1}>
-                <FormLabel>Address</FormLabel>
-                <FormControl
-                  sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
-                >
-                 
+              <Stack spacing={1} direction={{sm: 'row'}} flexWrap="wrap" useFlexGap>
+                
+                <FormControl>
+                  <FormLabel>Address</FormLabel>
                   <Input size="sm" placeholder="Address" sx={{ flexGrow: 1 }} />
                 </FormControl>
+
+                <FormControl>
+                    <FormLabel>Social Security Number</FormLabel>
+                    <Input size="sm" type='text' placeholder="SSN" />
+                  </FormControl>
               </Stack>
               <Stack direction={{sm: 'row', xs: 'column'}} spacing={2} flexWrap="wrap" useFlexGap>
                 <FormControl>
