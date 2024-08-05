@@ -9,9 +9,14 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import PatientTable from '../../components/patients/PatientTable';
 import PatientList from '../../components/patients/PatientList';
+import AddPatientModal from '../../components/patients/AddPatientModal';
 
 
-export default function Dashboard() {
+export default function Patients() {
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
   return (
     <Box
       component="main"
@@ -79,12 +84,14 @@ export default function Dashboard() {
           color="primary"
           startDecorator={<AddRoundedIcon />}
           size="sm"
+          onClick={handleOpen}
         >
           Add Patient
         </Button>
       </Box>
       <PatientTable />
       <PatientList />
+      <AddPatientModal open={modalOpen} onClose={handleClose} />
     </Box>
   );
 }
