@@ -332,7 +332,7 @@ export default function StaffTable() {
               
               <th style={{ width: 210, padding: '12px 6px' }}>Working Days</th>
               <th style={{ width: 200, padding: '12px 6px' }}>Assigned Treatment</th>
-              <th style={{ width: 100, padding: '12px 6px' }}>Type</th>
+              <th style={{ width: 100, padding: '12px 6px' }}>Work Status</th>
               <th style={{ width: 50, padding: '12px 6px' }}> </th>
             </tr>
           </thead>

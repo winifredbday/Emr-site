@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Button, FormControl, FormLabel, Input, Stack, Modal, ModalDialog, DialogTitle, DialogContent, Divider, ModalClose } from '@mui/joy';
 import Typography from '@mui/joy/Typography';
 import Stepper from '@mui/joy/Stepper';
-import Box from '@mui/joy/Box';
+import Select from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
 import Step from '@mui/joy/Step';
 import StepButton from '@mui/joy/StepButton';
 import StepIndicator from '@mui/joy/StepIndicator';
@@ -26,9 +27,20 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
     lastName: '',
     address: '',
     phoneNumber: '',
+    workStatus: '',
     email: '',
     assignedTreatment: '',
   });
+  const [selectedDays, setSelectedDays] = React.useState<Record<string, boolean>>({
+    Monday: false,
+    Tuesday: false,
+    Wednesday: false,
+    Thursday: false,
+    Friday: false,
+    Saturday: false,
+    Sunday: false,
+  });
+  
 
   const handleNext = () => {
     if (isStepCompleted(activeStep)) {
@@ -51,9 +63,21 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
       lastName: '',
       address: '',
       phoneNumber: '',
+      workStatus: '',
       email: '',
       assignedTreatment: '',
     });
+    setSelectedDays({
+      Monday: false,
+      Tuesday: false,
+      Wednesday: false,
+      Thursday: false,
+      Friday: false,
+      Saturday: false,
+      Sunday: false,
+    
+
+    })
     setCompletedSteps(new Array(steps.length).fill(false));
   };
 
@@ -62,15 +86,28 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleSelectChange = (event: any, value: string | null) => {
+    if (typeof value === 'string') {
+      setFormData((prev) => ({ ...prev, workStatus: value }));
+    }
+  };
+
+
+  const handleCheckboxChange = (day: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDays((prev) => ({ ...prev, [day]: event.target.checked }));
+  };
+
   const isStepCompleted = (stepIndex: number): boolean => {
     if (stepIndex === 0) {
-      return Boolean(formData.firstName && formData.lastName && formData.address);
+      return Boolean(formData.firstName && formData.lastName && formData.address && formData.phoneNumber && formData.email && formData.workStatus);
     }
     if (stepIndex === 1) {
-      return Boolean(formData.phoneNumber && formData.email);
+      return Boolean(formData.assignedTreatment);
     }
     if (stepIndex === 2) {
-      return Boolean(formData.assignedTreatment);
+      
+      // Here, we check if at least one day is selected.
+      return Object.values(selectedDays).some(Boolean);
     }
     return false;
   };
@@ -109,6 +146,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
               </Step>
             ))}
           </Stepper>
+
           <Stack spacing={2} sx={{ mt: 2, flexGrow: 1 }}>
             {activeStep === 0 && (
               <>
@@ -132,16 +170,40 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                       />
                     </Stack>
                   </FormControl>
-                  <FormControl>
-                    <FormLabel>Address</FormLabel>
-                    <Input
-                      name="address"
-                      value={formData.address}
-                      onChange={handleChange}
-                      placeholder="14th Street off Mid Avenue"
-                      sx={{ fontSize: '14px' }}
-                    />
-                  </FormControl>
+                  <Stack direction={{ sm: "row" }} sx={{ position: 'relative', width: "100%", display: "flex", gap: 2 }}>
+                    <FormControl>
+                      <FormLabel>Address</FormLabel>
+                      <Input
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        placeholder="14th Street off Mid Avenue"
+                        sx={{ fontSize: '14px' }}
+                      />
+                    </FormControl>
+                    <FormControl sx={{ width: "50%"}}>
+                      <FormLabel>Work Status</FormLabel>
+                        
+                          <Stack spacing={2} alignItems="flex-start">
+                            <Select
+                              placeholder="Select a status"
+                              name="workStatus"
+                              required
+                              sx={{ minWidth: 200, fontSize: '14px' }}
+                              value={formData.workStatus}
+                              onChange={handleSelectChange}
+                            >
+                              <Option value="FullTime" sx={{ minWidth: 200, fontSize: '14px' }}>Full Time</Option>
+                              <Option value="PartTime" sx={{ minWidth: 200, fontSize: '14px' }}>Part Time</Option>
+                              <Option value="Suspended" sx={{ minWidth: 200, fontSize: '14px' }}>Suspended</Option>
+                           
+                            </Select>
+                            
+                          </Stack>
+                        
+                      </FormControl>
+                  </Stack>
+                  
                   
                   <Stack direction={{ sm: "row" }} sx={{ position: 'relative', width: "100%", display: "flex", gap: 2 }}>
                     <FormControl sx={{ width: "50%" }}>
@@ -185,36 +247,19 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
             {activeStep === 2 && (
               <Stack spacing={2}>
                 <Typography level="h3">Select days the staff member works</Typography>
-                <Stack direction={{sm: "row"}}
-                  sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
-                    
-                    gap: 2,
-                    
-                    '& > div': { p: 1, borderRadius: 'md', display: 'flex' },
-                  }}
-                >
-                  <Sheet variant="outlined">
-                    <Checkbox overlay label="Monday" sx={{fontSize: "14px"}} />
-                  </Sheet>
-                  <Sheet variant="outlined">
-                    <Checkbox overlay label="Tuesday" sx={{fontSize: "14px"}} />
-                  </Sheet>
-                  <Sheet variant="outlined">
-                    <Checkbox overlay label="Wednesday" sx={{fontSize: "14px"}} />
-                  </Sheet>
-                  <Sheet variant="outlined">
-                    <Checkbox overlay label="Thursday" sx={{fontSize: "14px"}} />
-                  </Sheet>
-                  <Sheet variant="outlined">
-                    <Checkbox overlay label="Friday" sx={{fontSize: "14px"}} />
-                  </Sheet>
-                  <Sheet variant="outlined">
-                    <Checkbox overlay label="Saturday" sx={{fontSize: "14px"}} />
-                  </Sheet>
-
+                <Stack direction={{ sm: 'row' }} sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                  {Object.keys(selectedDays).map((day) => (
+                    <Sheet key={day} variant="outlined" sx={{p: 1, borderRadius: 'md', display: 'flex'}}>
+                      <Checkbox
+                        checked={selectedDays[day]}
+                        onChange={handleCheckboxChange(day)}
+                        label={day}
+                        sx={{ fontSize: '14px' }}
+                      />
+                    </Sheet>
+                  ))}
                 </Stack>
+
               </Stack>
             )}
           </Stack>
