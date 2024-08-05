@@ -9,9 +9,14 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import StaffTable from '../../components/staff/StaffTable';
 import StaffList from '../../components/staff/StaffList';
+import AddStaffModal from '../../components/staff/AddStaffModal';
 
 
 export default function Staff() {
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
   return (
     <Box
       component="main"
@@ -79,12 +84,14 @@ export default function Staff() {
           color="primary"
           startDecorator={<AddRoundedIcon />}
           size="sm"
+          onClick={handleOpen}
         >
           Add Staff Member
         </Button>
       </Box>
       <StaffTable />
       <StaffList />
+      <AddStaffModal open={modalOpen} onClose={handleClose} />
     </Box>
   );
 }

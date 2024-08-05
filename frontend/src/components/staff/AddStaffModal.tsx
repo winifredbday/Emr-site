@@ -11,19 +11,20 @@ import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import ModalClose from '@mui/joy/ModalClose';
+import { Divider } from '@mui/joy';
 
-interface AddPatientModalProps{
+interface AddStaffModalProps{
     open: boolean;
     onClose: () => void;
 }
-export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
+export default function AddStaffModal({open, onClose}: AddStaffModalProps) {
  
   return (
     <React.Fragment>
      
       <Modal keepMounted open={open} onClose={onClose} sx={{}}>
         <ModalDialog>
-          <DialogTitle sx={{fontSize: '1.2rem'}}>Add Patient Details  <ModalClose variant="plain" sx={{ m: 1 }} /></DialogTitle>
+          <DialogTitle sx={{fontSize: '1.2rem'}}>Add Staff Member Details  <ModalClose variant="plain" sx={{ m: 1 }} /></DialogTitle>
           <DialogContent sx={{marginTop: '1rem'}}>
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}>
@@ -35,15 +36,19 @@ export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
                   <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
                 </FormControl>
               </Stack>
-              <Stack spacing={1}>
-                <FormLabel>Address</FormLabel>
-                <FormControl
-                  sx={{ display: { sm: 'flex-column', md: 'flex-row' }, gap: 2 }}
-                >
-                 
-                  <Input size="sm" placeholder="Address" sx={{ flexGrow: 1 }} />
+              <Stack direction={{sm: 'row', xs: 'column'}} spacing={2} flexWrap="wrap" useFlexGap>
+                
+                <FormControl>
+                    <FormLabel>Address</FormLabel>
+                  <Input size="sm" placeholder="14th Street off Mid Avenue" sx={{ flexGrow: 1 }} />
+                </FormControl>
+
+                <FormControl sx={{ flexGrow: 1 }} >
+                    <FormLabel>Portfolio</FormLabel>
+                  <Input size="sm" placeholder="Doctor" />
                 </FormControl>
               </Stack>
+
               <Stack direction={{sm: 'row', xs: 'column'}} spacing={2} flexWrap="wrap" useFlexGap>
                 <FormControl>
                   <FormLabel>Phone number</FormLabel>
@@ -60,6 +65,13 @@ export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
                   />
                 </FormControl>
               </Stack>
+              <Stack>
+                <FormControl sx={{ flexGrow: 1 }} >
+                    <FormLabel>Assigned Treatment</FormLabel>
+                    <Input size="sm" placeholder="Malaria and Fever Treatment" />
+                </FormControl>
+              </Stack>
+              <Divider/>
               <Stack direction="row" spacing={2} sx={{width: "100%"}}>
                 <Button
                     color="neutral"
@@ -80,6 +92,7 @@ export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
               </Stack>
              
             </Stack>
+           
           </DialogContent>
         </ModalDialog>
       </Modal>
