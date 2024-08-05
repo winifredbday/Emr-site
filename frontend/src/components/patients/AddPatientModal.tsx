@@ -2,6 +2,7 @@ import * as React from 'react';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import Option from '@mui/joy/Option';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
@@ -17,6 +18,37 @@ interface AddPatientModalProps{
     open: boolean;
     onClose: () => void;
 }
+
+
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
+  function NumericFormatAdapter(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+      <NumericFormat
+        {...other}
+        getInputRef={ref}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              name: props.name,
+              value: values.value,
+            },
+          });
+        }}
+        
+        valueIsNumericString
+        prefix="+"
+      />
+    );
+  },
+);
+
 export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
   const [height, setHeight] = React.useState('metres');
   return (
@@ -117,7 +149,11 @@ export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
               <Stack direction={{sm: 'row', xs: 'column'}} spacing={2} flexWrap="wrap" useFlexGap>
                 <FormControl>
                   <FormLabel>Phone number</FormLabel>
-                  <Input size="sm" placeholder="+233 557 31 1180" sx={{flexGrow: 1}} />
+                  <Input size="sm" placeholder="+233 557 31 1180" slotProps={{
+                    input: {
+                      component: NumericFormatAdapter,
+                    },
+                  }} sx={{flexGrow: 1}} />
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Email</FormLabel>

@@ -11,11 +11,41 @@ import Check from '@mui/icons-material/Check';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import Checkbox, { checkboxClasses } from '@mui/joy/Checkbox';
 import Sheet from '@mui/joy/Sheet';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
 
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
+
+const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
+  function NumericFormatAdapter(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+      <NumericFormat
+        {...other}
+        getInputRef={ref}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              name: props.name,
+              value: values.value,
+            },
+          });
+        }}
+        
+        valueIsNumericString
+        prefix="+"
+      />
+    );
+  },
+);
 interface AddStaffModalProps {
   open: boolean;
   onClose: () => void;
 }
+
 
 const steps = ['Staff Info', 'Assigned Services', 'Working Days'];
 
@@ -29,6 +59,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
     phoneNumber: '',
     workStatus: '',
     email: '',
+    portfolio: '',
     assignedTreatment: '',
   });
   const [selectedDays, setSelectedDays] = React.useState<Record<string, boolean>>({
@@ -65,6 +96,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
       phoneNumber: '',
       workStatus: '',
       email: '',
+      portfolio: '',
       assignedTreatment: '',
     });
     setSelectedDays({
@@ -99,7 +131,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
 
   const isStepCompleted = (stepIndex: number): boolean => {
     if (stepIndex === 0) {
-      return Boolean(formData.firstName && formData.lastName && formData.address && formData.phoneNumber && formData.email && formData.workStatus);
+      return Boolean(formData.firstName && formData.lastName && formData.address && formData.phoneNumber && formData.email && formData.portfolio && formData.workStatus);
     }
     if (stepIndex === 1) {
       return Boolean(formData.assignedTreatment);
@@ -114,7 +146,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <ModalDialog sx={{ height: '60vh', width: '45%' }}>
+      <ModalDialog sx={{ minHeight: '60vh', width: '45%' }}>
         <DialogTitle>
           Add Staff Member Details
           <ModalClose variant="plain" sx={{ m: 1 }} />
@@ -214,6 +246,11 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                         onChange={handleChange}
                         placeholder="+233 557 31 1180"
                         sx={{ fontSize: '14px' }}
+                        slotProps={{
+                          input: {
+                            component: NumericFormatAdapter,
+                          },
+                        }}
                       />
                     </FormControl>
                     <FormControl sx={{ width: "50%" }}>
@@ -225,6 +262,20 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                         onChange={handleChange}
                         startDecorator={<EmailRoundedIcon />}
                         placeholder="siriwatk@test.com"
+                        sx={{ fontSize: '14px' }}
+                      />
+                    </FormControl>
+                  </Stack>
+                  <Stack direction={{ sm: "row" }} sx={{ position: 'relative', width: "100%", display: "flex", gap: 2 }}>
+                    <FormControl sx={{ width: "47%" }}>
+                      <FormLabel>Portfolio</FormLabel>
+                      <Input
+                        name="portfolio"
+                        type="text"
+                        value={formData.portfolio}
+                        onChange={handleChange}
+                        
+                        placeholder="Doctor"
                         sx={{ fontSize: '14px' }}
                       />
                     </FormControl>
