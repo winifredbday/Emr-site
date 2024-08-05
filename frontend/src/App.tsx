@@ -12,18 +12,17 @@ interface LayoutProps {
   children: ReactNode;
 }
 
-
 function Layout({ children }: LayoutProps) {
   const location = useLocation();
   const isAuthPage = location.pathname === '/signin' || location.pathname === '/signup'; // Update paths as needed
 
   return (
-    <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       {!isAuthPage && <Header />}
       {!isAuthPage && <Sidebar />}
-      <div className="content" style={{ flex: 1 }}>
+      <Box sx={{ flex: 1, position: 'relative' }}>
         {children}
-      </div>
+      </Box>
     </Box>
   );
 }
@@ -33,12 +32,30 @@ function App() {
     <Router>
       <CssVarsProvider disableTransitionOnChange>
         <CssBaseline />
-        <Suspense fallback={<CircularProgress sx={{ display: 'flex', height: '100vh', justifyContent: 'center', width: '100%', alignItems: 'center'}} />}>
+        <Suspense
+          fallback={
+            <Box sx={{ position: 'relative', height: '100vh' }}>
+              <CircularProgress
+                sx={{
+                  display: 'flex',
+                  height: '100vh',
+                  justifyContent: 'center',
+                  width: '100%',
+                  alignItems: 'center',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  zIndex: -9999, // Ensure it's above other content but below the sidebar
+                }}
+              />
+            </Box>
+          }
+        >
           <Routes>
             {routes.map(({ path, component: Component }, index) => (
-              <Route 
-                key={index} 
-                path={path} 
+              <Route
+                key={index}
+                path={path}
                 element={
                   <Layout>
                     <Component />

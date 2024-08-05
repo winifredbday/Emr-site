@@ -25,7 +25,7 @@ import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils/utils';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 function Toggler({
   defaultExpanded = false,
@@ -144,8 +144,8 @@ export default function Sidebar() {
            <ListItem>
             <ListItemButton
               role="menuitem"
-              component="a"
-              href="/"
+              component={Link}
+              to="/"
               selected={location.pathname === '/' ? true : false}>
               <DashboardRoundedIcon />
               <ListItemContent>
@@ -158,8 +158,8 @@ export default function Sidebar() {
           <ListItem>
             <ListItemButton
               role="menuitem"
-              component="a"
-              href="/profile"
+              component={Link}
+              to="/profile"
               selected={location.pathname === '/profile' ? true : false}>
               <PersonRoundedIcon/>
               <ListItemContent>
@@ -190,36 +190,36 @@ export default function Sidebar() {
                 <ListItem sx={{ mt: 0.5 }}>
                   <ListItemButton
                     role="menuitem"
-                    component="a"
-                    href="/patients"
+                    component={Link}
+                    to="/patients"
                     selected={location.pathname === '/patients' ? true : false}>Patients</ListItemButton>
                 </ListItem>
                 <ListItem sx={{ mt: 0.5 }}>
                   <ListItemButton
                     role="menuitem"
-                    component="a"
-                    href="/staff"
+                    component={Link}
+                    to="/staff"
                     selected={location.pathname === '/staff' ? true : false}>Staff List</ListItemButton>
                 </ListItem>
                 <ListItem sx={{ mt: 0.5 }}>
                   <ListItemButton
                     role="menuitem"
-                    component="a"
-                    href="/appointments"
+                    component={Link}
+                    to="/appointments"
                     selected={location.pathname === '/appointments' ? true : false}>Appointments</ListItemButton>
                 </ListItem>
                 <ListItem sx={{ mt: 0.5 }}>
                   <ListItemButton
                     role="menuitem"
-                    component="a"
-                    href="/treatments"
+                    component={Link}
+                    to="/treatments"
                     selected={location.pathname === '/treatments' ? true : false}>Treatments</ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton
                     role="menuitem"
-                    component="a"
-                    href="/prescriptions"
+                    component={Link}
+                    to="/prescriptions"
                     selected={location.pathname === '/prescriptions' ? true : false}>Prescriptions</ListItemButton>
                 </ListItem>
               </List>
@@ -229,8 +229,8 @@ export default function Sidebar() {
           <ListItem>
             <ListItemButton
               role="menuitem"
-              component="a"
-              href="/messages"
+              component={Link}
+              to="/messages"
               selected={location.pathname === '/messages' ? true : false}
             >
               <QuestionAnswerRoundedIcon />
@@ -261,8 +261,8 @@ export default function Sidebar() {
                 <ListItem sx={{ mt: 0.5 }}>
                   <ListItemButton
                     role="menuitem"
-                    component="a"
-                    href="/accounts"
+                    component={Link}
+                    to="/accounts"
                     selected={location.pathname === '/accounts' ? true : false}>
                     Accounts
                   </ListItemButton>
@@ -270,15 +270,15 @@ export default function Sidebar() {
                 <ListItem>
                   <ListItemButton
                     role="menuitem"
-                    component="a"
-                    href="/revenue"
+                    component={Link}
+                    to="/revenue"
                     selected={location.pathname === '/revenue' ? true : false}>Revenue</ListItemButton>
                 </ListItem>
                 <ListItem>
                   <ListItemButton
                     role="menuitem"
-                    component="a"
-                    href="/payment-method"
+                    component={Link}
+                    to="/payment-method"
                     selected={location.pathname === '/payment-method' ? true : false}>Payment Method</ListItemButton>
                 </ListItem>
               </List>
@@ -322,7 +322,7 @@ export default function Sidebar() {
           <Typography level="title-sm">Yhung Hydrus</Typography>
           <Typography level="body-xs" sx={{fontSize: '10px'}}>dehydrus223@gmail.com</Typography>
         </Box>
-        <IconButton size="sm" variant="plain" color="neutral" onClick={() => location.pathname='/signin'}>
+        <IconButton size="sm" variant="plain" color="neutral" onClick={() => window.location.href='/signin'}>
           <LogoutRoundedIcon />
         </IconButton>
       </Box>
