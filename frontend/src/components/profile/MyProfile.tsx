@@ -56,15 +56,7 @@ export default function MyProfile() {
             >
               <HomeRoundedIcon />
             </Link>
-            <Link
-              underline="hover"
-              color="neutral"
-              href="#some-link"
-              fontSize={12}
-              fontWeight={500}
-            >
-              Users
-            </Link>
+            
             <Typography color="primary" fontWeight={500} fontSize={12}>
               My profile
             </Typography>

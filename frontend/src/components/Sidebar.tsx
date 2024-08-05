@@ -154,24 +154,6 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
 
-
-          <ListItem>
-            <ListItemButton
-              role="menuitem"
-              component={Link}
-              to="/profile"
-              selected={location.pathname === '/profile' ? true : false}>
-              <PersonRoundedIcon/>
-              <ListItemContent>
-                <Typography level="title-sm">Profile</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-
-         
-
-          
-
           <ListItem nested>
             <Toggler
               renderToggle={({ open, setOpen }) => (
@@ -284,6 +266,19 @@ export default function Sidebar() {
               </List>
             </Toggler>
           </ListItem>
+
+          <ListItem>
+            <ListItemButton
+              role="menuitem"
+              component={Link}
+              to="/profile"
+              selected={location.pathname === '/profile' ? true : false}>
+              <PersonRoundedIcon/>
+              <ListItemContent>
+                <Typography level="title-sm">Profile</Typography>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
         </List>
 
         <List
@@ -313,18 +308,22 @@ export default function Sidebar() {
       </Box>
       <Divider />
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <Avatar
-          variant="outlined"
-          size="sm"
-          src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
-        />
-        <Box sx={{ minWidth: 0, boxSizing: 'border-box', flex: 1 }}>
-          <Typography level="title-sm">Yhung Hydrus</Typography>
-          <Typography level="body-xs" sx={{fontSize: '10px'}}>dehydrus223@gmail.com</Typography>
-        </Box>
-        <IconButton size="sm" variant="plain" color="neutral" onClick={() => window.location.href='/signin'}>
-          <LogoutRoundedIcon />
-        </IconButton>
+        
+          <Box component={Link} to="/profile" sx={{ display: 'flex', textDecoration: 'none', gap: 1, alignItems: 'center' }}>
+            <Avatar
+              variant="outlined"
+              size="sm"
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+            />
+            <Box sx={{ minWidth: 0, boxSizing: 'border-box', flex: 1 }}>
+              <Typography level="title-sm">Yhung Hydrus</Typography>
+              <Typography level="body-xs" sx={{fontSize: '10px'}}>dehydrus223@gmail.com</Typography>
+            </Box>
+          </Box>
+          <IconButton size="sm" variant="plain" color="neutral" onClick={() => window.location.href='/signin'}>
+            <LogoutRoundedIcon />
+          </IconButton>
+        
       </Box>
     </Sheet>
   );
