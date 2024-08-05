@@ -7,11 +7,11 @@ import Typography from '@mui/joy/Typography';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import RevenueTable from '../../components/revenue/RevenueTable';
-import RevenueList from '../../components/revenue/RevenueList';
+import TreatmentTable from '../../components/treatments/TreatmentTable';
+import TreatmentList from '../../components/treatments/TreatmentList';
 
 
-export default function Revenue() {
+export default function Treatment() {
   return (
     <Box
       component="main"
@@ -83,8 +83,8 @@ export default function Revenue() {
           Download PDF
         </Button>
       </Box>
-      <RevenueTable />
-      <RevenueList />
+      <TreatmentTable />
+      <TreatmentList />
     </Box>
   );
 }

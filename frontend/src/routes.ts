@@ -8,7 +8,9 @@ const Messages = lazy(() => import('./pages/messages/Messages'));
 const Profile = lazy(() => import('./pages/profile/Profile'));
 const Patients = lazy(() => import('./pages/patients/Patients'));
 const StaffList = lazy(() => import('./pages/staff/Staff'));
+const Treatments = lazy(() => import('./pages/treatments/Treatments'));
 const Revenue = lazy(() => import('./pages/revenue/Revenue'));
+
 
 const routes = [
   { path: '/', component: Dashboard },
@@ -17,6 +19,7 @@ const routes = [
   { path: '/messages', component: Messages},
   { path: '/profile', component: Profile},
   { path: '/patients', component: Patients},
+  { path: '/treatments', component: Treatments},
   { path: '/revenue', component: Revenue},
   { path: '/staff', component: StaffList}
 ];
