@@ -9,7 +9,8 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
 import TreatmentTable from '../../components/treatments/TreatmentTable';
 import TreatmentList from '../../components/treatments/TreatmentList';
-
+import Divider from '@mui/joy/Divider';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 export default function Treatment() {
   return (
@@ -54,10 +55,10 @@ export default function Treatment() {
             fontSize={12}
             fontWeight={500}
           >
-            Finance
+            Clinic
           </Link>
           <Typography color="primary" fontWeight={500} fontSize={12}>
-            Revenue
+            Treatments
           </Typography>
         </Breadcrumbs>
       </Box>
@@ -73,15 +74,15 @@ export default function Treatment() {
         }}
       >
         <Typography level="h2" component="h1">
-          Revenue
+          Treatments
         </Typography>
-        <Button
-          color="primary"
-          startDecorator={<DownloadRoundedIcon />}
-          size="sm"
-        >
-          Download PDF
-        </Button>
+        
+      </Box>
+      <Divider />
+      <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1}}>
+        <FormatListBulletedIcon/>
+        <Typography component="h2" level="h2">5</Typography>
+        <Typography level="body-sm" fontWeight={600}>Active treatments</Typography>
       </Box>
       <TreatmentTable />
       <TreatmentList />

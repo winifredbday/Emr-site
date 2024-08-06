@@ -37,185 +37,42 @@ import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 
 const rows = [
   {
-    id: 'INV-1234',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
+    id: 'TRT-01',
+    treatment_name: 'General Checkup',
+    price: '$50',
+    estimated_duration: '<= 1 hour',
+    type_of_visit: 'singlevisit' 
   },
   {
-    id: 'INV-1233',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-    },
+    id: 'TRT-02',
+    treatment_name: 'Teeth Whitening',
+    price: '$200',
+    estimated_duration: '>= 2 hour',
+    type_of_visit: 'multiplevisit'
   },
   {
-    id: 'INV-1232',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'C',
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-    },
+    id: 'TRT-03',
+    treatment_name: 'Malaria Test',
+    price: '$50',
+    estimated_duration: '<= 1 hour',
+    type_of_visit: 'singlevisit'
   },
   {
-    id: 'INV-1231',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'M',
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-    },
+    id: 'TRT-04',
+    treatment_name: 'Urine Lab Test',
+    price: '$50',
+    estimated_duration: '<= 3 hour',
+    type_of_visit: 'singlevisit'
   },
   {
-    id: 'INV-1230',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'C',
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-    },
-  },
-  {
-    id: 'INV-1229',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'J',
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-    },
-  },
-  {
-    id: 'INV-1228',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'K',
-      name: 'Krystal Stevens',
-      email: 'k.stevens@email.com',
-    },
-  },
-  {
-    id: 'INV-1227',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Sachin Flynn',
-      email: 's.flyn@email.com',
-    },
-  },
-  {
-    id: 'INV-1226',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'B',
-      name: 'Bradley Rosales',
-      email: 'brad123@email.com',
-    },
-  },
-  {
-    id: 'INV-1225',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-  },
-  {
-    id: 'INV-1224',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'S',
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-    },
-  },
-  {
-    id: 'INV-1223',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'C',
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-    },
-  },
-  {
-    id: 'INV-1221',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'M',
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-    },
-  },
-  {
-    id: 'INV-1220',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'C',
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-    },
-  },
-  {
-    id: 'INV-1219',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'J',
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-    },
-  },
-  {
-    id: 'INV-1218',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'K',
-      name: 'Krystal Stevens',
-      email: 'k.stevens@email.com',
-    },
-  },
-  {
-    id: 'INV-1217',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Sachin Flynn',
-      email: 's.flyn@email.com',
-    },
-  },
-  {
-    id: 'INV-1216',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'B',
-      name: 'Bradley Rosales',
-      email: 'brad123@email.com',
-    },
-  },
+    id: 'TRT-05',
+    treatment_name: 'Teeth Cleaning',
+    price: '$500',
+    estimated_duration: '<= 4 hour',
+    type_of_visit: 'multiplevisit'
+  }
+  
+  
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -269,8 +126,7 @@ function RowMenu() {
       </MenuButton>
       <Menu size="sm" sx={{ minWidth: 140 }}>
         <MenuItem>Edit</MenuItem>
-        <MenuItem>Rename</MenuItem>
-        <MenuItem>Move</MenuItem>
+       
         <Divider />
         <MenuItem color="danger">Delete</MenuItem>
       </Menu>
@@ -285,39 +141,17 @@ export default function TreatmentTable() {
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
-        <FormLabel>Status</FormLabel>
+        <FormLabel>Type of Visit</FormLabel>
         <Select
           size="sm"
-          placeholder="Filter by status"
+          placeholder="Filter by visit"
           slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
         >
-          <Option value="paid">Paid</Option>
-          <Option value="pending">Pending</Option>
-          <Option value="refunded">Refunded</Option>
-          <Option value="cancelled">Cancelled</Option>
+          <Option value="paid">singlevisit</Option>
+          <Option value="pending">multiplevisit</Option>
         </Select>
       </FormControl>
-      <FormControl size="sm">
-        <FormLabel>Category</FormLabel>
-        <Select size="sm" placeholder="All">
-          <Option value="all">All</Option>
-          <Option value="refund">Refund</Option>
-          <Option value="purchase">Purchase</Option>
-          <Option value="debit">Debit</Option>
-        </Select>
-      </FormControl>
-      <FormControl size="sm">
-        <FormLabel>Patient</FormLabel>
-        <Select size="sm" placeholder="All">
-          <Option value="all">All</Option>
-          <Option value="olivia">Olivia Rhye</Option>
-          <Option value="steve">Steve Hampton</Option>
-          <Option value="ciaran">Ciaran Murray</Option>
-          <Option value="marina">Marina Macdonald</Option>
-          <Option value="charles">Charles Fulton</Option>
-          <Option value="jay">Jay Hoper</Option>
-        </Select>
-      </FormControl>
+      
     </React.Fragment>
   );
   return (
@@ -373,9 +207,9 @@ export default function TreatmentTable() {
           },
         }}
       >
-        <FormControl sx={{ flex: 1 }} size="sm">
-          <FormLabel>Search for invoice</FormLabel>
-          <Input size="sm" placeholder="Search" startDecorator={<SearchIcon />} />
+        <FormControl sx={{ flex: 1}} size="sm">
+          <FormLabel>Search for treatment</FormLabel>
+          <Input size="sm" placeholder="Search by treatment name" sx={{ width:{sm: "50%", sx: "100%"}}} startDecorator={<SearchIcon />} />
         </FormControl>
         {renderFilters()}
       </Box>
@@ -405,7 +239,7 @@ export default function TreatmentTable() {
         >
           <thead>
             <tr>
-              <th style={{ width: 48, textAlign: 'center', padding: '12px 6px' }}>
+              <th style={{ width: 35, textAlign: 'center', padding: '12px 6px' }}>
                 <Checkbox
                   size="sm"
                   indeterminate={
@@ -425,7 +259,7 @@ export default function TreatmentTable() {
                   sx={{ verticalAlign: 'text-bottom' }}
                 />
               </th>
-              <th style={{ width: 120, padding: '12px 6px' }}>
+              <th style={{ width: 240, padding: '12px 6px' }}>
                 <Link
                   underline="none"
                   color="primary"
@@ -441,13 +275,13 @@ export default function TreatmentTable() {
                     },
                   }}
                 >
-                  Invoice
+                  Treatment Name
                 </Link>
               </th>
-              <th style={{ width: 140, padding: '12px 6px' }}>Date</th>
-              <th style={{ width: 140, padding: '12px 6px' }}>Status</th>
-              <th style={{ width: 240, padding: '12px 6px' }}>Patient</th>
-              <th style={{ width: 140, padding: '12px 6px' }}> </th>
+              <th style={{ width: 140, padding: '12px 6px' }}>Price</th>
+              <th style={{ width: 140, padding: '12px 6px' }}>Estimate Duration</th>
+              <th style={{ width: 100, padding: '12px 6px' }}>Type of Visit</th>
+              <th style={{ width: 50, padding: '12px 6px' }}> </th>
             </tr>
           </thead>
           <tbody>
@@ -470,47 +304,41 @@ export default function TreatmentTable() {
                   />
                 </td>
                 <td>
-                  <Typography level="body-xs">{row.id}</Typography>
+                  <Typography level="body-xs" fontWeight={'bold'}>{row.treatment_name}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs">{row.date}</Typography>
+                  <Typography level="body-xs"><span>Start from </span> <b>{row.price}</b></Typography>
+                </td>
+
+                <td>
+                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                    
+                    
+                      <Typography level="body-xs">{row.estimated_duration}</Typography>
+                    
+                  </Box>
                 </td>
                 <td>
                   <Chip
                     variant="soft"
                     size="sm"
-                    startDecorator={
-                      {
-                        Paid: <CheckRoundedIcon />,
-                        Refunded: <AutorenewRoundedIcon />,
-                        Cancelled: <BlockIcon />,
-                      }[row.status]
-                    }
+                    
                     color={
                       {
-                        Paid: 'success',
-                        Refunded: 'neutral',
-                        Cancelled: 'danger',
-                      }[row.status] as ColorPaletteProp
+                        singlevisit: 'success',
+                        multiplevisit: 'warning',
+                       
+                      }[row.type_of_visit] as ColorPaletteProp
                     }
                   >
-                    {row.status}
+                        {row.type_of_visit === "singlevisit" ? "Single Visit" : "Multiple Visit"}
+                        
+                
                   </Chip>
                 </td>
+                
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Avatar size="sm">{row.customer.initial}</Avatar>
-                    <div>
-                      <Typography level="body-xs">{row.customer.name}</Typography>
-                      <Typography level="body-xs">{row.customer.email}</Typography>
-                    </div>
-                  </Box>
-                </td>
-                <td>
-                  <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Link level="body-xs" component="button">
-                      Download
-                    </Link>
                     <RowMenu />
                   </Box>
                 </td>
