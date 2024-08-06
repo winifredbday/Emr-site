@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from 'react';
 import { ColorPaletteProp } from '@mui/joy/styles';
-import Avatar from '@mui/joy/Avatar';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Chip from '@mui/joy/Chip';
@@ -40,35 +40,35 @@ const rows = [
     id: 'TRT-01',
     treatment_name: 'General Checkup',
     price: '$50',
-    estimated_duration: '<= 1 hour',
+    estimated_duration: '<= 1 hour(s)',
     type_of_visit: 'singlevisit' 
   },
   {
     id: 'TRT-02',
     treatment_name: 'Teeth Whitening',
     price: '$200',
-    estimated_duration: '>= 2 hour',
+    estimated_duration: '>= 2 hour(s)',
     type_of_visit: 'multiplevisit'
   },
   {
     id: 'TRT-03',
     treatment_name: 'Malaria Test',
     price: '$50',
-    estimated_duration: '<= 1 hour',
+    estimated_duration: '<= 1 hour(s)',
     type_of_visit: 'singlevisit'
   },
   {
     id: 'TRT-04',
     treatment_name: 'Urine Lab Test',
     price: '$50',
-    estimated_duration: '<= 3 hour',
+    estimated_duration: '<= 3 hour(s)',
     type_of_visit: 'singlevisit'
   },
   {
     id: 'TRT-05',
     treatment_name: 'Teeth Cleaning',
     price: '$500',
-    estimated_duration: '<= 4 hour',
+    estimated_duration: '<= 4 hour(s)',
     type_of_visit: 'multiplevisit'
   }
   
@@ -200,6 +200,7 @@ export default function TreatmentTable() {
           borderRadius: 'sm',
           py: 2,
           display: { xs: 'none', sm: 'flex' },
+          alignItems: 'flex-end',
           flexWrap: 'wrap',
           gap: 1.5,
           '& > *': {
@@ -211,8 +212,18 @@ export default function TreatmentTable() {
           <FormLabel>Search for treatment</FormLabel>
           <Input size="sm" placeholder="Search by treatment name" sx={{ width:{sm: "50%", sx: "100%"}}} startDecorator={<SearchIcon />} />
         </FormControl>
+        
         {renderFilters()}
+        <Button
+          color="primary"
+          startDecorator={<AddRoundedIcon />}
+          size="sm"
+          sx={{display:"flex", alignItems:"center"}}
+        >
+          Add Treatment
+        </Button>
       </Box>
+      
       <Sheet
         className="RevenueTableContainer"
         variant="outlined"
