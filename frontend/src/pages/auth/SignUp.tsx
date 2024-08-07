@@ -4,7 +4,7 @@ import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import Divider from '@mui/joy/Divider';
+
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
@@ -15,7 +15,6 @@ import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
-import GoogleIcon from '../../components/auth/GoogleIcon';
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
