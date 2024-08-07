@@ -62,6 +62,7 @@ export default function SignUp() {
           },
         }}
       />
+
       <Box
         sx={(theme) => ({
           width: { xs: '100%', md: '50vw' },
@@ -87,6 +88,7 @@ export default function SignUp() {
             px: 2,
           }}
         >
+          {/* Header  */}
           <Box
             component="header"
             sx={{
@@ -103,6 +105,7 @@ export default function SignUp() {
             </Box>
             <ColorSchemeToggle />
           </Box>
+          {/* Main */}
           <Box
             component="main"
             sx={{
@@ -129,8 +132,9 @@ export default function SignUp() {
             <Stack gap={4}>
               <Stack gap={1}>
                 <Typography component="h1" level="h3">
-                  Sign Up
+                  Patient Sign Up
                 </Typography>
+                <Typography component="p" level="body-sm">Fill details in steps below to create an account.</Typography>
                 
               </Stack>
             
@@ -168,25 +172,10 @@ export default function SignUp() {
                 </Stack>
               </form>
             </Stack>
-            <Divider
-              sx={(theme) => ({
-                [theme.getColorSchemeSelector('light')]: {
-                  color: { xs: '#FFF', md: 'text.tertiary' },
-                },
-              })}
-            >
-              or
-            </Divider>
+            
             <Stack gap={4} sx={{ mb: 2 }}>
              
-              <Button
-                variant="soft"
-                color="neutral"
-                fullWidth
-                startDecorator={<GoogleIcon />}
-              >
-                Continue with Google
-              </Button>
+              
               <Stack gap={1}>
                 
                 <Typography level="body-sm">
@@ -205,6 +194,8 @@ export default function SignUp() {
           </Box>
         </Box>
       </Box>
+
+      {/* Sign Up page image */}
       <Box
         sx={(theme) => ({
           height: '100%',
