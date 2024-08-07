@@ -80,7 +80,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 
 class Patient(models.Model):
-    ROLE_CHOICES = (
+    GENDER_CHOICES = (
         ('male', 'Male'),
         ('female', 'Female'),
         ('other', 'Other')
@@ -88,7 +88,7 @@ class Patient(models.Model):
     )
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='patient_profile')
     date_of_birth = models.DateField(db_column='dateofbirth', blank=True, null=True)
-    gender = models.CharField(db_column='gender', choices=ROLE_CHOICES, max_length=6)
+    gender = models.CharField(db_column='gender', choices=GENDER_CHOICES, max_length=6)
     contact_number = models.CharField(db_column='contactnumber', unique=True, max_length=20)
     address = models.CharField(db_column='address', max_length=255)
     work = models.CharField(db_column='work', max_length=45, blank=True, null=True)
