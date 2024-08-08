@@ -4,7 +4,14 @@ import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-
+import Stepper from '@mui/joy/Stepper';
+import Select from '@mui/joy/Select';
+import Option from '@mui/joy/Option';
+import Step from '@mui/joy/Step';
+import StepButton from '@mui/joy/StepButton';
+import StepIndicator from '@mui/joy/StepIndicator';
+import Check from '@mui/icons-material/Check';
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
@@ -15,7 +22,12 @@ import Stack from '@mui/joy/Stack';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
-
+import Divider from '@mui/joy/Divider';
+import { NumericFormat, NumericFormatProps } from 'react-number-format';
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+}
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
   password: HTMLInputElement;
@@ -24,6 +36,31 @@ interface FormElements extends HTMLFormControlsCollection {
 interface SignInFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
+
+
+const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
+  function NumericFormatAdapter(props, ref) {
+    const { onChange, ...other } = props;
+
+    return (
+      <NumericFormat
+        {...other}
+        getInputRef={ref}
+        onValueChange={(values) => {
+          onChange({
+            target: {
+              name: props.name,
+              value: values.value,
+            },
+          });
+        }}
+        
+        valueIsNumericString
+        prefix="+"
+      />
+    );
+  },
+);
 
 function ColorSchemeToggle(props: IconButtonProps) {
   const { onClick, ...other } = props;
@@ -49,7 +86,66 @@ function ColorSchemeToggle(props: IconButtonProps) {
   );
 }
 
+
+const steps = ['Personal Info', 'Contact Info', 'Work and Identification'];
 export default function SignUp() {
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [completedSteps, setCompletedSteps] = React.useState<boolean[]>(new Array(steps.length).fill(false));
+  const [height, setHeight] = React.useState('metres');
+  const [formData, setFormData] = React.useState({
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    address: '',
+    phoneNumber: '',
+    gender: '',
+    work: '',
+    email: '',
+    height: '',
+    ssn: '',
+  });
+
+  const handleNext = () => {
+    if (isStepCompleted(activeStep)) {
+      setCompletedSteps((prev) => {
+        const newCompletedSteps = [...prev];
+        newCompletedSteps[activeStep] = true;
+        return newCompletedSteps;
+      });
+      setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
+    }
+  };
+
+  const handleBack = () => setActiveStep((prev) => Math.max(prev - 1, 0));
+
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (event: any, value: string | null) => {
+    if (typeof value === 'string') {
+      setFormData((prev) => ({ ...prev, gender: value }));
+    }
+  };
+
+  const isStepCompleted = (stepIndex: number): boolean => {
+    if (stepIndex === 0) {
+      return Boolean(formData.firstName && formData.lastName  && formData.gender && formData.height && formData.dateOfBirth );
+    }
+    if (stepIndex === 1) {
+      return Boolean(formData.phoneNumber && formData.address && formData.email);
+    }
+    if (stepIndex === 2) {
+      
+      return Boolean(formData.work && formData.ssn)
+      // Here, we check if at least one day is selected.
+      // return Object.values(selectedDays).some(Boolean);
+    }
+    return false;
+  };
+
   return (
     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
       <CssBaseline />
@@ -61,13 +157,40 @@ export default function SignUp() {
           },
         }}
       />
-
+      {/* Sign Up page image */}
       <Box
         sx={(theme) => ({
-          width: { xs: '100%', md: '50vw' },
+          height: '100%',
+          position: 'relative',
+          width:'50%',
+          
+          left: 0,
+          transition:
+            'background-image var(--Transition-duration), left var(--Transition-duration) !important',
+          transitionDelay: 'calc(var(--Transition-duration) + 0.1s)',
+          backgroundColor: 'background.level1',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundImage:
+            'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
+          [theme.getColorSchemeSelector('dark')]: {
+            backgroundImage:
+              'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',
+          },
+        })}
+      />
+      {/* Right Form Box */}
+      <Box
+        sx={(theme) => ({
+          height: '100vh',
+          width: '50%',
           transition: 'width var(--Transition-duration)',
           transitionDelay: 'calc(var(--Transition-duration) + 0.1s)',
-          position: 'relative',
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          padding:'.1rem .5rem',
           zIndex: 1,
           display: 'flex',
           justifyContent: 'flex-end',
@@ -91,6 +214,7 @@ export default function SignUp() {
           <Box
             component="header"
             sx={{
+              height:'15%',
               py: 3,
               display: 'flex',
               justifyContent: 'space-between',
@@ -108,13 +232,15 @@ export default function SignUp() {
           <Box
             component="main"
             sx={{
+             
               my: 'auto',
               py: 2,
-              pb: 5,
+              pb: 1,
               display: 'flex',
               flexDirection: 'column',
               gap: 2,
-              width: 400,
+              width: '100%',
+              height: '80%',
               maxWidth: '100%',
               mx: 'auto',
               borderRadius: 'sm',
@@ -128,17 +254,45 @@ export default function SignUp() {
               },
             }}
           >
-            <Stack gap={4}>
+            {/* Info Header */}
+            <Stack gap={4} sx={{ height: '20%'}}>
               <Stack gap={1}>
                 <Typography component="h1" level="h3">
-                  Patient Sign Up
+                  Patient Signup Form
                 </Typography>
                 <Typography component="p" level="body-sm">Fill details in steps below to create an account.</Typography>
                 
               </Stack>
             
             </Stack>
-            <Stack gap={4} sx={{ mt: 1 }}>
+            {/* Form with Stepper */}
+            <Stepper sx={{ width: '100%', height: '10%' }}>
+            {steps.map((step, index) => (
+              <Step
+                key={step}
+                active={activeStep === index}
+                completed={completedSteps[index] || (activeStep > index && isStepCompleted(index))}
+                indicator={
+                  <StepIndicator
+                    variant={activeStep === index ? 'soft' : 'solid'}
+                    color={activeStep === index ? 'primary' : 'neutral'}
+                    sx={{ background: completedSteps[index] ? 'green' : 'neutral' }}
+                  >
+                    {activeStep === index ? index + 1 : <Check sx={{ color: completedSteps[index] ? 'white' : 'neutral' }} />}
+                  </StepIndicator>
+                }
+                sx={{
+                  fontSize: '14px',
+                  '&::after': {
+                    ...(activeStep > index && index !== steps.length - 1 && { bgcolor: 'primary.solidBg' }),
+                  },
+                }}
+              >
+                <StepButton onClick={() => setActiveStep(index)}>{step}</StepButton>
+              </Step>
+            ))}
+            </Stepper>
+            <Stack gap={4} sx={{ mt: 0, height: '60%'}}>
               <form
                 onSubmit={(event: React.FormEvent<SignInFormElement>) => {
                   event.preventDefault();
@@ -151,28 +305,195 @@ export default function SignUp() {
                   alert(JSON.stringify(data, null, 2));
                 }}
               >
-                <FormControl required>
-                  <FormLabel>Email</FormLabel>
-                  <Input type="email" name="email" />
-                </FormControl>
-                <FormControl required>
-                  <FormLabel>Password</FormLabel>
-                  <Input type="password" name="password" />
-                </FormControl>
-                <FormControl required>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <Input type="password" name="confirmm_password" />
-                </FormControl>
-                <Stack gap={4} sx={{ mt: 2 }}>
-                  
-                  <Button type="submit" fullWidth>
-                    Create an account
-                  </Button>
+               {activeStep === 0 && (
+                <>
+                  <FormControl>
+                    <FormLabel>Name</FormLabel>
+                    <Stack direction="row" spacing={2}>
+                      <Input
+                        name="firstName"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        placeholder="First name"
+                        sx={{ fontSize: '14px', flexGrow: '1' }}
+                      />
+                      <Input
+                        name="lastName"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        placeholder="Last name"
+                        sx={{ fontSize: '14px', flexGrow: '1' }}
+                      />
+                    </Stack>
+                  </FormControl>
+                  <Stack spacing={1} direction={{sm: 'row'}} sx={{width:'100%', display: 'flex', gap: 2}} flexWrap={{xs: 'wrap'}}>
+                    <FormControl sx={{flexGrow: '1'}}>
+                        <FormLabel>Gender</FormLabel>
+                          
+                        <Stack spacing={2} alignItems="flex-start">
+                          <Select
+                            placeholder="Select Gender"
+                            name="gender"
+                            required
+                            sx={{ width:'100%', fontSize: '14px' }}
+                            value={formData.gender}
+                              onChange={handleSelectChange}
+                          >
+                            <Option value="Male" sx={{ minWidth: 200, fontSize: '14px' }}>Male</Option>
+                            <Option value="Female" sx={{ minWidth: 200, fontSize: '14px' }}>Female</Option>
+                            <Option value="Suspended" sx={{ minWidth: 200, fontSize: '14px' }}>Other</Option>
+                          
+                          </Select>
+                          
+                        </Stack>
+                          
+                    </FormControl>
+                    <FormControl sx={{flexGrow: '1'}}>
+                      <FormLabel>Date of Birth</FormLabel>
+                      <Input
+                          sx={{fontSize: "14px", width: '100%'}}
+                          type="date"
+                          name="dateOfBirth"
+                          onChange={handleChange}
+                          slotProps={{
+                            input: {
+                              min: '1900-12-31',
+                              max: '2024-12-31',
+                            },
+                          }}
+                        />
+                      
+                    </FormControl>
+                    <FormControl>
+                      <FormLabel>Height</FormLabel>
+                      <Input
+                        type='number'
+                        name='height'
+                        placeholder="1.62"
+                        onChange={handleChange}
+                        sx={{fontSize:"14px", width:'100%', maxWidth: 205}}
+                        startDecorator={{ feet: 'ft', metres: 'm', centimetres: 'cm' }[height]}
+                        endDecorator={
+                          <React.Fragment>
+                            <Divider orientation="vertical" />
+                            <Select
+                              variant="plain"
+                              value={height}
+                              onChange={(_, value) => setHeight(value!)}
+                              slotProps={{
+                                listbox: {
+                                  variant: 'outlined',
+                                },
+                              }}
+                              sx={{  mr: -1.5, fontSize: '14px', '&:hover': { bgcolor: 'transparent' } }}
+                            >
+                              <Option value="feet" sx={{fontSize: '14px'}}>Feet</Option>
+                              <Option value="metres" sx={{fontSize: '14px'}}>Metres</Option>
+                              <Option value="centimetres" sx={{fontSize: '14px'}}>Centimetres</Option>
+                            </Select>
+                          </React.Fragment>
+                        }
+                      
+                      />
+                    </FormControl>
+                  </Stack>
+
+                </>
+                )}
+
+                {activeStep === 1 && (
+                  <>
+                    <Stack direction={{ sm: "row" }} sx={{ position: 'relative', width: "100%", display: "flex", gap: 2 }}>
+                      <FormControl sx={{ width: "50%" }}>
+                        <FormLabel>Phone number</FormLabel>
+                        <Input
+                          name="phoneNumber"
+                          value={formData.phoneNumber}
+                          onChange={handleChange}
+                          placeholder="+233 557 31 1180"
+                          sx={{ fontSize: '14px' }}
+                          slotProps={{
+                            input: {
+                              component: NumericFormatAdapter,
+                            },
+                          }}
+                        />
+                      </FormControl>
+                      <FormControl sx={{ width: "50%" }}>
+                        <FormLabel>Email</FormLabel>
+                        <Input
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          startDecorator={<EmailRoundedIcon />}
+                          placeholder="siriwatk@test.com"
+                          sx={{ fontSize: '14px' }}
+                        />
+                      </FormControl>
+                    </Stack>
+                    <FormControl>
+                      <FormLabel>Address</FormLabel>
+                      <Input
+                        name="address"
+                        value={formData.address}
+                        onChange={handleChange}
+                        placeholder="14th Street off Mid Avenue"
+                        sx={{ fontSize: '14px' }}
+                      />
+                    </FormControl>
+                   
+                  </>
+                
+                )}
+
+                {activeStep === 2 && (
+                  <>
+                     <FormControl>
+                      <FormLabel>Social Security No.</FormLabel>
+                      <Input
+                        name="ssn"
+                        value={formData.ssn}
+                        onChange={handleChange}
+                        placeholder="14th Street off Mid Avenue"
+                        sx={{ fontSize: '14px' }}
+                      />
+                    </FormControl>
+                    <Stack  direction={{sm: "row"}} spacing={2} useFlexGap>
+                      <FormControl sx={{flexGrow: '1'}} required>
+                        <FormLabel>Password</FormLabel>
+                        <Input type="password" name="password" />
+                      </FormControl>
+                      <FormControl sx={{flexGrow: '1'}} required>
+                        <FormLabel>Confirm Password</FormLabel>
+                        <Input type="password" name="confirmm_password" />
+                      </FormControl>
+                    </Stack>
+                  </>
+                )}
+                <Stack sx={{ mt: 2}}>
+                  <Divider sx={{ my: 2 }} />
+                  <Stack direction="row" spacing={2}>
+                    <Button onClick={handleBack} disabled={activeStep === 0} color="neutral">
+                      Back
+                    </Button>
+                    {activeStep < steps.length - 1 ? (
+                      <Button onClick={handleNext} color="primary">
+                        Next
+                      </Button>
+                    ) : (
+                      <Button color="primary">
+                        Submit
+                      </Button>
+                    )}
+                  </Stack>
                 </Stack>
+               
+                
+               
               </form>
             </Stack>
-            
-            <Stack gap={4} sx={{ mb: 2 }}>
+            <Stack gap={4} sx={{ mb: 0, height: '10%' }}>
              
               
               <Stack gap={1}>
@@ -186,7 +507,8 @@ export default function SignUp() {
               </Stack>
             </Stack>
           </Box>
-          <Box component="footer" sx={{ py: 3 }}>
+          {/* Footer */}
+          <Box component="footer" sx={{ height: '5%', py: 3 }}>
             <Typography level="body-xs" textAlign="center">
               © Your company {new Date().getFullYear()}
             </Typography>
@@ -194,30 +516,7 @@ export default function SignUp() {
         </Box>
       </Box>
 
-      {/* Sign Up page image */}
-      <Box
-        sx={(theme) => ({
-          height: '100%',
-          position: 'fixed',
-          right: 0,
-          top: 0,
-          bottom: 0,
-          left: { xs: 0, md: '50vw' },
-          transition:
-            'background-image var(--Transition-duration), left var(--Transition-duration) !important',
-          transitionDelay: 'calc(var(--Transition-duration) + 0.1s)',
-          backgroundColor: 'background.level1',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundImage:
-            'url(https://images.unsplash.com/photo-1527181152855-fc03fc7949c8?auto=format&w=1000&dpr=2)',
-          [theme.getColorSchemeSelector('dark')]: {
-            backgroundImage:
-              'url(https://images.unsplash.com/photo-1572072393749-3ca9c8ea0831?auto=format&w=1000&dpr=2)',
-          },
-        })}
-      />
+      
     </CssVarsProvider>
   );
 }
