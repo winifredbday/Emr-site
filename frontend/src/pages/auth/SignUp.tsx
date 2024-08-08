@@ -24,6 +24,8 @@ import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import Divider from '@mui/joy/Divider';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
+import AlertVariousStates from '../../components/AlertVariousStates';
+import axios from 'axios'
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
@@ -31,6 +33,7 @@ interface CustomProps {
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
   password: HTMLInputElement;
+  confirmPassword: HTMLInputElement;
   persistent: HTMLInputElement;
 }
 interface SignInFormElement extends HTMLFormElement {
@@ -103,9 +106,12 @@ export default function SignUp() {
     email: '',
     height: '',
     ssn: '',
+    password: '',
+    confirmPassword: '',
   });
 
-  const handleNext = () => {
+  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     if (isStepCompleted(activeStep)) {
       setCompletedSteps((prev) => {
         const newCompletedSteps = [...prev];
@@ -139,13 +145,75 @@ export default function SignUp() {
     }
     if (stepIndex === 2) {
       
-      return Boolean(formData.work && formData.ssn)
+      return Boolean(formData.work && formData.ssn && formData.password && formData.confirmPassword)
       // Here, we check if at least one day is selected.
       // return Object.values(selectedDays).some(Boolean);
     }
     return false;
   };
 
+  const [alert, setAlert] = React.useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent<SignInFormElement>) => {
+    event.preventDefault();
+    // Check if passwords match
+  
+
+    const patientData = {
+      firstname: formData.firstName,
+      lastname: formData.lastName,
+      date_of_birth: formData.dateOfBirth,
+      address: formData.address,
+      contact_number: formData.phoneNumber,
+      gender: formData.gender,
+      work: formData.work,
+      email: formData.email,
+      height: formData.height,
+      ssn: formData.ssn,
+      password: formData.password,
+      password_confirm: formData.confirmPassword,
+    }
+   
+  
+    // Check if the form is complete before submitting
+    if (!isStepCompleted(activeStep)) {
+      setAlert({ message: 'Please complete all required fields.', type: 'error'});
+      return;
+    }
+  
+    try {
+      const response = await axios.post('http://localhost:8000/accounts/signup/', patientData);
+        
+  
+      
+        setAlert({ message: 'User created successfully!', type: 'success' });
+        setTimeout(() => {
+          window.location.href = '/signin';
+        }, 3000); // Redirect after 3 seconds
+     
+      
+      
+      
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // This block is for Axios errors
+        if (error.response && error.response.data) {
+          const errorData = error.response.data;
+          if (errorData && typeof errorData === 'object') {
+            const errorMessages = Object.values(errorData).flat().join(' ');
+            setAlert({ message: `Error: ${errorMessages}`, type: 'error' });
+          } else {
+            setAlert({ message: 'An unexpected error occurred', type: 'error' });
+          }
+        } else {
+          setAlert({ message: 'Network error', type: 'error' });
+        }
+      } else {
+        // This block is for other types of errors
+        setAlert({ message: 'An unexpected error occurred', type: 'error' });
+      }
+    };
+  }
   return (
     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
       <CssBaseline />
@@ -254,6 +322,12 @@ export default function SignUp() {
               },
             }}
           >
+             {alert && (
+                <AlertVariousStates
+                  message={alert.message}
+                  type={alert.type}
+                />
+              )}
             {/* Info Header */}
             <Stack gap={4} sx={{ height: '20%'}}>
               <Stack gap={1}>
@@ -293,18 +367,7 @@ export default function SignUp() {
             ))}
             </Stepper>
             <Stack gap={4} sx={{ mt: 0, height: '60%'}}>
-              <form
-                onSubmit={(event: React.FormEvent<SignInFormElement>) => {
-                  event.preventDefault();
-                  const formElements = event.currentTarget.elements;
-                  const data = {
-                    email: formElements.email.value,
-                    password: formElements.password.value,
-                    persistent: formElements.persistent.checked,
-                  };
-                  alert(JSON.stringify(data, null, 2));
-                }}
-              >
+              <form onSubmit={handleSubmit}>
                {activeStep === 0 && (
                 <>
                   <FormControl>
@@ -339,9 +402,9 @@ export default function SignUp() {
                             value={formData.gender}
                               onChange={handleSelectChange}
                           >
-                            <Option value="Male" sx={{ minWidth: 200, fontSize: '14px' }}>Male</Option>
-                            <Option value="Female" sx={{ minWidth: 200, fontSize: '14px' }}>Female</Option>
-                            <Option value="Suspended" sx={{ minWidth: 200, fontSize: '14px' }}>Other</Option>
+                            <Option value="male" sx={{ minWidth: 200, fontSize: '14px' }}>Male</Option>
+                            <Option value="female" sx={{ minWidth: 200, fontSize: '14px' }}>Female</Option>
+                            <Option value="other" sx={{ minWidth: 200, fontSize: '14px' }}>Other</Option>
                           
                           </Select>
                           
@@ -355,6 +418,7 @@ export default function SignUp() {
                           type="date"
                           name="dateOfBirth"
                           onChange={handleChange}
+                          value={formData.dateOfBirth}
                           slotProps={{
                             input: {
                               min: '1900-12-31',
@@ -370,6 +434,7 @@ export default function SignUp() {
                         type='number'
                         name='height'
                         placeholder="1.62"
+                        value={formData.height}
                         onChange={handleChange}
                         sx={{fontSize:"14px", width:'100%', maxWidth: 205}}
                         startDecorator={{ feet: 'ft', metres: 'm', centimetres: 'cm' }[height]}
@@ -378,7 +443,7 @@ export default function SignUp() {
                             <Divider orientation="vertical" />
                             <Select
                               variant="plain"
-                              value={height}
+                              value={formData.height}
                               onChange={(_, value) => setHeight(value!)}
                               slotProps={{
                                 listbox: {
@@ -410,7 +475,7 @@ export default function SignUp() {
                           name="phoneNumber"
                           value={formData.phoneNumber}
                           onChange={handleChange}
-                          placeholder="+233 557 31 1180"
+                          
                           sx={{ fontSize: '14px' }}
                           slotProps={{
                             input: {
@@ -449,7 +514,19 @@ export default function SignUp() {
 
                 {activeStep === 2 && (
                   <>
-                     <FormControl>
+                     <Stack direction={{sm: "row"}} spacing={2} useFlexGap>
+                     
+                     <FormControl sx={{flexGrow: '1'}}>
+                      <FormLabel>Work</FormLabel>
+                      <Input
+                        name="work"
+                        value={formData.work}
+                        onChange={handleChange}
+                        placeholder="Software Engineer"
+                        sx={{ fontSize: '14px' }}
+                      />
+                    </FormControl>
+                    <FormControl sx={{flexGrow: '1'}}>
                       <FormLabel>Social Security No.</FormLabel>
                       <Input
                         name="ssn"
@@ -459,14 +536,15 @@ export default function SignUp() {
                         sx={{ fontSize: '14px' }}
                       />
                     </FormControl>
+                     </Stack>
                     <Stack  direction={{sm: "row"}} spacing={2} useFlexGap>
                       <FormControl sx={{flexGrow: '1'}} required>
                         <FormLabel>Password</FormLabel>
-                        <Input type="password" name="password" />
+                        <Input type="password" name="password" value={formData.password} onChange={handleChange} />
                       </FormControl>
                       <FormControl sx={{flexGrow: '1'}} required>
                         <FormLabel>Confirm Password</FormLabel>
-                        <Input type="password" name="confirmm_password" />
+                        <Input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
                       </FormControl>
                     </Stack>
                   </>
@@ -474,15 +552,15 @@ export default function SignUp() {
                 <Stack sx={{ mt: 2}}>
                   <Divider sx={{ my: 2 }} />
                   <Stack direction="row" spacing={2}>
-                    <Button onClick={handleBack} disabled={activeStep === 0} color="neutral">
+                    <Button type="button" onClick={handleBack} disabled={activeStep === 0} color="neutral">
                       Back
                     </Button>
                     {activeStep < steps.length - 1 ? (
-                      <Button onClick={handleNext} color="primary">
+                      <Button type="button" onClick={handleNext} color="primary">
                         Next
                       </Button>
                     ) : (
-                      <Button color="primary">
+                      <Button type="submit" color="primary">
                         Submit
                       </Button>
                     )}
