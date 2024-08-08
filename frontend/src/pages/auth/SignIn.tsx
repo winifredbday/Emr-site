@@ -1,28 +1,30 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import CssBaseline from '@mui/joy/CssBaseline';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Checkbox from '@mui/joy/Checkbox';
-import Divider from '@mui/joy/Divider';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
-import Link from '@mui/joy/Link';
 import Input from '@mui/joy/Input';
 import Typography from '@mui/joy/Typography';
 import Stack from '@mui/joy/Stack';
+import IconButton, { IconButtonProps } from '@mui/joy/IconButton';
+import Link from '@mui/joy/Link';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
-import GoogleIcon from '../../components/auth/GoogleIcon';
+import AlertVariousStates from '../../components/AlertVariousStates'; // Import your alert component
 
 interface FormElements extends HTMLFormControlsCollection {
   email: HTMLInputElement;
   password: HTMLInputElement;
   persistent: HTMLInputElement;
 }
+
 interface SignInFormElement extends HTMLFormElement {
   readonly elements: FormElements;
 }
@@ -52,6 +54,41 @@ function ColorSchemeToggle(props: IconButtonProps) {
 }
 
 export default function SignIn() {
+
+  const navigate = useNavigate(); // Initialize navigate
+
+  // Check if user is authenticated
+  useEffect(() => {
+    // Check localStorage or context for authentication state
+    const token = localStorage.getItem('token'); // Adjust based on your auth implementation
+    if (token) {
+      navigate('/'); // Redirect to dashboard if token exists
+    }
+  }, [navigate]);
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [alert, setAlert] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:8000/accounts/signin/', {
+        email,
+        password,
+      });
+      localStorage.setItem('token', response.data.access); // Adjust based on the response structure
+      setAlert({ message: 'Login successful!', type: 'success' });
+      window.location.href = '/'
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setAlert({ message: error.response?.data.detail || 'Login failed', type: 'error' });
+      } else {
+        setAlert({ message: 'An unexpected error occurred', type: 'error' });
+      }
+    }
+  };
+
   return (
     <CssVarsProvider defaultMode="dark" disableTransitionOnChange>
       <CssBaseline />
@@ -133,50 +170,25 @@ export default function SignIn() {
                   Sign in
                 </Typography>
                 <Typography level="body-sm">
-                  New to company?{' '}
+                  Need an account?{' '}
                   <Link href="/signup" level="title-sm">
                     Sign up!
                   </Link>
                 </Typography>
               </Stack>
-              <Button
-                variant="soft"
-                color="neutral"
-                fullWidth
-                startDecorator={<GoogleIcon />}
-              >
-                Continue with Google
-              </Button>
             </Stack>
-            <Divider
-              sx={(theme) => ({
-                [theme.getColorSchemeSelector('light')]: {
-                  color: { xs: '#FFF', md: 'text.tertiary' },
-                },
-              })}
-            >
-              or
-            </Divider>
+
+            {alert && <AlertVariousStates message={alert.message} type={alert.type} />}
+
             <Stack gap={4} sx={{ mt: 2 }}>
-              <form
-                onSubmit={(event: React.FormEvent<SignInFormElement>) => {
-                  event.preventDefault();
-                  const formElements = event.currentTarget.elements;
-                  const data = {
-                    email: formElements.email.value,
-                    password: formElements.password.value,
-                    persistent: formElements.persistent.checked,
-                  };
-                  alert(JSON.stringify(data, null, 2));
-                }}
-              >
+              <form onSubmit={handleSubmit}>
                 <FormControl required>
                   <FormLabel>Email</FormLabel>
-                  <Input type="email" name="email" />
+                  <Input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 </FormControl>
                 <FormControl required>
                   <FormLabel>Password</FormLabel>
-                  <Input type="password" name="password" />
+                  <Input type="password" name="password" onChange={(e) => setPassword(e.target.value)} />
                 </FormControl>
                 <Stack gap={4} sx={{ mt: 2 }}>
                   <Box
