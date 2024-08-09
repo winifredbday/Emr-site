@@ -77,9 +77,9 @@ export default function SignIn() {
         email,
         password,
       });
-      localStorage.setItem('token', response.data.access); // Adjust based on the response structure
-      setAlert({ message: 'Login successful!', type: 'success' });
-      window.location.href = '/'
+      localStorage.setItem('token', response.data.token); // Adjust based on the response structure
+      setAlert({ message: 'Signin successful!', type: 'success' });
+      navigate('/')
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setAlert({ message: error.response?.data.detail || 'Login failed', type: 'error' });

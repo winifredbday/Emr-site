@@ -25,7 +25,8 @@ import BrightnessAutoRoundedIcon from '@mui/icons-material/BrightnessAutoRounded
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils/utils';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 
 function Toggler({
   defaultExpanded = false,
@@ -61,6 +62,39 @@ function Toggler({
 
 export default function Sidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const handleSignout = async () => {
+    try {
+      const token = localStorage.getItem('token'); // Retrieve token from local storage
+      if (!token) {
+        console.error('No token found'); // Log error if token is not found
+        alert('No token found. Please log in again.');
+        return;
+      }
+
+      const response = await axios.post(
+        'http://localhost:8000/accounts/signout/',
+        {},
+        {
+          headers: {
+            Authorization: `Token ${token}`, // Include token in the Authorization header
+          },
+        }
+      );
+
+      console.log('Sign out response:', response); // Log response for debugging
+      localStorage.removeItem('token'); // Remove token from local storage
+      navigate('/signin'); // Redirect to sign-in page
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Signout error:', error.response?.data || error.message);
+        alert('Failed to log out. Please try again.');
+      } else {
+        console.error('Unexpected error:', error);
+        alert('An unexpected error occurred. Please try again.');
+      }
+    }
+  };
   return (
     <Sheet
       className="Sidebar"
@@ -320,7 +354,7 @@ export default function Sidebar() {
               <Typography level="body-xs" sx={{fontSize: '10px'}}>dehydrus223@gmail.com</Typography>
             </Box>
           </Box>
-          <IconButton size="sm" variant="plain" color="neutral" onClick={() => window.location.href='/signin'}>
+          <IconButton size="sm" variant="plain" color="neutral" onClick={handleSignout}>
             <LogoutRoundedIcon />
           </IconButton>
         
