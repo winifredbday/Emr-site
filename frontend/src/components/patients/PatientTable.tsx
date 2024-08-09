@@ -509,7 +509,7 @@ export default function PatientTable() {
                 </td>
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Link level="body-xs" component="button">
+                    <Link onClick={() => window.location.href="/patients/patient/detail"} level="body-xs" component="button">
                       View
                     </Link>
                     <RowMenu />
