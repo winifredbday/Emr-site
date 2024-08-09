@@ -3,8 +3,8 @@ import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import Tab, {tabClasses} from '@mui/joy/Tab';
 import TabPanel from '@mui/joy/TabPanel';
-
-
+import Typography from '@mui/joy/Typography';
+import Box from '@mui/joy/Box'
 export default function PatientDetail(){
     return (
         <Tabs aria-label="Basic tabs" defaultValue={0}>
@@ -34,8 +34,28 @@ export default function PatientDetail(){
           <Tab>Appointment History</Tab>
           <Tab>Next Treatment</Tab>
         </TabList>
-        <TabPanel value={0}>
-          <b>First</b> tab panel
+        <TabPanel value={0} sx={{border: '1px solid red', display: 'flex', gap: 3}}>
+          <Box sx={{p: 1}}>
+            <Typography level="title-sm">Date of Birth:</Typography>
+            <Typography level="body-sm" sx={{fontSize: '12px', pt: 1}}>14th April, 2003</Typography>
+          </Box>
+          <Box sx={{p: 1}}>
+            <Typography level="title-sm">Email:</Typography>
+            <Typography level="body-sm" sx={{fontSize: '12px', pt: 1}}>user@test.com</Typography>
+          </Box>
+          <Box sx={{p: 1}}>
+            <Typography level="title-sm">Phone:</Typography>
+            <Typography level="body-sm" sx={{fontSize: '12px', pt: 1}}>(+233) 557 31 1180</Typography>
+          </Box>
+          <Box sx={{p: 1}}>
+            <Typography level="title-sm">Address:</Typography>
+            <Typography level="body-sm" sx={{fontSize: '12px', pt: 1}}>Chico Street of 22nd Avenue</Typography>
+          </Box>
+          <Box sx={{p: 1}}>
+            <Typography level="title-sm">Work:</Typography>
+            <Typography level="body-sm" sx={{fontSize: '12px', pt: 1}}>Software Developer</Typography>
+          </Box>
+          
         </TabPanel>
         <TabPanel value={1}>
           <b>Second</b> tab panel

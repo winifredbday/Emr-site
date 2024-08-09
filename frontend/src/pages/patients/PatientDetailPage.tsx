@@ -56,7 +56,7 @@ export default function PatientDetailPage() {
           <Link
             underline="hover"
             color="neutral"
-            href="#some-link"
+            href="/patients"
             fontSize={12}
             fontWeight={500}
           >
