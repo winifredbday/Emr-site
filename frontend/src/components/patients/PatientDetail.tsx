@@ -15,15 +15,17 @@ import Box from '@mui/joy/Box'
 
 const listItems = [
     {
-      id: 'INV-1234',
+      id: 'APT-001',
       date: 'Feb 3, 2023',
-      status: 'Discharged',
-      customer: {
-        initial: 'O',
-        name: 'Olivia Ryhe',
-        email: 'olivia@email.com',
-      },
+      doctor: 'Dr. James Hayford',
+      treatment: 'Full Medical Checkup'
     },
+    {
+        id: 'APT-002',
+        date: 'Feb 4, 2023',
+        doctor: 'Dr. Mark McIntyre',
+        treatment: 'Tooth Cavity Check'
+    }
 ]
 
 export default function PatientDetail(){
@@ -54,7 +56,7 @@ export default function PatientDetail(){
                 }}>
             <Tab>Patient Information</Tab>
             <Tab>Appointment History</Tab>
-            <Tab>Next Treatment</Tab>
+            
             </TabList>
             <TabPanel value={0}>
                 <Box sx={{display: 'flex', gap: 5}}>
@@ -92,13 +94,26 @@ export default function PatientDetail(){
             {/* Tab 2 */}
             <TabPanel value={1}>
             <Box sx={{p: 1, width: '100%', height: '100%'}}>
-                {listItems.map((listItem) => (
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 2,
+                        mb: 1,
+                    }}
+                >
+                    <Typography level="body-xs" sx={{minWidth: 10}}></Typography>
+                    <Typography level="body-xs" sx={{minWidth: 200, fontWeight: 'bold'}}>Date</Typography>
+                    <Typography level="body-xs" sx={{minWidth: 200, fontWeight: 'bold'}}>Doctor</Typography>
+                    <Typography level="body-xs" sx={{minWidth: 200, fontWeight: 'bold'}}>Treatment</Typography>
+                </Box>
+                <ListDivider />
+                {listItems.map((listItem, index) => (
                     <List
                         key={listItem.id}
                         size="sm"
                         sx={{
                             '--ListItem-paddingX': 0,
-                            border: '1px solid red'
                         }}
                         >
                         <ListItem
@@ -118,9 +133,12 @@ export default function PatientDetail(){
                                         mb: 1,
                                     }}
                                 >
-                                    <Typography level="body-xs">{listItem.date}</Typography>
+                                    <Typography level="body-xs" sx={{minWidth: 10}}>{index + 1}</Typography>
+                                    <Typography level="body-xs" sx={{minWidth: 200}}>{listItem.date}</Typography>
+                                    
+                                    <Typography level="body-xs" sx={{minWidth: 200}}>{listItem.doctor}</Typography>
                                     <Typography level="body-xs">&bull;</Typography>
-                                    <Typography level="body-xs">Dr. James Hayford</Typography>
+                                    <Typography level="body-xs" sx={{minWidth: 200}}>{listItem.treatment}</Typography>
                                 </Box>
                             
                             
@@ -132,9 +150,8 @@ export default function PatientDetail(){
                 ))}
             </Box>
             </TabPanel>
-            <TabPanel value={2}>
-            <b>Third</b> tab panel
-            </TabPanel>
+            
         </Tabs>
+        
     )
 }

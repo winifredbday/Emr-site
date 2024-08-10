@@ -97,7 +97,8 @@ export default function PatientDetailPage() {
           Create Appointment
         </Button>
       </Box>
-      <Button
+      {/* Edit Profile */}
+      {/* <Button
           color="neutral"
           startDecorator={<EditRoundedIcon sx={{fontSize: '12px'}}/>}
           size="sm"
@@ -105,7 +106,7 @@ export default function PatientDetailPage() {
           
         >
           Edit Profile
-      </Button>
+      </Button> */}
       <PatientDetail/>
       {/* <AddPatientModal open={modalOpen} onClose={handleClose} /> */}
     </Box>
