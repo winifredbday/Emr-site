@@ -1,33 +1,71 @@
-# views.py
+from django.db import transaction
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 from .serializers import PatientSerializer, UserAccountSerializer
-import logging
+from rest_framework.authtoken.models import Token
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.permissions import AllowAny
+from django.contrib.auth import authenticate
 
-logger = logging.getLogger(__name__)
 
 @api_view(['POST'])
 def create_patient(request):
-    logger.info("Received request data: %s", request.data)
-    
     user_serializer = UserAccountSerializer(data=request.data)
-    print("Request Data:", request.data)  # Debugging line
-    if request.method == 'POST':
-        if user_serializer.is_valid():
-            print("Validated User Data:", user_serializer.validated_data)  # Debugging line
-            user = user_serializer.save()
-            logger.info("User created: %s", user)
-            
-            patient_data = request.data.copy()
-            patient_data['user'] = user.id
-            patient_serializer = PatientSerializer(data=patient_data)
-            if patient_serializer.is_valid():
-                patient_serializer.save()
-                logger.info("Patient created: %s", patient_serializer.validated_data)
-                return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
-            logger.error("Patient serializer errors: %s", patient_serializer.errors)
-            return Response(patient_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        logger.error("User serializer errors: %s", user_serializer.errors)
+    if user_serializer.is_valid():
+        try:
+            with transaction.atomic():
+                # Create the user
+                user = user_serializer.save()
+                
+                # Prepare patient data and create the patient
+                patient_data = request.data.copy()
+                patient_data['user'] = user.id
+                patient_serializer = PatientSerializer(data=patient_data)
+                
+                if patient_serializer.is_valid():
+                    patient_serializer.save()
+                    return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
+                else:
+                    # If patient serializer is invalid, rollback the user creation
+                    user.delete()  # Rollback user creation
+                    return Response(patient_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            # Handle any unexpected errors
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    else:
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class SignInView(ObtainAuthToken):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        password = request.data.get('password')
+
+        # Authenticate user
+        user = authenticate(request, email=email, password=password)
+
+        if user is None:
+            return Response({'error': 'Invalid credentials'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create or get the token
+        token, created = Token.objects.get_or_create(user=user)
+        
+        return Response({'token': token.key})
+    
+
+
+class SignOutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            request.user.auth_token.delete()  # Delete the token
+        except (AttributeError, Token.DoesNotExist):
+            pass  # Token might not exist
+        
+        return Response({"message": "Successfully logged out."})
