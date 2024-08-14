@@ -11,13 +11,11 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import PatientDetail from '../../components/patients/PatientDetail';
 import Avatar from '@mui/joy/Avatar';
 
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
-
 export default function PatientDetailPage() {
-  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  // const [modalOpen, setModalOpen] = React.useState<boolean>(false);
 
-  const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
+  // const handleOpen = () => setModalOpen(true);
+  // const handleClose = () => setModalOpen(false);
   return (
     <Box
       component="main"
@@ -92,7 +90,7 @@ export default function PatientDetailPage() {
           startDecorator={<AddRoundedIcon />}
           size="sm"
           sx={{p: 1.2}}
-          onClick={handleOpen}
+          
         >
           Create Appointment
         </Button>
