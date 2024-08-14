@@ -6,10 +6,7 @@ import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import OrderTable from '../components/OrderTable';
-import OrderList from '../components/OrderList';
-
+import CashFlow from '../components/dashboard/CashFlow'
 
 export default function Dashboard() {
   return (
@@ -79,7 +76,8 @@ export default function Dashboard() {
         </Typography>
         
       </Box>
-      
+      {/* Dashboard Content */}
+      <CashFlow/>
     </Box>
   );
 }
