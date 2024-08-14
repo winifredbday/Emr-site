@@ -32,6 +32,7 @@ export default function Dashboard() {
         gap: 1,
       }}
     >
+      {/* Breadcrumbs */}
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Breadcrumbs
           size="sm"
@@ -56,9 +57,7 @@ export default function Dashboard() {
           >
             Dashboard
           </Link>
-          <Typography color="primary" fontWeight={500} fontSize={12}>
-            Orders
-          </Typography>
+          
         </Breadcrumbs>
       </Box>
       <Box
@@ -66,25 +65,21 @@ export default function Dashboard() {
           display: 'flex',
           mb: 1,
           gap: 1,
-          flexDirection: { xs: 'column', sm: 'row' },
-          alignItems: { xs: 'start', sm: 'center' },
+          flexDirection: { xs: 'column', sm: 'column' },
+          alignItems: { xs: 'start', sm: 'start' },
           flexWrap: 'wrap',
           justifyContent: 'space-between',
         }}
       >
-        <Typography level="h2" component="h1">
-          Orders
+        <Typography level="h4" component="h4">
+          Good morning, Yung!
         </Typography>
-        <Button
-          color="primary"
-          startDecorator={<DownloadRoundedIcon />}
-          size="sm"
-        >
-          Download PDF
-        </Button>
+        <Typography level="body-sm" component="p">
+          Wednesday, August 14, 2024
+        </Typography>
+        
       </Box>
-      <OrderTable />
-      <OrderList />
+      
     </Box>
   );
 }
