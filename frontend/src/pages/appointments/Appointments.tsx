@@ -1,15 +1,19 @@
 import * as React from 'react';
 import Box from '@mui/joy/Box';
+import Button from '@mui/joy/Button';
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import CashFlow from '../components/dashboard/CashFlow'
+import AppointmentsTable from '../../components/appointments/AppointmentsTable';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
-export default function Dashboard() {
-  return (
-    <Box
+
+export default function Appointments(){
+    return (
+        <Box
       component="main"
       className="MainContent"
       sx={{
@@ -39,21 +43,18 @@ export default function Dashboard() {
           <Link
             underline="none"
             color="neutral"
-            href="#some-link"
+            href="/dashboard"
             aria-label="Home"
           >
             <HomeRoundedIcon />
           </Link>
-          <Link
-            underline="hover"
-            color="neutral"
-            href="#some-link"
-            fontSize={12}
-            fontWeight={500}
-          >
-            Dashboard
-          </Link>
+          <Typography color="neutral" fontWeight={500} fontSize={12}>
+            Clinic
+          </Typography>
           
+          <Typography color="primary" fontWeight={500} fontSize={12}>
+            Appointments
+          </Typography>
         </Breadcrumbs>
       </Box>
       <Box
@@ -61,22 +62,29 @@ export default function Dashboard() {
           display: 'flex',
           mb: 1,
           gap: 1,
-          flexDirection: { xs: 'column', sm: 'column' },
-          alignItems: { xs: 'start', sm: 'start' },
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { xs: 'start', sm: 'center' },
           flexWrap: 'wrap',
           justifyContent: 'space-between',
         }}
       >
-        <Typography level="h4" component="h4">
-          Good morning, Yung!
-        </Typography>
-        <Typography level="body-sm" component="p">
-          Wednesday, August 14, 2024
-        </Typography>
+        <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1}}>
+            <FormatListBulletedIcon/>
+            <Typography component="h2" level="h2">5</Typography>
+            <Typography level="body-sm" fontWeight={600}>Total Appointments</Typography>
+        </Box>
+        <Button
+          color="primary"
+          startDecorator={<AddRoundedIcon />}
+          size="sm"
+          
+        >
+          Add Appointment
+        </Button>
         
       </Box>
-      {/* Dashboard Content */}
-      <CashFlow/>
+      {/* Appointments Content */}
+      <AppointmentsTable/>
     </Box>
-  );
+    )
 }
