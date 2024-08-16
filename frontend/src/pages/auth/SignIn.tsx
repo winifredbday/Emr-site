@@ -25,9 +25,9 @@ interface FormElements extends HTMLFormControlsCollection {
   persistent: HTMLInputElement;
 }
 
-interface SignInFormElement extends HTMLFormElement {
-  readonly elements: FormElements;
-}
+// interface SignInFormElement extends HTMLFormElement {
+//   readonly elements: FormElements;
+// }
 
 function ColorSchemeToggle(props: IconButtonProps) {
   const { onClick, ...other } = props;
