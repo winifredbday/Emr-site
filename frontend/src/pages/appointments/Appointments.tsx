@@ -9,9 +9,14 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import AppointmentsTable from '../../components/appointments/AppointmentsTable';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import AddAppointmentModal from '../../components/appointments/AddAppointmentModal';
 
 
 export default function Appointments(){
+    const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+
+    const handleOpen = () => setModalOpen(true);
+    const handleClose = () => setModalOpen(false);
     return (
         <Box
       component="main"
@@ -77,7 +82,7 @@ export default function Appointments(){
           color="primary"
           startDecorator={<AddRoundedIcon />}
           size="sm"
-          
+          onClick={handleOpen}
         >
           Add Appointment
         </Button>
@@ -85,6 +90,7 @@ export default function Appointments(){
       </Box>
       {/* Appointments Content */}
       <AppointmentsTable/>
+      <AddAppointmentModal open={modalOpen} onClose={handleClose} />
     </Box>
     )
 }
