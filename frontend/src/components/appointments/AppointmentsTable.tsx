@@ -98,6 +98,14 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
         handleCloseModal();
     };
 
+
+    const treatmentLabels: { [key: string]: string} = {
+        'teethcleaning': 'Teeth Cleaning',
+        'urinelabtest': 'Urine Lab Test',
+        'malariatest': 'Malaria Test',
+        'teethwhitening': 'Teeth Whitening',
+        'generalcheckup': 'General Checkup',
+    }
     return (
 
         <>
@@ -175,7 +183,7 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                                                     <Typography sx={{ fontSize: '13px', fontWeight: 'bold' }}>{appointment.patient.firstName} {appointment.patient.lastName}</Typography>
                                                 </Box>
                                                 <Typography level="body-xs">{appointment.time}</Typography>
-                                                <Typography sx={{ p: 0.8, fontWeight: 'bold', color: 'black', mt: 2, width: 'fit-content', borderRadius: '50px', background: 'white', fontSize: '10px' }}>{appointment.treatment}</Typography>
+                                                <Typography sx={{ p: 0.8, fontWeight: 'bold', color: 'black', mt: 2, width: 'fit-content', borderRadius: '50px', background: 'white', fontSize: '10px' }}>{treatmentLabels[appointment.treatment] || appointment.treatment}</Typography>
                                             </Box>
                                         ))
                                     )}
