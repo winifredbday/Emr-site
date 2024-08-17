@@ -11,6 +11,25 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddAppointmentModal from '../../components/appointments/AddAppointmentModal';
 
+interface Appointment {
+  id: string;
+  time: string;
+  treatment: string;
+  price: number;
+  doctor: string;
+  patient: {
+    firstName: string;
+    lastName: string;
+  };
+}
+
+interface Doctor {
+  id: string;
+  doctor: string;
+  avatar: string;
+  available: string;
+  appointments: Appointment[];
+}
 
 const initialListItems = [
   {
@@ -87,14 +106,22 @@ const initialListItems = [
 
 export default function Appointments(){
     const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-    const [listItems, setListItems] = React.useState(initialListItems);
+    const [listItems, setListItems] = React.useState<Doctor[]>(initialListItems);
 
     const handleOpen = () => setModalOpen(true);
     const handleClose = () => setModalOpen(false);
 
     const handleSubmitAppointment = (newAppointment: any) => {
+      console.log("New Appointment Data:", newAppointment)
       setListItems(prevItems => {
-          return prevItems.map(item => {
+        console.log("Previous Items:", prevItems);
+
+        const doctorExists = prevItems.some(item => item.doctor === newAppointment.doctor);
+        let updatedItems;
+
+        if (doctorExists) {
+          // If doctor exists, update appointments
+          updatedItems = prevItems.map(item => {
               if (item.doctor === newAppointment.doctor) {
                   return {
                       ...item,
@@ -103,6 +130,21 @@ export default function Appointments(){
               }
               return item;
           });
+        }else {
+            // If doctor does not exist, add new doctor with the appointment
+            updatedItems = [
+                ...prevItems,
+                {
+                  id: newAppointment.doctor + '_id', // Generate or fetch proper ID
+                  doctor: newAppointment.doctor,
+                  avatar: '', // Provide default or fetched avatar
+                  available: '', // Provide default or fetched availability
+                  appointments: [newAppointment]
+                }
+            ];
+        }
+        console.log("Updated Items:", updatedItems);
+        return updatedItems;
       });
       handleClose();
   };

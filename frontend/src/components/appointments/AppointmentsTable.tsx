@@ -92,7 +92,7 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
 
     const handleSubmitAppointment = (newAppointment: Appointment) => {
         newAppointment.id = generateId();
-        console.log(newAppointment)
+        
         onSubmitAppointment(newAppointment);
 
         handleCloseModal();
@@ -131,7 +131,7 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                 <TabPanel value={0} sx={{ p: 0 }}>
                     <Box sx={{ display: 'flex', gap: 1, p: 1, flexWrap: 'wrap', height: '100%' }}>
                         {listItems.map((listItem) => (
-                            <Box key={listItem.id} sx={{ minWidth: '300px', p: 1, maxHeight: '50vh', position: 'relative' }}>
+                            <Box key={listItem.id} sx={{ minWidth: '295px', p: 1, maxHeight: '50vh', position: 'relative' }}>
                                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                                     <Avatar size="sm" src={listItem.avatar} />
                                     <div>

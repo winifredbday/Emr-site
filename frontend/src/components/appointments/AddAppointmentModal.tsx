@@ -5,7 +5,7 @@ import FormLabel from '@mui/joy/FormLabel';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import Option from '@mui/joy/Option';
 import Input from '@mui/joy/Input';
-import {Input as MInput} from '@mui/material';
+import Box from '@mui/joy/Box'
 import Stack from '@mui/joy/Stack';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
@@ -122,21 +122,25 @@ export default function AddAppointmentModal({open, onClose, onSubmit, preselecte
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
             <Stack spacing={1}>
               <FormLabel>Patient</FormLabel>
-              <FormControl sx={{ display: "flex", flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
-                <Input
-                  size="sm"
-                  placeholder="First name"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}  // Capture first name
-                />
-                <Input
-                  size="sm"
-                  placeholder="Last name"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}  // Capture last name
-                  sx={{ flexGrow: 1 }}
-                />
-              </FormControl>
+              <Box sx={{ display: 'flex', flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
+                <FormControl>
+                    <Input
+                        size="sm"
+                        placeholder="First name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}  // Capture first name
+                    />
+                </FormControl>
+                <FormControl>
+                    <Input
+                        size="sm"
+                        placeholder="Last name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}  // Capture last name
+                        sx={{ flexGrow: 1 }}
+                    />
+                </FormControl>
+            </Box>
             </Stack>
 
             <Stack spacing={1} direction={{ sm: 'row' }} flexWrap="wrap" sx={{ gap: 2 }}>
