@@ -148,6 +148,8 @@ export default function Appointments(){
       });
       handleClose();
   };
+
+  const totalAppointments = listItems.reduce((count, doctor) => count + doctor.appointments.length, 0);
     return (
         <Box
       component="main"
@@ -206,7 +208,7 @@ export default function Appointments(){
       >
         <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1}}>
             <FormatListBulletedIcon/>
-            <Typography component="h2" level="h2">5</Typography>
+            <Typography component="h2" level="h2">{totalAppointments}</Typography>
             <Typography level="body-sm" fontWeight={600}>Total Appointments</Typography>
         </Box>
         <Button
