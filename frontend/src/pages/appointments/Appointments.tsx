@@ -12,11 +12,100 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddAppointmentModal from '../../components/appointments/AddAppointmentModal';
 
 
+const initialListItems = [
+  {
+      id: 'STF-001',
+      doctor: 'Dr. James Hayford',
+      avatar: '/user/avatar.jpg',
+      available: 'yes',
+      appointments: [
+          {
+              id: 'APT-001',
+              time: '09:00 AM - 10:00 AM', 
+              treatment: 'Full Medical Checkup',
+              price: 150,
+              doctor: 'Dr. James Hayford',
+              patient: { firstName: 'Trudy', lastName: 'Jackson' }
+          },
+          {
+              id: 'APT-002',
+              time: '12:00 PM - 01:00 PM', 
+              treatment: 'Teeth Cleaning',
+              price: 200,
+              doctor: 'Dr. James Hayford',
+              patient: { firstName: 'James', lastName: '' }
+          },
+          {
+              id: 'APT-003',
+              time: '12:00 PM - 01:00 PM', 
+              treatment: 'Lab Analysis',
+              price: 300,
+              doctor: 'Dr. James Hayford',
+              patient: { firstName: 'James', lastName: 'McGriffen' }
+          }
+      ]
+  },
+  {
+      id: 'STF-002',
+      doctor: 'Dr. Harley Quinzel',
+      avatar: '/user/avatar.jpg',
+      available: 'yes',
+      appointments: [
+          {
+              id: 'APT-004',
+              time: '09:00 AM - 10:00 AM', 
+              treatment: 'Full Medical Checkup',
+              price: 150,
+              doctor: 'Dr. Harley Quinzel',
+              patient: { firstName: 'Trudy', lastName: 'Jackson' }
+          },
+          {
+              id: 'APT-005',
+              time: '12:00 PM - 01:00 PM', 
+              treatment: 'Teeth Cleaning',
+              price: 200,
+              doctor: 'Dr. Harley Quinzel',
+              patient: { firstName: 'James', lastName: 'McGriffen' }
+          }
+      ]
+  },
+  {
+      id: 'STF-003',
+      doctor: 'Dr. Michael Kelso',
+      avatar: '/user/avatar.jpg',
+      available: 'no',
+      appointments: []
+  },
+  {
+      id: 'STF-004',
+      doctor: 'Dr. Jackie Burkhart',
+      avatar: '/user/avatar.jpg',
+      available: 'yes',
+      appointments: []
+  }
+];
+
 export default function Appointments(){
     const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+    const [listItems, setListItems] = React.useState(initialListItems);
 
     const handleOpen = () => setModalOpen(true);
     const handleClose = () => setModalOpen(false);
+
+    const handleSubmitAppointment = (newAppointment: any) => {
+      setListItems(prevItems => {
+          return prevItems.map(item => {
+              if (item.doctor === newAppointment.doctor) {
+                  return {
+                      ...item,
+                      appointments: [...item.appointments, newAppointment]
+                  };
+              }
+              return item;
+          });
+      });
+      handleClose();
+  };
     return (
         <Box
       component="main"
@@ -89,8 +178,8 @@ export default function Appointments(){
         
       </Box>
       {/* Appointments Content */}
-      <AppointmentsTable/>
-      <AddAppointmentModal open={modalOpen} onClose={handleClose} />
+      <AppointmentsTable listItems={listItems} onSubmitAppointment={handleSubmitAppointment}/>
+      <AddAppointmentModal open={modalOpen} onClose={handleClose} onSubmit={handleSubmitAppointment} />
     </Box>
     )
 }

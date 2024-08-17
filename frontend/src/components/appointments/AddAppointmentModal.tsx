@@ -5,19 +5,43 @@ import FormLabel from '@mui/joy/FormLabel';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import Option from '@mui/joy/Option';
 import Input from '@mui/joy/Input';
+import {Input as MInput} from '@mui/material';
 import Stack from '@mui/joy/Stack';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+
 import ModalClose from '@mui/joy/ModalClose';
 import Select from '@mui/joy/Select';
-import Divider from '@mui/joy/Divider';
+import Autocomplete from '@mui/joy/Autocomplete';
+
+
+
+
+
+const doctors = [
+  { value: 'olivia', label: 'Dr. Olivia Rhye' },
+  { value: 'steve', label: 'Dr. Steve Hampton' },
+  { value: 'ciaran', label: 'Dr. Ciaran Murray' },
+  { value: 'marina', label: 'Dr. Marina Macdonald' },
+  { value: 'charles', label: 'Dr. Charles Fulton' },
+  { value: 'jay', label: 'Dr. Jay Hoper' },
+];
+
+const treatments = [
+  { value: 'teethcleaning', label: 'Teeth Cleaning', price: 50.0 },
+  { value: 'urinelabtest', label: 'Urine Lab Test', price: 20.0 },
+  { value: 'malariatest', label: 'Malaria Test', price: 15.0 },
+  { value: 'teethwhitening', label: 'Teeth Whitening', price: 75.0 },
+  { value: 'generalcheckup', label: 'General Checkup', price: 30.0 },
+];
 
 interface AddAppointmentModalProps{
     open: boolean;
     onClose: () => void;
+    onSubmit: (formData: any) => void;
+    preselectedDoctor?: string | null;
 }
 
 
@@ -50,146 +74,127 @@ const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
   },
 );
 
-export default function AddAppointmentModal({open, onClose}: AddAppointmentModalProps) {
-  const [height, setHeight] = React.useState('metres');
+export default function AddAppointmentModal({open, onClose, onSubmit, preselectedDoctor}: AddAppointmentModalProps) {
+  const [selectedDoctor, setSelectedDoctor] = React.useState<string | null>(preselectedDoctor || null);
+  const [selectedTreatment, setSelectedTreatment] = React.useState<string | null>(null);
+  const [price, setPrice] = React.useState<number | string>('');
+  const [firstName, setFirstName] = React.useState<string>('');
+  const [lastName, setLastName] = React.useState<string>('');
+
+  const [time, setTime] = React.useState<string>('');
+
+  React.useEffect(() => {
+      if (preselectedDoctor) {
+          setSelectedDoctor(preselectedDoctor);
+      }
+  }, [preselectedDoctor]);
+
+  const handleTreatmentChange = (event: any, newValue: string | null) => {
+    setSelectedTreatment(newValue);
+    const treatment = treatments.find((t) => t.value === newValue);
+    setPrice(treatment?.price || '');
+  };
+
+  const handleFormSubmit = () => {
+    const formData = {
+      doctor: selectedDoctor,
+      treatment: selectedTreatment,
+      price: price,
+      time: time,
+      patient: {
+        firstName: firstName,
+        lastName: lastName,
+      },
+    };
+    onSubmit(formData);  // Call the onSubmit function with form data
+  };
+
   return (
     <React.Fragment>
-     
-      <Modal keepMounted open={open} onClose={onClose} sx={{}}>
-        <ModalDialog>
-          <DialogTitle sx={{fontSize: '1.2rem'}}>Add Patient Details  <ModalClose variant="plain" sx={{ m: 1 }} /></DialogTitle>
-          <DialogContent sx={{marginTop: '1rem'}}>
+    <Modal keepMounted open={open} onClose={onClose} sx={{}}>
+      <ModalDialog>
+        <DialogTitle sx={{ fontSize: '1.2rem' }}>
+          Add Appointment
+          <ModalClose variant="plain" sx={{ m: 1 }} />
+        </DialogTitle>
+
+        <DialogContent sx={{ marginTop: '1rem' }}>
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <Stack spacing={1}>
-                <FormLabel>Name</FormLabel>
-                <FormControl
-                  sx={{ display: "flex", flexDirection: {sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}
-                >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
-                </FormControl>
-              </Stack>
-              <Stack spacing={1} direction={{sm: 'row'}} flexWrap="wrap" useFlexGap>
-                  <FormControl>
-                    <FormLabel>Date of Birth</FormLabel>
-                    <Input
-                        sx={{fontSize: "14px"}}
-                        type="date"
-                        slotProps={{
-                          input: {
-                            min: '1900-12-31',
-                            max: '2024-12-31',
-                          },
-                        }}
-                      />
-                    
-                  </FormControl>
-                  <FormControl>
-                      <FormLabel>Gender</FormLabel>
-                        
-                      <Stack spacing={2} alignItems="flex-start">
-                        <Select
-                          placeholder="Select Gender"
-                          name="Gender"
-                          required
-                          sx={{ minWidth: 200, fontSize: '14px' }}
-                          
-                        >
-                          <Option value="Male" sx={{ minWidth: 200, fontSize: '14px' }}>Male</Option>
-                          <Option value="Female" sx={{ minWidth: 200, fontSize: '14px' }}>Female</Option>
-                          <Option value="Suspended" sx={{ minWidth: 200, fontSize: '14px' }}>Other</Option>
-                        
-                        </Select>
-                        
-                      </Stack>
-                        
-                  </FormControl>
-                  <FormControl sx={{Width:70}} >
-                    <FormLabel>Height</FormLabel>
-                    <Input
-                      type='number'
-                      placeholder="1.62"
-                      sx={{fontSize:"14px", width: 200}}
-                      startDecorator={{ feet: 'ft', metres: 'm', centimetres: 'cm' }[height]}
-                      endDecorator={
-                        <React.Fragment>
-                          <Divider orientation="vertical" />
-                          <Select
-                            variant="plain"
-                            value={height}
-                            onChange={(_, value) => setHeight(value!)}
-                            slotProps={{
-                              listbox: {
-                                variant: 'outlined',
-                              },
-                            }}
-                            sx={{ mr: -1.5, fontSize: '14px', '&:hover': { bgcolor: 'transparent' } }}
-                          >
-                            <Option value="feet" sx={{fontSize: '14px'}}>Feet</Option>
-                            <Option value="metres" sx={{fontSize: '14px'}}>Metres</Option>
-                            <Option value="centimetres" sx={{fontSize: '14px'}}>Centimetres</Option>
-                          </Select>
-                        </React.Fragment>
-                      }
-                    
-                    />
-                  </FormControl>
-              </Stack>
-              <Stack spacing={1} direction={{sm: 'row'}} flexWrap="wrap" useFlexGap>
-                
-                <FormControl>
-                  <FormLabel>Address</FormLabel>
-                  <Input size="sm" placeholder="Address" sx={{ flexGrow: 1 }} />
-                </FormControl>
-
-                <FormControl>
-                    <FormLabel>Social Security Number</FormLabel>
-                    <Input size="sm" type='text' placeholder="SSN" />
-                  </FormControl>
-              </Stack>
-              <Stack direction={{sm: 'row', xs: 'column'}} spacing={2} flexWrap="wrap" useFlexGap>
-                <FormControl>
-                  <FormLabel>Phone number</FormLabel>
-                  <Input size="sm" placeholder="+233 557 31 1180" slotProps={{
-                    input: {
-                      component: NumericFormatAdapter,
-                    },
-                  }} sx={{flexGrow: 1}} />
-                </FormControl>
-                <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    size="sm"
-                    type="email"
-                    startDecorator={<EmailRoundedIcon />}
-                    placeholder="siriwatk@test.com"
-                    sx={{ flexGrow: 1 }}
-                  />
-                </FormControl>
-              </Stack>
-              <Stack direction="row" spacing={2} sx={{width: "100%"}}>
-                <Button
-                    color="neutral"
-                    size="sm"
-                    sx={{width: "50%"}}
-                    onClick={onClose}
-                    >
-                    Cancel
-                </Button>
-
-                <Button
-                    color="primary"
-                    size="sm"
-                    sx={{width: "50%"}}
-                    >
-                    Submit
-                </Button>
-              </Stack>
-             
+            <Stack spacing={1}>
+              <FormLabel>Patient</FormLabel>
+              <FormControl sx={{ display: "flex", flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
+                <Input
+                  size="sm"
+                  placeholder="First name"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}  // Capture first name
+                />
+                <Input
+                  size="sm"
+                  placeholder="Last name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}  // Capture last name
+                  sx={{ flexGrow: 1 }}
+                />
+              </FormControl>
             </Stack>
-          </DialogContent>
-        </ModalDialog>
-      </Modal>
-    </React.Fragment>
+
+            <Stack spacing={1} direction={{ sm: 'row' }} flexWrap="wrap" sx={{ gap: 2 }}>
+              <FormControl>
+                <FormLabel>Doctor</FormLabel>
+                <Autocomplete
+                  value={selectedDoctor}
+                  onChange={(event, newValue) => setSelectedDoctor(newValue)}
+                  size="sm"
+                  options={doctors.map((option) => option.label)}
+                  slotProps={{
+                    input: {
+                      placeholder: 'Select doctor',
+                    },
+                  }}
+                />
+              </FormControl>
+
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>Treatment</FormLabel>
+                <Select
+                  size="sm"
+                  placeholder="Select Treatment"
+                  value={selectedTreatment}
+                  onChange={handleTreatmentChange}
+                >
+                  {treatments.map((treatment) => (
+                    <Option key={treatment.value} value={treatment.value}>
+                      {treatment.label}
+                    </Option>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
+
+            <Stack spacing={1} direction={{ sm: 'row', xs: 'column', md: 'row' }}>
+              <FormControl sx={{ flexGrow: 1 }}>
+                <FormLabel>Price</FormLabel>
+                <Input startDecorator={'$'} size="sm" value={price} readOnly placeholder="Price" />
+              </FormControl>
+              <FormControl>
+                <FormLabel>Time</FormLabel>
+                <Input size="sm" type="time" placeholder="Time" value={time} onChange={(e) => setTime(e.target.value)} />
+              </FormControl>
+            </Stack>
+
+            <Button
+              color="primary"
+              size="sm"
+              sx={{ width: "50%" }}
+              onClick={handleFormSubmit}  // Trigger form submission
+            >
+              Submit
+            </Button>
+          </Stack>
+        </DialogContent>
+      </ModalDialog>
+    </Modal>
+  </React.Fragment>
   );
 }
