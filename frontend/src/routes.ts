@@ -11,6 +11,7 @@ const PatientDetail = lazy(() => import('./pages/patients/PatientDetailPage'));
 const StaffList = lazy(() => import('./pages/staff/Staff'));
 const Appointments = lazy(() => import('./pages/appointments/Appointments'));
 const Treatments = lazy(() => import('./pages/treatments/Treatments'));
+const Prescriptions = lazy(() => import('./pages/prescriptions/Prescriptions'));
 const Revenue = lazy(() => import('./pages/revenue/Revenue'));
 
 
@@ -25,7 +26,8 @@ const routes = [
   { path: '/treatments', component: Treatments},
   { path: '/revenue', component: Revenue},
   { path: '/staff', component: StaffList},
-  { path: '/appointments', component: Appointments}
+  { path: '/appointments', component: Appointments},
+  { path: '/prescriptions', component: Prescriptions}
 ];
 
 export default routes;
