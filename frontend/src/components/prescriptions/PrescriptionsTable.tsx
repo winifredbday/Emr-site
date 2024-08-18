@@ -8,6 +8,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Box from '@mui/joy/Box';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import 'jspdf-autotable';
 import Button from '@mui/joy/Button';
 
 interface History {
@@ -28,29 +29,50 @@ interface RowData {
 
 // Function to download the PDF
 const downloadPDF = (row: RowData) => {
-  const input = document.getElementById(`history-${row.id}`);
-  
-  if (input) {
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-          orientation: 'landscape',
-          unit: 'px',
-          format: [canvas.width, canvas.height],
-        });
+  const pdf = new jsPDF();
+  const pageWidth = pdf.internal.pageSize.width;
+  // Add the title
+  pdf.text(`${row.name}'s Prescription History`, 14, 22);
 
-        pdf.addImage(imgData, 'PNG', 10, 10, canvas.width, canvas.height);
-        pdf.save(`${row.name}_Prescription_History.pdf`);
-        console.log(pdf)
-      })
-      .catch((error) => {
-        console.error("Error generating PDF:", error);
-      });
+  // Define the table columns and rows
+  const columns = [
+    { header: 'Drug name', dataKey: 'drug' },
+    { header: 'Usage', dataKey: 'usage' },
+    { header: 'Quantity', dataKey: 'quantity' },
+    { header: 'Total price ($)', dataKey: 'total_price' },
+  ];
+
+  const rows = row.history.map((historyItem) => ({
+    drug: historyItem.drug,
+    usage: historyItem.usage,
+    quantity: historyItem.quantity,
+    total_price: historyItem.total_price.toFixed(2),
+  }));
+
+  // Generate the table
+  (pdf as any).autoTable({
+    startY: 30,
+    head: [columns.map(col => col.header)],
+    body: rows.map(row => columns.map(col => row[col.dataKey as keyof typeof row])),
+  });
+
+  const signatureElement = document.getElementById('signature');
+  if (signatureElement) {
+    html2canvas(signatureElement).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      pdf.addImage(imgData, 'PNG', pageWidth - 60 - 10, (pdf as any).autoTable.previous.finalY + 10, 65, 10); // Adjust position and size
+
+      // Save the PDF after the signature is added
+      pdf.save(`${row.name}_Prescription_History.pdf`);
+    }).catch(error => {
+      console.error('Error capturing signature:', error);
+    });
   } else {
-    console.error("Element not found for PDF generation.");
+    // Save the PDF without the signature if not found
+    pdf.save(`${row.name}_Prescription_History.pdf`);
   }
 };
+
 
 function createData(
   id: string,
@@ -165,9 +187,9 @@ function Row(props: { row: RowData; initialOpen?: boolean }) {
                 </tbody>
               </Table>
               <Box sx={{ mt: 2, display: 'flex', p: 2, justifyContent: 'flex-end'}}>
-                <Typography sx={{fontSize: '12px'}}>
+                <Typography id="signature" sx={{fontSize: '12px'}}>
                     Doctor's Signature: 
-                    <Typography color='primary' sx={{fontFamily: 'Grey Qo', p:2, fontSize: '20px'}}>{row.doctor}</Typography></Typography>
+                    <Typography  color='primary' sx={{fontFamily: 'Grey Qo', p:2, fontSize: '20px'}}>{row.doctor}</Typography></Typography>
               </Box>
             </Sheet>
           )}
