@@ -80,8 +80,11 @@ function Row(props: { row: ReturnType<typeof createData>; initialOpen?: boolean 
                 borderAxis="bothBetween"
                 size="sm"
                 aria-label="prescription-details"
+                stickyHeader={false}
                 sx={{
                     mt: 2,
+                    '& > thead':
+                    { position: 'sticky', top: 0},
                   '& > thead > tr > th:nth-child(n + 3), & > tbody > tr > td:nth-child(n + 3)':
                     { textAlign: 'right' },
                   '--TableCell-paddingX': '0.5rem',
@@ -141,7 +144,7 @@ export default function PrescriptionsTable() {
         aria-label="collapsible table"
         stickyHeader
         sx={{
-           
+         
           '& > thead > tr > th:nth-child(n + 5), & > tbody > tr > td:nth-child(n + 5)':
                     { textAlign: 'right' },
           '& > tbody > tr:nth-child(odd) > td, & > tbody > tr:nth-child(odd) > th[scope="row"]':
