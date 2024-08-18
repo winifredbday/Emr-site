@@ -274,15 +274,7 @@ export default function Sidebar() {
               )}
             >
               <List sx={{ gap: 0.5 }}>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton
-                    role="menuitem"
-                    component={Link}
-                    to="/accounts"
-                    selected={location.pathname === '/accounts' ? true : false}>
-                    Accounts
-                  </ListItemButton>
-                </ListItem>
+               
                 <ListItem>
                   <ListItemButton
                     role="menuitem"
@@ -290,13 +282,7 @@ export default function Sidebar() {
                     to="/revenue"
                     selected={location.pathname === '/revenue' ? true : false}>Revenue</ListItemButton>
                 </ListItem>
-                <ListItem>
-                  <ListItemButton
-                    role="menuitem"
-                    component={Link}
-                    to="/payment-method"
-                    selected={location.pathname === '/payment-method' ? true : false}>Payment Method</ListItemButton>
-                </ListItem>
+               
               </List>
             </Toggler>
           </ListItem>
