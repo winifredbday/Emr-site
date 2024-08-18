@@ -10,7 +10,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import 'jspdf-autotable';
 import Button from '@mui/joy/Button';
-
+import PrintRoundedIcon from '@mui/icons-material/PrintRounded';
 interface History {
   drug: string;
   usage: string;
@@ -131,9 +131,7 @@ function Row(props: { row: RowData; initialOpen?: boolean }) {
         <td style={{ fontSize: '13px'}}>{row.name}</td>
         <td style={{ fontSize: '13px'}}>{row.date}</td>
         <td style={{ fontSize: '13px', fontWeight: 'bold'}}>{row.total_amount}</td>
-        <td style={{ fontSize: '13px', textAlign: 'right' }}>
-          <Button onClick={() => downloadPDF(row)}>Download PDF</Button>
-        </td>
+        
       </tr>
       <tr>
         <td style={{ height: 0, padding: 0 }} colSpan={5}>
@@ -143,8 +141,9 @@ function Row(props: { row: RowData; initialOpen?: boolean }) {
               sx={{ p: 1, pl: 6, boxShadow: 'inset 0 3px 6px 0 rgba(0 0 0 / 0.08)' }}
               id={`history-${row.id}`}
             >
-              <Typography level="body-lg" component="div">
+              <Typography level="body-lg" component="div" sx={{display: 'flex', justifyContent: 'space-between'}}>
                 Prescription details
+                <Button startDecorator={<PrintRoundedIcon/>} onClick={() => downloadPDF(row)}>Print</Button>
               </Typography>
               <Table
                 borderAxis="bothBetween"
@@ -231,7 +230,7 @@ export default function PrescriptionsTable() {
             <th style={{ width: '40%', fontSize: '16px'}}>Patient</th>
             <th style={{ fontSize: '16px'}}>Date</th>
             <th style={{ fontSize: '16px'}}>Total Amount($)</th>
-            <th style={{ fontSize: '16px', textAlign: 'right' }}>Action</th>
+           
           
           </tr>
         </thead>
