@@ -8,7 +8,7 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import PrescriptionsTable from '../../components/prescriptions/PrescriptionsTable';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Button from '@mui/joy/Button';
-
+import AddPrescriptionModal from '../../components/prescriptions/AddPrescriptionModal';
 
 
 export default function Prescriptions() {
@@ -16,6 +16,11 @@ export default function Prescriptions() {
 
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
+  const handleSubmitPrescription = (newAppointment: any) => {
+    
+    
+    handleClose();
+};
   return (
     <Box
       component="main"
@@ -90,6 +95,7 @@ export default function Prescriptions() {
       </Box>
       {/* Prescription Content */}
       <PrescriptionsTable/>
+      <AddPrescriptionModal open={modalOpen} onClose={handleClose} onSubmit={handleSubmitPrescription} />
     </Box>
   );
 }
