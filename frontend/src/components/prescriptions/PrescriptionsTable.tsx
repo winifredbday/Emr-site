@@ -12,31 +12,33 @@ function createData(
   name: string,
   date: string,
   doctor: string,
-  total_amount: number,
+
   
 ) {
+    const history = [
+        {
+        drug: 'Abacavir 20mg/ml oral soln',
+        usage: 'Take 2 before breakfast',
+        quantity: 3,
+        total_price: 1036.5
+
+        },
+        {
+        drug: 'Acamprosate calcium 333mg dr tab',
+        usage: 'Take 1 before bed',
+        quantity: 2,
+        total_price: 691
+        
+        }
+    ];
+  const total_amount = history.reduce((sum, item) => sum + item.total_price, 0);
   return {
     id,
     name,
     date,
     doctor,
     total_amount,
-    history: [
-      {
-        drug: 'Abacavir 20mg/ml oral soln',
-        usage: 'Take 2 before breakfast',
-        quantity: 3,
-        
-
-      },
-      {
-        drug: 'Acamprosate calcium 333mg dr tab',
-        usage: 'Take 1 before bed',
-        quantity: 2,
-
-        
-      },
-    ],
+    history
   };
 }
 
@@ -61,7 +63,7 @@ function Row(props: { row: ReturnType<typeof createData>; initialOpen?: boolean 
         <th style={{ fontSize: '13px'}}scope="row">{row.id}</th>
         <td style={{ fontSize: '13px'}}>{row.name}</td>
         <td style={{ fontSize: '13px'}}>{row.date}</td>
-        <td style={{ fontSize: '13px'}}>{row.total_amount}</td>
+        <td style={{ fontSize: '13px', fontWeight: 'bold'}}>{row.total_amount}</td>
         
       </tr>
       <tr>
@@ -101,7 +103,7 @@ function Row(props: { row: ReturnType<typeof createData>; initialOpen?: boolean 
                         <td>{historyRow.usage}</td>
                         <td>{historyRow.quantity}</td>
                         <td>
-                            {Math.round(historyRow.quantity * row.total_amount * 100) / 100}
+                            {historyRow.total_price}
                         </td>
                     
                       </tr>
@@ -125,21 +127,23 @@ function Row(props: { row: ReturnType<typeof createData>; initialOpen?: boolean 
 }
 
 const rows = [
-  createData('PAT-001','Mrs. Jemma Rawlings', 'August 24, 2024', 'Dr. Audrey McGriffen', 345.50),
-  createData('PAT-002','Olivia Ryhe', 'August 24, 2024', 'Dr. Audrey McGriffen',  345.50),
-  createData('PAT-003','Steven Hampton', 'August 24, 2024', 'Dr. Audrey McGriffen', 345.50),
-  createData('PAT-004','Claran Murray', 'August 24, 2024', 'Dr. Audrey McGriffen', 345.50),
-  createData('PAT-005','Maria McDonald', 'August 24, 2024', 'Dr. Audrey McGriffen', 345.50),
+  createData('PAT-001','Mrs. Jemma Rawlings', 'August 24, 2024', 'Dr. Audrey McGriffen'),
+  createData('PAT-002','Olivia Ryhe', 'August 24, 2024', 'Dr. Audrey McGriffen'),
+  createData('PAT-003','Steven Hampton', 'August 24, 2024', 'Dr. Audrey McGriffen'),
+  createData('PAT-004','Claran Murray', 'August 24, 2024', 'Dr. Audrey McGriffen'),
+  createData('PAT-005','Maria McDonald', 'August 24, 2024', 'Dr. Audrey McGriffen'),
 ];
 
 export default function PrescriptionsTable() {
   return (
-    <Sheet>
+    <Sheet sx={{overflowY: 'auto'}}>
       <Table
         aria-label="collapsible table"
+        stickyHeader
         sx={{
            
-          
+          '& > thead > tr > th:nth-child(n + 5), & > tbody > tr > td:nth-child(n + 5)':
+                    { textAlign: 'right' },
           '& > tbody > tr:nth-child(odd) > td, & > tbody > tr:nth-child(odd) > th[scope="row"]':
             {
               borderBottom: 0,
