@@ -6,7 +6,51 @@ import Sheet from '@mui/joy/Sheet';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Box from '@mui/joy/Box';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import Button from '@mui/joy/Button';
 
+interface History {
+  drug: string;
+  usage: string;
+  quantity: number;
+  total_price: number;
+}
+
+interface RowData {
+  id: string;
+  name: string;
+  date: string;
+  doctor: string;
+  total_amount: number;
+  history: History[];
+}
+
+// Function to download the PDF
+const downloadPDF = (row: RowData) => {
+  const input = document.getElementById(`history-${row.id}`);
+  
+  if (input) {
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+          orientation: 'landscape',
+          unit: 'px',
+          format: [canvas.width, canvas.height],
+        });
+
+        pdf.addImage(imgData, 'PNG', 10, 10, canvas.width, canvas.height);
+        pdf.save(`${row.name}_Prescription_History.pdf`);
+        console.log(pdf)
+      })
+      .catch((error) => {
+        console.error("Error generating PDF:", error);
+      });
+  } else {
+    console.error("Element not found for PDF generation.");
+  }
+};
 
 function createData(
   id: string,
@@ -43,7 +87,7 @@ function createData(
   };
 }
 
-function Row(props: { row: ReturnType<typeof createData>; initialOpen?: boolean }) {
+function Row(props: { row: RowData; initialOpen?: boolean }) {
   const { row } = props;
   const [open, setOpen] = React.useState(props.initialOpen || false);
 
@@ -65,7 +109,9 @@ function Row(props: { row: ReturnType<typeof createData>; initialOpen?: boolean 
         <td style={{ fontSize: '13px'}}>{row.name}</td>
         <td style={{ fontSize: '13px'}}>{row.date}</td>
         <td style={{ fontSize: '13px', fontWeight: 'bold'}}>{row.total_amount}</td>
-        
+        <td style={{ fontSize: '13px', textAlign: 'right' }}>
+          <Button onClick={() => downloadPDF(row)}>Download PDF</Button>
+        </td>
       </tr>
       <tr>
         <td style={{ height: 0, padding: 0 }} colSpan={5}>
@@ -73,6 +119,7 @@ function Row(props: { row: ReturnType<typeof createData>; initialOpen?: boolean 
             <Sheet
               variant="soft"
               sx={{ p: 1, pl: 6, boxShadow: 'inset 0 3px 6px 0 rgba(0 0 0 / 0.08)' }}
+              id={`history-${row.id}`}
             >
               <Typography level="body-lg" component="div">
                 Prescription details
@@ -162,6 +209,8 @@ export default function PrescriptionsTable() {
             <th style={{ width: '40%', fontSize: '16px'}}>Patient</th>
             <th style={{ fontSize: '16px'}}>Date</th>
             <th style={{ fontSize: '16px'}}>Total Amount($)</th>
+            <th style={{ fontSize: '16px', textAlign: 'right' }}>Action</th>
+          
           </tr>
         </thead>
         <tbody>
