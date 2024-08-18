@@ -2,8 +2,8 @@ import * as React from 'react';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
-import Option from '@mui/joy/Option';
+
+
 import Input from '@mui/joy/Input';
 import Box from '@mui/joy/Box'
 import Stack from '@mui/joy/Stack';
@@ -13,7 +13,7 @@ import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
 
 import ModalClose from '@mui/joy/ModalClose';
-import Select from '@mui/joy/Select';
+
 import Autocomplete from '@mui/joy/Autocomplete';
 
 
@@ -29,13 +29,6 @@ const doctors = [
   { value: 'jay', label: 'Dr. Jay Hoper' },
 ];
 
-const treatments = [
-  { value: 'teethcleaning', label: 'Teeth Cleaning', price: 50.0 },
-  { value: 'urinelabtest', label: 'Urine Lab Test', price: 20.0 },
-  { value: 'malariatest', label: 'Malaria Test', price: 15.0 },
-  { value: 'teethwhitening', label: 'Teeth Whitening', price: 75.0 },
-  { value: 'generalcheckup', label: 'General Checkup', price: 30.0 },
-];
 
 interface AddAppointmentModalProps{
     open: boolean;
@@ -45,34 +38,8 @@ interface AddAppointmentModalProps{
 }
 
 
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
 
-const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
-  function NumericFormatAdapter(props, ref) {
-    const { onChange, ...other } = props;
 
-    return (
-      <NumericFormat
-        {...other}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          onChange({
-            target: {
-              name: props.name,
-              value: values.value,
-            },
-          });
-        }}
-        
-        valueIsNumericString
-        prefix="+"
-      />
-    );
-  },
-);
 
 export default function AddPrescriptionModal({open, onClose, onSubmit, preselectedDoctor}: AddAppointmentModalProps) {
   const [selectedDoctor, setSelectedDoctor] = React.useState<string | null>(preselectedDoctor || null);
@@ -89,11 +56,7 @@ export default function AddPrescriptionModal({open, onClose, onSubmit, preselect
       }
   }, [preselectedDoctor]);
 
-  const handleTreatmentChange = (event: any, newValue: string | null) => {
-    setSelectedTreatment(newValue);
-    const treatment = treatments.find((t) => t.value === newValue);
-    setPrice(treatment?.price || '');
-  };
+
 
   const handleFormSubmit = () => {
     const formData = {
