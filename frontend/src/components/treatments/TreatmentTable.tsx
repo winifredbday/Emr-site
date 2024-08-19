@@ -294,7 +294,7 @@ export default function TreatmentTable() {
                 </Link>
               </th>
               <th style={{ width: 140, padding: '12px 6px' }}>Price</th>
-              <th style={{ width: 140, padding: '12px 6px' }}>Estimate Duration</th>
+              <th style={{ width: 140, padding: '12px 6px' }}>Estimated Duration</th>
               <th style={{ width: 100, padding: '12px 6px' }}>Type of Visit</th>
               <th style={{ width: 50, padding: '12px 6px' }}> </th>
             </tr>
@@ -322,7 +322,7 @@ export default function TreatmentTable() {
                   <Typography level="body-xs" fontWeight={'bold'}>{row.treatment_name}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs"><span>Start from </span> <b>{row.price}</b></Typography>
+                  <Typography level="body-xs"> <b>{row.price}</b></Typography>
                 </td>
 
                 <td>

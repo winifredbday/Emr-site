@@ -52,13 +52,17 @@ const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
 );
 
 export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
-  const [height, setHeight] = React.useState('metres');
+  const [time, setTime] = React.useState('mins');
+  
+  const handleSelectChange = (event: any, value: string | null) => {
+
+  };
   return (
     <React.Fragment>
      
       <Modal keepMounted open={open} onClose={onClose} sx={{}}>
         <ModalDialog>
-          <DialogTitle sx={{fontSize: '1.2rem'}}>Add Patient Details  <ModalClose variant="plain" sx={{ m: 1 }} /></DialogTitle>
+          <DialogTitle sx={{fontSize: '1.2rem'}}>Add Treatment  <ModalClose variant="plain" sx={{ m: 1 }} /></DialogTitle>
           <DialogContent sx={{marginTop: '1rem'}}>
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}>
@@ -66,59 +70,32 @@ export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
                 <FormControl
                   sx={{ display: "flex", flexDirection: {sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}
                 >
-                  <Input size="sm" placeholder="First name" />
-                  <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
+                  <Input placeholder="Treatment name" sx={{flexGrow: 1, fontSize: '14px'}} />
+                  
                 </FormControl>
               </Stack>
               <Stack spacing={1} direction={{sm: 'row'}} flexWrap="wrap" useFlexGap>
-                  <FormControl>
-                    <FormLabel>Date of Birth</FormLabel>
-                    <Input
-                        sx={{fontSize: "14px"}}
-                        type="date"
-                        slotProps={{
-                          input: {
-                            min: '1900-12-31',
-                            max: '2024-12-31',
-                          },
-                        }}
-                      />
-                    
-                  </FormControl>
-                  <FormControl>
-                      <FormLabel>Gender</FormLabel>
-                        
-                      <Stack spacing={2} alignItems="flex-start">
-                        <Select
-                          placeholder="Select Gender"
-                          name="Gender"
-                          required
-                          sx={{ minWidth: 200, fontSize: '14px' }}
-                          
-                        >
-                          <Option value="Male" sx={{ minWidth: 200, fontSize: '14px' }}>Male</Option>
-                          <Option value="Female" sx={{ minWidth: 200, fontSize: '14px' }}>Female</Option>
-                          <Option value="Suspended" sx={{ minWidth: 200, fontSize: '14px' }}>Other</Option>
-                        
-                        </Select>
-                        
-                      </Stack>
-                        
-                  </FormControl>
-                  <FormControl sx={{Width:70}} >
-                    <FormLabel>Height</FormLabel>
+                <FormControl sx={{width: 200}}>
+                    <FormLabel>Price</FormLabel>
+                    <Input startDecorator={'$'}  placeholder="Price" sx={{fontSize: '14px'}} />
+                </FormControl>
+                
+                  <FormControl sx={{flexGrow: 1}}>
+                    <FormLabel>Estimated duration</FormLabel>
                     <Input
                       type='number'
                       placeholder="1.62"
+                      
                       sx={{fontSize:"14px", width: 200}}
-                      startDecorator={{ feet: 'ft', metres: 'm', centimetres: 'cm' }[height]}
+                      startDecorator={{ mins: 'm', hours: 'H' }[time]}
                       endDecorator={
                         <React.Fragment>
                           <Divider orientation="vertical" />
                           <Select
                             variant="plain"
-                            value={height}
-                            onChange={(_, value) => setHeight(value!)}
+                            value={time}
+                            size="sm"
+                            onChange={(_, value) => setTime(value!)}
                             slotProps={{
                               listbox: {
                                 variant: 'outlined',
@@ -126,9 +103,9 @@ export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
                             }}
                             sx={{ mr: -1.5, fontSize: '14px', '&:hover': { bgcolor: 'transparent' } }}
                           >
-                            <Option value="feet" sx={{fontSize: '14px'}}>Feet</Option>
-                            <Option value="metres" sx={{fontSize: '14px'}}>Metres</Option>
-                            <Option value="centimetres" sx={{fontSize: '14px'}}>Centimetres</Option>
+                           
+                            <Option value="mins" sx={{fontSize: '14px'}}>Minutes</Option>
+                            <Option value="hours" sx={{fontSize: '14px'}}>Hours</Option>
                           </Select>
                         </React.Fragment>
                       }
@@ -136,38 +113,30 @@ export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
                     />
                   </FormControl>
               </Stack>
-              <Stack spacing={1} direction={{sm: 'row'}} flexWrap="wrap" useFlexGap>
-                
-                <FormControl>
-                  <FormLabel>Address</FormLabel>
-                  <Input size="sm" placeholder="Address" sx={{ flexGrow: 1 }} />
-                </FormControl>
-
-                <FormControl>
-                    <FormLabel>Social Security Number</FormLabel>
-                    <Input size="sm" type='text' placeholder="SSN" />
-                  </FormControl>
+              <Stack spacing={1} direction={{sm: 'row'}} flexWrap="wrap" useFlexGap> 
+              <FormControl sx={{ width: "50%"}}>
+                      <FormLabel>Visit Type</FormLabel>
+                        
+                          <Stack spacing={2} alignItems="flex-start">
+                            <Select
+                              placeholder="Select a visit type"
+                              name="visitType"
+                              required
+                              sx={{ minWidth: 200, fontSize: '14px' }}
+                              
+                              onChange={handleSelectChange}
+                            >
+                              <Option value="MultipleVisit" sx={{ minWidth: 200, fontSize: '14px' }}>Multiple Visit</Option>
+                              <Option value="SingleVisit" sx={{ minWidth: 200, fontSize: '14px' }}>Single Visit</Option>
+                              
+                           
+                            </Select>
+                            
+                          </Stack>
+                        
+                      </FormControl>
               </Stack>
-              <Stack direction={{sm: 'row', xs: 'column'}} spacing={2} flexWrap="wrap" useFlexGap>
-                <FormControl>
-                  <FormLabel>Phone number</FormLabel>
-                  <Input size="sm" placeholder="+233 557 31 1180" slotProps={{
-                    input: {
-                      component: NumericFormatAdapter,
-                    },
-                  }} sx={{flexGrow: 1}} />
-                </FormControl>
-                <FormControl sx={{ flexGrow: 1 }}>
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    size="sm"
-                    type="email"
-                    startDecorator={<EmailRoundedIcon />}
-                    placeholder="siriwatk@test.com"
-                    sx={{ flexGrow: 1 }}
-                  />
-                </FormControl>
-              </Stack>
+              
               <Stack direction="row" spacing={2} sx={{width: "100%"}}>
                 <Button
                     color="neutral"
