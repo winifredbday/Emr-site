@@ -10,7 +10,9 @@ import TreatmentList from '../../components/treatments/TreatmentList';
 import Divider from '@mui/joy/Divider';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
+
 export default function Treatment() {
+  
   return (
     <Box
       component="main"
@@ -84,6 +86,7 @@ export default function Treatment() {
       </Box>
       <TreatmentTable />
       <TreatmentList />
+      
     </Box>
   );
 }

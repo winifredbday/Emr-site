@@ -32,7 +32,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-
+import AddTreatmentModal from './AddTreatmentModal';
 const rows = [
   {
     id: 'TRT-01',
@@ -136,6 +136,11 @@ export default function TreatmentTable() {
   const [order, setOrder] = React.useState<Order>('desc');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [open, setOpen] = React.useState(false);
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
+
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
@@ -217,6 +222,7 @@ export default function TreatmentTable() {
           startDecorator={<AddRoundedIcon />}
           size="sm"
           sx={{display:"flex", alignItems:"center"}}
+          onClick={handleOpen}
         >
           Add Treatment
         </Button>
@@ -399,6 +405,7 @@ export default function TreatmentTable() {
           Next
         </Button>
       </Box>
+      <AddTreatmentModal open={modalOpen} onClose={handleClose} />
     </React.Fragment>
   );
 }
