@@ -247,10 +247,19 @@ export default function AddPrescriptionModal({
                   </Box>
                 </Box>
               </Stack>
-
-              <Button color="primary" size="sm" sx={{ width: '50%' }} onClick={handleFormSubmit}>
-                Submit
-              </Button>
+             <Box sx={{display: 'flex', gap: 2}}>
+              <Button
+                      color="neutral"
+                      size="sm"
+                      sx={{width: "50%"}}
+                      onClick={onClose}
+                      >
+                      Cancel
+                  </Button>
+                <Button color="primary" size="sm" sx={{ width: '50%' }} onClick={handleFormSubmit}>
+                  Submit
+                </Button>
+             </Box>
             </Stack>
           </DialogContent>
         </ModalDialog>
