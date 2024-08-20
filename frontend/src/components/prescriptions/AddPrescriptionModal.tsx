@@ -59,23 +59,27 @@ export default function AddPrescriptionModal({
   }, [preselectedDoctor]);
 
   const handleAddPrescription = () => {
-    const totalPrice = unitPrice * quantity;
-    const newPrescription = {
-      name,
-      direction,
-      quantity,
-      unit_price: unitPrice,
-      total_price: totalPrice,
-    };
+    if (name && direction && quantity > 0 && unitPrice > 0) {
+      const totalPrice = unitPrice * quantity;
+      const newPrescription = {
+        name,
+        direction,
+        quantity,
+        unit_price: unitPrice,
+        total_price: totalPrice,
+      };
 
-    setPrescriptions([...prescriptions, newPrescription]);
+      setPrescriptions([...prescriptions, newPrescription]);
 
-    // Reset the input fields
-    setName('');
-    setDirection('');
-    setQuantity(1);
-    setUnitPrice(0);
+      // Reset the input fields
+      setName('');
+      setDirection('');
+      setQuantity(1);
+      setUnitPrice(0);
+    }
   };
+
+  const isAddButtonDisabled = !name || !direction || quantity <= 0 || unitPrice <= 0;
 
   const handleFormSubmit = () => {
     const formData = {
@@ -152,8 +156,8 @@ export default function AddPrescriptionModal({
                         <tr>
                           <th style={{ padding: '.3rem', height: 'fit-content' }}>Name</th>
                           <th style={{ padding: '.3rem', height: 'fit-content' }}>Direction</th>
-                          <th style={{ padding: '.3rem .2rem', textAlign: 'center', width: 60, height: 'fit-content' }}>Quantity</th>
-                          <th style={{ padding: '.3rem .2rem', textAlign: 'center', width: 60, height: 'fit-content' }}>Total Price ($)</th>
+                          <th style={{ padding: '.3rem .2rem', textAlign: 'center', width: 55, height: 'fit-content' }}>Quantity</th>
+                          <th style={{ padding: '.3rem .2rem', textAlign: 'center', width: 70, height: 'fit-content' }}>Total Price</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -161,8 +165,8 @@ export default function AddPrescriptionModal({
                           <tr key={index}>
                             <td>{prescription.name}</td>
                             <td>{prescription.direction}</td>
-                            <td>{prescription.quantity}</td>
-                            <td>{prescription.total_price.toFixed(2)}</td>
+                            <td style={{textAlign: 'center'}}>{prescription.quantity}</td>
+                            <td style={{textAlign: 'center'}}>${prescription.total_price.toFixed(2)}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -214,7 +218,12 @@ export default function AddPrescriptionModal({
                         </FormControl>
                       </Box>
                     </Box>
-                    <Button color="primary" size="sm" onClick={handleAddPrescription}>
+                    <Button
+                      color="primary"
+                      size="sm"
+                      onClick={handleAddPrescription}
+                      disabled={isAddButtonDisabled}
+                    >
                       Add
                     </Button>
                   </Box>
