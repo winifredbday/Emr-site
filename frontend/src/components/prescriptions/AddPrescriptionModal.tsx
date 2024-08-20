@@ -12,6 +12,8 @@ import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
 import ModalClose from '@mui/joy/ModalClose';
 import Autocomplete from '@mui/joy/Autocomplete';
+import IconButton from '@mui/joy/IconButton';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const doctors = [
   { value: 'olivia', label: 'Dr. Olivia Rhye' },
@@ -79,6 +81,12 @@ export default function AddPrescriptionModal({
     }
   };
 
+
+  const handleDeletePrescription = (index: number) => {
+    const updatedPrescriptions = prescriptions.filter((_, i) => i !== index);
+    setPrescriptions(updatedPrescriptions);
+  };
+
   const isAddButtonDisabled = !name || !direction || quantity <= 0 || unitPrice <= 0;
 
   const handleFormSubmit = () => {
@@ -107,7 +115,7 @@ export default function AddPrescriptionModal({
               <Stack spacing={1}>
                 <FormLabel>Patient</FormLabel>
                 <Box sx={{ display: 'flex', flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
-                  <FormControl>
+                  <FormControl sx={{flexGrow: 1}}>
                     <Input
                       size="sm"
                       placeholder="First name"
@@ -115,7 +123,7 @@ export default function AddPrescriptionModal({
                       onChange={(e) => setFirstName(e.target.value)} // Capture first name
                     />
                   </FormControl>
-                  <FormControl>
+                  <FormControl sx={{flexGrow: 1}}>
                     <Input
                       size="sm"
                       placeholder="Last name"
@@ -146,10 +154,10 @@ export default function AddPrescriptionModal({
               </Stack>
 
               {/* Prescription Box */}
-              <Stack sx={{ border: '1px solid red' }}>
+              <Stack>
                 <FormLabel>Prescription List</FormLabel>
                 <Box sx={{ p: 2 }}>
-                  <Box>
+                  <Box sx={{overflowY: 'auto'}}>
                     {/* List of selected prescriptions */}
                     <Table size="sm" variant="soft" borderAxis="bothBetween" sx={{ fontSize: '10px', m: 0 }}>
                       <thead>
@@ -158,6 +166,7 @@ export default function AddPrescriptionModal({
                           <th style={{ padding: '.3rem', height: 'fit-content' }}>Direction</th>
                           <th style={{ padding: '.3rem .2rem', textAlign: 'center', width: 55, height: 'fit-content' }}>Quantity</th>
                           <th style={{ padding: '.3rem .2rem', textAlign: 'center', width: 70, height: 'fit-content' }}>Total Price</th>
+                          <th style={{ padding: '.3rem .2rem', textAlign: 'center', width: 60, height: 'fit-content' }}>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -167,6 +176,15 @@ export default function AddPrescriptionModal({
                             <td>{prescription.direction}</td>
                             <td style={{textAlign: 'center'}}>{prescription.quantity}</td>
                             <td style={{textAlign: 'center'}}>${prescription.total_price.toFixed(2)}</td>
+                            <td style={{textAlign: 'center'}}>
+                              <IconButton
+                                size="sm"
+                                color="danger"
+                                onClick={() => handleDeletePrescription(index)}
+                              >
+                                <DeleteIcon sx={{fontSize: '14px'}}/>
+                              </IconButton>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
