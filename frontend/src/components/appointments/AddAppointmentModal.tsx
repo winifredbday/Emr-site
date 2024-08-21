@@ -50,29 +50,29 @@ interface CustomProps {
   name: string;
 }
 
-const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
-  function NumericFormatAdapter(props, ref) {
-    const { onChange, ...other } = props;
+// const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
+//   function NumericFormatAdapter(props, ref) {
+//     const { onChange, ...other } = props;
 
-    return (
-      <NumericFormat
-        {...other}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          onChange({
-            target: {
-              name: props.name,
-              value: values.value,
-            },
-          });
-        }}
+//     return (
+//       <NumericFormat
+//         {...other}
+//         getInputRef={ref}
+//         onValueChange={(values) => {
+//           onChange({
+//             target: {
+//               name: props.name,
+//               value: values.value,
+//             },
+//           });
+//         }}
         
-        valueIsNumericString
-        prefix="+"
-      />
-    );
-  },
-);
+//         valueIsNumericString
+//         prefix="+"
+//       />
+//     );
+//   },
+// );
 
 export default function AddAppointmentModal({open, onClose, onSubmit, preselectedDoctor}: AddAppointmentModalProps) {
   const [selectedDoctor, setSelectedDoctor] = React.useState<string | null>(preselectedDoctor || null);
