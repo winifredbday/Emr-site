@@ -10,7 +10,7 @@ import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+
 import ModalClose from '@mui/joy/ModalClose';
 import Select from '@mui/joy/Select';
 import Divider from '@mui/joy/Divider';
