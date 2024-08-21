@@ -19,11 +19,11 @@ import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
 import AlertVariousStates from '../../components/AlertVariousStates'; // Import your alert component
 
-interface FormElements extends HTMLFormControlsCollection {
-  email: HTMLInputElement;
-  password: HTMLInputElement;
-  persistent: HTMLInputElement;
-}
+// interface FormElements extends HTMLFormControlsCollection {
+//   email: HTMLInputElement;
+//   password: HTMLInputElement;
+//   persistent: HTMLInputElement;
+// }
 
 // interface SignInFormElement extends HTMLFormElement {
 //   readonly elements: FormElements;
