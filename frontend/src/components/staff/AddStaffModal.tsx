@@ -9,7 +9,7 @@ import StepButton from '@mui/joy/StepButton';
 import StepIndicator from '@mui/joy/StepIndicator';
 import Check from '@mui/icons-material/Check';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
-import Checkbox, { checkboxClasses } from '@mui/joy/Checkbox';
+import Checkbox from '@mui/joy/Checkbox';
 import Sheet from '@mui/joy/Sheet';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
 

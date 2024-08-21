@@ -4,7 +4,7 @@ import TabList from '@mui/joy/TabList';
 import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import ListItemContent from '@mui/joy/ListItemContent';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
+
 import ListDivider from '@mui/joy/ListDivider';
 import Tab, {tabClasses} from '@mui/joy/Tab';
 import TabPanel from '@mui/joy/TabPanel';

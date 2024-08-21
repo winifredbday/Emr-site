@@ -17,23 +17,21 @@ import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import Table from '@mui/joy/Table';
 import Sheet from '@mui/joy/Sheet';
-import Checkbox from '@mui/joy/Checkbox';
+
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import Menu from '@mui/joy/Menu';
 import MenuButton from '@mui/joy/MenuButton';
 import MenuItem from '@mui/joy/MenuItem';
 import Dropdown from '@mui/joy/Dropdown';
-import PreviewIcon from '@mui/icons-material/Preview';
+
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 
-import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
+
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const rows = [

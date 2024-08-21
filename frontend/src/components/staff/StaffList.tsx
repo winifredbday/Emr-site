@@ -19,9 +19,7 @@ import MenuItem from '@mui/joy/MenuItem';
 import Dropdown from '@mui/joy/Dropdown';
 
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-import BlockIcon from '@mui/icons-material/Block';
-import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
+
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 

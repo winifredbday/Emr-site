@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
+// import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import Option from '@mui/joy/Option';
 import Input from '@mui/joy/Input';
 import Box from '@mui/joy/Box'
@@ -45,10 +45,10 @@ interface AddAppointmentModalProps{
 }
 
 
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
+// interface CustomProps {
+//   onChange: (event: { target: { name: string; value: string } }) => void;
+//   name: string;
+// }
 
 // const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
 //   function NumericFormatAdapter(props, ref) {
