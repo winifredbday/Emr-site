@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@mui/joy/Button';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
-import { NumericFormat, NumericFormatProps } from 'react-number-format';
+// import { NumericFormat, NumericFormatProps } from 'react-number-format';
 import Option from '@mui/joy/Option';
 import Input from '@mui/joy/Input';
 import Stack from '@mui/joy/Stack';
@@ -22,34 +22,34 @@ interface AddTreatmentProps{
 }
 
 
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
+// interface CustomProps {
+//   onChange: (event: { target: { name: string; value: string } }) => void;
+//   name: string;
+// }
 
-const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
-  function NumericFormatAdapter(props, ref) {
-    const { onChange, ...other } = props;
+// const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
+//   function NumericFormatAdapter(props, ref) {
+//     const { onChange, ...other } = props;
 
-    return (
-      <NumericFormat
-        {...other}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          onChange({
-            target: {
-              name: props.name,
-              value: values.value,
-            },
-          });
-        }}
+//     return (
+//       <NumericFormat
+//         {...other}
+//         getInputRef={ref}
+//         onValueChange={(values) => {
+//           onChange({
+//             target: {
+//               name: props.name,
+//               value: values.value,
+//             },
+//           });
+//         }}
         
-        valueIsNumericString
-        prefix="+"
-      />
-    );
-  },
-);
+//         valueIsNumericString
+//         prefix="+"
+//       />
+//     );
+//   },
+// );
 
 export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
   const [time, setTime] = React.useState('mins');
