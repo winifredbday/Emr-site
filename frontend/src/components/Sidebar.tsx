@@ -65,15 +65,9 @@ function Toggler({
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [sidebarOpen, setSidebarOpen] = React.useState(false);
-  const isMobile = useMediaQuery('(max-width:600px)');
+  
+  
 
-  useEffect(() => {
-    if (sidebarOpen) {
-        console.log('Location changed, closing sidebar.');
-        setSidebarOpen(false);
-    }
-}, [location.pathname, sidebarOpen]);
 
   const handleSignout = async () => {
     try {
