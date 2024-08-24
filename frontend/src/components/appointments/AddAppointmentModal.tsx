@@ -112,13 +112,13 @@ export default function AddAppointmentModal({open, onClose, onSubmit, preselecte
   return (
     <React.Fragment>
     <Modal keepMounted open={open} onClose={onClose} sx={{}}>
-      <ModalDialog>
+      <ModalDialog sx={{width: {xs: '100%'}, mt: {xs: '5%'}}}>
         <DialogTitle sx={{ fontSize: '1.2rem' }}>
           Add Appointment
           <ModalClose variant="plain" sx={{ m: 1 }} />
         </DialogTitle>
 
-        <DialogContent sx={{ marginTop: '1rem' }}>
+        <DialogContent sx={{ marginTop: '1rem', pb: {xs: '1rem'} }}>
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
             <Stack spacing={1}>
               <FormLabel>Patient</FormLabel>
