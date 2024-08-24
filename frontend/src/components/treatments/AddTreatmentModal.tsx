@@ -61,7 +61,7 @@ export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
     <React.Fragment>
      
       <Modal keepMounted open={open} onClose={onClose} sx={{}}>
-        <ModalDialog>
+        <ModalDialog sx={{width: {xs: '100%'}, height: {xs: '80%'}, mt: {xs: '5%'}}}>
           <DialogTitle sx={{fontSize: '1.2rem'}}>Add Treatment  <ModalClose variant="plain" sx={{ m: 1 }} /></DialogTitle>
           <DialogContent sx={{marginTop: '1rem'}}>
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
@@ -74,8 +74,8 @@ export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
                   
                 </FormControl>
               </Stack>
-              <Stack spacing={1} direction={{sm: 'row'}} flexWrap="wrap" useFlexGap>
-                <FormControl sx={{width: 200}}>
+              <Stack spacing={1} direction={{sm: 'row'}} sx={{gap: {xs: 2}}} flexWrap="wrap" useFlexGap>
+                <FormControl sx={{width: {sm: 200}}}>
                     <FormLabel>Price</FormLabel>
                     <Input startDecorator={'$'}  placeholder="Price" sx={{fontSize: '14px'}} />
                 </FormControl>

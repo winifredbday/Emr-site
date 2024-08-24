@@ -254,6 +254,7 @@ export default function StaffTable() {
             <Divider sx={{ my: 2 }} />
             <Sheet sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {renderFilters()}
+              
               <Button color="primary" onClick={() => setOpen(false)}>
                 Submit
               </Button>

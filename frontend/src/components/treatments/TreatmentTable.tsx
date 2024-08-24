@@ -163,10 +163,21 @@ export default function TreatmentTable() {
         className="SearchAndFilters-mobile"
         sx={{
           display: { xs: 'flex', sm: 'none' },
+          flexWrap: {xs: 'wrap'},
+          
           my: 1,
           gap: 1,
         }}
       >
+        <Button
+          color="primary"
+          startDecorator={<AddRoundedIcon />}
+          size="sm"
+          sx={{display:"flex", alignItems:"center", mb: {xs: 1}}}
+          onClick={handleOpen}
+        >
+          Add Treatment
+        </Button>
         <Input
           size="sm"
           placeholder="Search"
