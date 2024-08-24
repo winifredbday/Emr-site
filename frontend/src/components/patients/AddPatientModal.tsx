@@ -54,8 +54,8 @@ export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
   return (
     <React.Fragment>
      
-      <Modal keepMounted open={open} onClose={onClose} sx={{}}>
-        <ModalDialog>
+      <Modal keepMounted open={open} onClose={onClose}>
+        <ModalDialog sx={{width: {xs: '100%'}, height: {xs: '80%'}, mt: {xs: '5%'}}}>
           <DialogTitle sx={{fontSize: '1.2rem'}}>Add Patient Details  <ModalClose variant="plain" sx={{ m: 1 }} /></DialogTitle>
           <DialogContent sx={{marginTop: '1rem'}}>
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
@@ -68,7 +68,7 @@ export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
                   <Input size="sm" placeholder="Last name" sx={{ flexGrow: 1 }} />
                 </FormControl>
               </Stack>
-              <Stack spacing={1} direction={{sm: 'row'}} flexWrap="wrap" useFlexGap>
+              <Stack spacing={1} direction={{sm: 'row'}} sx={{gap: {xs: 2}}} flexWrap="wrap" useFlexGap>
                   <FormControl>
                     <FormLabel>Date of Birth</FormLabel>
                     <Input
@@ -134,7 +134,7 @@ export default function AddPatientModal({open, onClose}: AddPatientModalProps) {
                     />
                   </FormControl>
               </Stack>
-              <Stack spacing={1} direction={{sm: 'row'}} flexWrap="wrap" useFlexGap>
+              <Stack spacing={1} direction={{sm: 'row'}} sx={{gap: {xs: 2}}} flexWrap="wrap" useFlexGap>
                 
                 <FormControl>
                   <FormLabel>Address</FormLabel>
