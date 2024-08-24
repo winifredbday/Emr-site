@@ -28,7 +28,7 @@ import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils/utils';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { useMediaQuery } from '@mui/material'; // Import useMediaQuery
+
 
 function Toggler({
   defaultExpanded = false,
