@@ -146,7 +146,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <ModalDialog sx={{ minHeight: '60vh', width: '45%' }}>
+      <ModalDialog sx={{ minHeight: '60vh', width: {xs: '100%', sm: '45%'}, height: {xs: '80%'}, mt: {xs: '5%'} }}>
         <DialogTitle>
           Add Staff Member Details
           <ModalClose variant="plain" sx={{ m: 1 }} />
@@ -168,7 +168,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                   </StepIndicator>
                 }
                 sx={{
-                  fontSize: '14px',
+                  fontSize: {xs: '12px', sm: '14px'},
                   '&::after': {
                     ...(activeStep > index && index !== steps.length - 1 && { bgcolor: 'primary.solidBg' }),
                   },
@@ -185,13 +185,13 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                 <Stack spacing={2}>
                   <FormControl>
                     <FormLabel>Name</FormLabel>
-                    <Stack direction="row" spacing={2}>
+                    <Stack direction="row" useFlexGap flexWrap={'wrap'} spacing={2}>
                       <Input
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
                         placeholder="First name"
-                        sx={{ fontSize: '14px' }}
+                        sx={{ fontSize: '14px' , flexGrow: {xs: 1}}}
                       />
                       <Input
                         name="lastName"
@@ -213,7 +213,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                         sx={{ fontSize: '14px' }}
                       />
                     </FormControl>
-                    <FormControl sx={{ width: "50%"}}>
+                    <FormControl sx={{ width: {sm: "50%"}}}>
                       <FormLabel>Work Status</FormLabel>
                         
                           <Stack spacing={2} alignItems="flex-start">
@@ -221,7 +221,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                               placeholder="Select a status"
                               name="workStatus"
                               required
-                              sx={{ minWidth: 200, fontSize: '14px' }}
+                              sx={{ minWidth: 200, fontSize: '14px', width: {xs: '100%'}, flexGrow: {xs: 1} }}
                               value={formData.workStatus}
                               onChange={handleSelectChange}
                             >
@@ -238,7 +238,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                   
                   
                   <Stack direction={{ sm: "row" }} sx={{ position: 'relative', width: "100%", display: "flex", gap: 2 }}>
-                    <FormControl sx={{ width: "50%" }}>
+                    <FormControl sx={{ width: {sm: "50%"} }}>
                       <FormLabel>Phone number</FormLabel>
                       <Input
                         name="phoneNumber"
@@ -253,7 +253,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                         }}
                       />
                     </FormControl>
-                    <FormControl sx={{ width: "50%" }}>
+                    <FormControl sx={{ width: {sm: "50%"} }}>
                       <FormLabel>Email</FormLabel>
                       <Input
                         name="email"
@@ -262,12 +262,12 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
                         onChange={handleChange}
                         startDecorator={<EmailRoundedIcon />}
                         placeholder="siriwatk@test.com"
-                        sx={{ fontSize: '14px' }}
+                        sx={{ fontSize: '14px', flexGrow: {xs: 1} }}
                       />
                     </FormControl>
                   </Stack>
                   <Stack direction={{ sm: "row" }} sx={{ position: 'relative', width: "100%", display: "flex", gap: 2 }}>
-                    <FormControl sx={{ width: "47%" }}>
+                    <FormControl sx={{ width: {sm: "47%"} }}>
                       <FormLabel>Portfolio</FormLabel>
                       <Input
                         name="portfolio"
