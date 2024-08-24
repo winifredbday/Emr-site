@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
@@ -27,6 +28,7 @@ import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils/utils';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import { useMediaQuery } from '@mui/material'; // Import useMediaQuery
 
 function Toggler({
   defaultExpanded = false,
@@ -63,6 +65,16 @@ function Toggler({
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const isMobile = useMediaQuery('(max-width:600px)');
+
+  useEffect(() => {
+    if (sidebarOpen) {
+        console.log('Location changed, closing sidebar.');
+        setSidebarOpen(false);
+    }
+}, [location.pathname, sidebarOpen]);
+
   const handleSignout = async () => {
     try {
       const token = localStorage.getItem('token'); // Retrieve token from local storage
@@ -94,6 +106,12 @@ export default function Sidebar() {
         alert('An unexpected error occurred. Please try again.');
       }
     }
+  };
+
+  const handleListItemClick = () => {
+   
+      closeSidebar() // Close the sidebar in mobile view
+
   };
   return (
     <Sheet
@@ -128,7 +146,8 @@ export default function Sidebar() {
           },
         })}
       />
-      <Box
+     
+     <Box
         className="Sidebar-overlay"
         sx={{
           position: 'fixed',
@@ -147,6 +166,7 @@ export default function Sidebar() {
         }}
         onClick={() => closeSidebar()}
       />
+    
       <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
         <IconButton variant="soft" color="primary" size="sm">
           <BrightnessAutoRoundedIcon />
@@ -180,6 +200,7 @@ export default function Sidebar() {
               role="menuitem"
               component={Link}
               to="/"
+              onClick={handleListItemClick}
               selected={location.pathname === '/' ? true : false}>
               <DashboardRoundedIcon />
               <ListItemContent>
@@ -208,6 +229,8 @@ export default function Sidebar() {
                     role="menuitem"
                     component={Link}
                     to="/patients"
+                    
+                    onClick={handleListItemClick}
                     selected={location.pathname === '/patients' ? true : false}>Patients</ListItemButton>
                 </ListItem>
                 <ListItem sx={{ mt: 0.5 }}>
@@ -215,6 +238,7 @@ export default function Sidebar() {
                     role="menuitem"
                     component={Link}
                     to="/staff"
+                    onClick={handleListItemClick}
                     selected={location.pathname === '/staff' ? true : false}>Staff List</ListItemButton>
                 </ListItem>
                 <ListItem sx={{ mt: 0.5 }}>
@@ -222,6 +246,7 @@ export default function Sidebar() {
                     role="menuitem"
                     component={Link}
                     to="/appointments"
+                    onClick={handleListItemClick}
                     selected={location.pathname === '/appointments' ? true : false}>Appointments</ListItemButton>
                 </ListItem>
                 <ListItem sx={{ mt: 0.5 }}>
@@ -229,6 +254,7 @@ export default function Sidebar() {
                     role="menuitem"
                     component={Link}
                     to="/treatments"
+                    onClick={handleListItemClick}
                     selected={location.pathname === '/treatments' ? true : false}>Treatments</ListItemButton>
                 </ListItem>
                 <ListItem>
@@ -236,6 +262,7 @@ export default function Sidebar() {
                     role="menuitem"
                     component={Link}
                     to="/prescriptions"
+                    onClick={handleListItemClick}
                     selected={location.pathname === '/prescriptions' ? true : false}>Prescriptions</ListItemButton>
                 </ListItem>
               </List>
@@ -247,6 +274,7 @@ export default function Sidebar() {
               role="menuitem"
               component={Link}
               to="/messages"
+              onClick={handleListItemClick}
               selected={location.pathname === '/messages' ? true : false}
             >
               <QuestionAnswerRoundedIcon />
@@ -280,6 +308,7 @@ export default function Sidebar() {
                     role="menuitem"
                     component={Link}
                     to="/revenue"
+                    onClick={handleListItemClick}
                     selected={location.pathname === '/revenue' ? true : false}>Revenue</ListItemButton>
                 </ListItem>
                
@@ -292,6 +321,7 @@ export default function Sidebar() {
               role="menuitem"
               component={Link}
               to="/profile"
+              onClick={handleListItemClick}
               selected={location.pathname === '/profile' ? true : false}>
               <PersonRoundedIcon/>
               <ListItemContent>
