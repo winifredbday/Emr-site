@@ -139,7 +139,7 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                 <TabPanel value={0} sx={{ p: 0}}>
                     <Box sx={{ display: 'flex', gap: 1, p: 1, flexWrap: 'wrap', height: '100%'}}>
                         {listItems.map((listItem) => (
-                            <Box key={listItem.id} sx={{ display: 'flex', flexDirection: 'column', minWidth: '295px', width: {xs: '100%'}, border: '1px solid red', p: 1, maxHeight: '50vh', position: 'relative' }}>
+                            <Box key={listItem.id} sx={{ display: 'flex', flexDirection: 'column', minWidth: '295px', width: {xs: '100%'}, p: 1, maxHeight: '50vh', position: 'relative' }}>
                                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                                     <Avatar size="sm" src={listItem.avatar} />
                                     <div>
@@ -194,7 +194,7 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                     </Box>
                 </TabPanel>
                 <TabPanel value={1} sx={{width: {xs: '100%'}}}>
-                    <Box sx={{ display: 'flex', gap: 1, p: 1, flexDirection: 'column', height: '100%' }}>
+                    <Box sx={{ display: {xs: 'flex', sm: 'block'}, gap: 0, p: 1, flexDirection: 'column', height: '100%' }}>
                         <Box
                             sx={{
                                 display: 'flex',
@@ -226,7 +226,7 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                                     }}
                                 >
                                     <Typography level="body-xs" sx={{ minWidth: 10 }}>{index + 1}</Typography>
-                                    <ListItemContent>
+                                    <ListItemContent sx={{display: {sm: 'flex'}, gap: 2}}>
                                         <Typography level="body-xs" sx={{ minWidth: {sm : 200} }}>{new Date().toLocaleDateString()}</Typography>
                                         <Typography level="body-xs" sx={{ minWidth: {sm : 200}, fontWeight: 'bold' }}>{listItem.doctor}</Typography>
                                         <Typography level="body-xs" sx={{ minWidth: {sm : 200} }}>{listItem.appointments[listItem.appointments.length - 1]?.treatment}</Typography>
