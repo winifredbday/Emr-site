@@ -109,7 +109,7 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
     return (
 
         <>
-            <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ mt: 1, height: '100%' }}>
+            <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ mt: 1, height: '100%', display: 'flex', flexDirection: 'column'}}>
                 <TabList 
                     sx={{
                         mt: 2,
@@ -136,10 +136,10 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                     <Tab>Current</Tab>
                     <Tab>Log History</Tab>
                 </TabList>
-                <TabPanel value={0} sx={{ p: 0 }}>
-                    <Box sx={{ display: 'flex', gap: 1, p: 1, flexWrap: 'wrap', height: '100%' }}>
+                <TabPanel value={0} sx={{ p: 0}}>
+                    <Box sx={{ display: 'flex', gap: 1, p: 1, flexWrap: 'wrap', height: '100%'}}>
                         {listItems.map((listItem) => (
-                            <Box key={listItem.id} sx={{ minWidth: '295px', p: 1, maxHeight: '50vh', position: 'relative' }}>
+                            <Box key={listItem.id} sx={{ display: 'flex', flexDirection: 'column', minWidth: '295px', width: {xs: '100%'}, border: '1px solid red', p: 1, maxHeight: '50vh', position: 'relative' }}>
                                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                                     <Avatar size="sm" src={listItem.avatar} />
                                     <div>
@@ -153,7 +153,8 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                                 <Box 
                                     sx={{
                                         mt: 1, 
-                                        height: '90%', 
+                                        height: '100%', 
+                                       
                                         overflowY: 'scroll', 
                                         position: 'relative',
                                         pr: 2,
@@ -192,20 +193,21 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                         ))}
                     </Box>
                 </TabPanel>
-                <TabPanel value={1}>
-                    <Box sx={{ p: 1, width: '100%', height: '100%' }}>
+                <TabPanel value={1} sx={{width: {xs: '100%'}}}>
+                    <Box sx={{ display: 'flex', gap: 1, p: 1, flexDirection: 'column', height: '100%' }}>
                         <Box
                             sx={{
                                 display: 'flex',
                                 alignItems: 'center',
                                 gap: 2,
                                 mb: 1,
+                                width: {xs: '100%'}
                             }}
                         >
-                            <Typography level="body-xs" sx={{ minWidth: 10 }}></Typography>
-                            <Typography level="body-xs" sx={{ minWidth: 200, fontWeight: 'bold' }}>Date</Typography>
-                            <Typography level="body-xs" sx={{ minWidth: 200, fontWeight: 'bold' }}>Doctor</Typography>
-                            <Typography level="body-xs" sx={{ minWidth: 200, fontWeight: 'bold' }}>Treatment</Typography>
+                            <Typography level="body-xs" sx={{ minWidth: {sm : 10} }}></Typography>
+                            <Typography level="body-xs" sx={{ minWidth: {sm : 200}, fontWeight: 'bold' }}>Date</Typography>
+                            <Typography level="body-xs" sx={{ minWidth: {sm : 200}, fontWeight: 'bold' }}>Doctor</Typography>
+                            <Typography level="body-xs" sx={{ minWidth: {sm : 200}, fontWeight: 'bold' }}>Treatment</Typography>
                         </Box>
                         <ListDivider />
                         {listItems.map((listItem, index) => (
@@ -214,18 +216,20 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                                 size="sm"
                                 sx={{
                                     '--ListItem-paddingX': 0,
+                                    
                                 }}
                             >
                                 <ListItem
                                     sx={{
                                         bgcolor: index % 2 === 0 ? 'rgba(155,220,150,0.36)' : 'rgba(223,84,150,0.11)',
+                                        paddingLeft: {xs: '.5rem'}
                                     }}
                                 >
                                     <Typography level="body-xs" sx={{ minWidth: 10 }}>{index + 1}</Typography>
                                     <ListItemContent>
-                                        <Typography level="body-xs" sx={{ minWidth: 200 }}>{new Date().toLocaleDateString()}</Typography>
-                                        <Typography level="body-xs" sx={{ minWidth: 200, fontWeight: 'bold' }}>{listItem.doctor}</Typography>
-                                        <Typography level="body-xs" sx={{ minWidth: 200 }}>{listItem.appointments[listItem.appointments.length - 1]?.treatment}</Typography>
+                                        <Typography level="body-xs" sx={{ minWidth: {sm : 200} }}>{new Date().toLocaleDateString()}</Typography>
+                                        <Typography level="body-xs" sx={{ minWidth: {sm : 200}, fontWeight: 'bold' }}>{listItem.doctor}</Typography>
+                                        <Typography level="body-xs" sx={{ minWidth: {sm : 200} }}>{listItem.appointments[listItem.appointments.length - 1]?.treatment}</Typography>
                                     </ListItemContent>
                                 </ListItem>
                             </List>
