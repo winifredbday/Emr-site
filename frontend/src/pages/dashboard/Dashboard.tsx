@@ -5,7 +5,8 @@ import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import CashFlow from '../../components/dashboard/CashFlow';
+import PatientDashboard from '../../components/dashboard/PatientDashboard';
+import DoctorDashboard from '../../components/dashboard/DoctorDashboard';
 import useAuth from '../../hooks/useAuth';
 
 export default function Dashboard() {
@@ -13,6 +14,19 @@ export default function Dashboard() {
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography>Error fetching user data</Typography>;
+
+  const renderDashboardContent = () => {
+    if (!user) return <Typography>Loading...</Typography>;
+
+    switch (user.role) {
+      case 'patient':
+        return <PatientDashboard />;
+      case 'doctor':
+        return <DoctorDashboard />;
+      default:
+        return <Typography>Unauthorized</Typography>;
+    }
+  };
 
   return (
     <Box
@@ -80,7 +94,7 @@ export default function Dashboard() {
         </Typography>
       </Box>
       {/* Dashboard Content */}
-      <CashFlow />
+      {renderDashboardContent()}
     </Box>
   );
 }

@@ -5,6 +5,7 @@ interface User {
     id: number;
     firstname: string;
     email: string;
+    role: string;
 }
 
 interface AuthError{
