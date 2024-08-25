@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import Avatar from '@mui/joy/Avatar';
 import Box from '@mui/joy/Box';
@@ -28,7 +27,7 @@ import ColorSchemeToggle from './ColorSchemeToggle';
 import { closeSidebar } from '../utils/utils';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-
+import useAuth from '../hooks/useAuth'; // Import the useAuth hook
 
 function Toggler({
   defaultExpanded = false,
@@ -65,9 +64,7 @@ function Toggler({
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
-  
-  
-
+  const { user } = useAuth(); // Fetch user data from the hook
 
   const handleSignout = async () => {
     try {
@@ -103,10 +100,256 @@ export default function Sidebar() {
   };
 
   const handleListItemClick = () => {
-   
-      closeSidebar() // Close the sidebar in mobile view
-
+    closeSidebar(); // Close the sidebar in mobile view
   };
+
+  const renderSidebarLinks = () => {
+    if (!user) return null;
+
+    switch (user.role) {
+      case 'patient':
+        return (
+          <>
+            <ListItem>
+              <ListItemButton
+                role="menuitem"
+                component={Link}
+                to="/"
+                onClick={handleListItemClick}
+                selected={location.pathname === '/' ? true : false}>
+                <DashboardRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Dashboard</Typography>
+                </ListItemContent>
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem>
+              <ListItemButton
+                role="menuitem"
+                component={Link}
+                to="/messages"
+                onClick={handleListItemClick}
+                selected={location.pathname === '/messages' ? true : false}
+              >
+                <QuestionAnswerRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Messages</Typography>
+                </ListItemContent>
+                <Chip size="sm" color="primary" variant="solid">
+                  4
+                </Chip>
+              </ListItemButton>
+            </ListItem>
+            
+            <ListItem>
+              <ListItemButton
+                role="menuitem"
+                component={Link}
+                to="/appointments"
+                onClick={handleListItemClick}
+                selected={location.pathname === '/appointments' ? true : false}>
+                <AssignmentRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Appointments</Typography>
+                </ListItemContent>
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem>
+              <ListItemButton
+                role="menuitem"
+                component={Link}
+                to="/prescriptions"
+                onClick={handleListItemClick}
+                selected={location.pathname === '/prescriptions' ? true : false}>
+                <AssignmentRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Prescriptions</Typography>
+                </ListItemContent>
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem>
+              <ListItemButton
+                role="menuitem"
+                component={Link}
+                to="/profile"
+                onClick={handleListItemClick}
+                selected={location.pathname === '/profile' ? true : false}>
+                <PersonRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Profile</Typography>
+                </ListItemContent>
+              </ListItemButton>
+            </ListItem>
+          </>
+        );
+
+      case 'doctor':
+        return (
+          <>
+            <ListItem>
+              <ListItemButton
+                role="menuitem"
+                component={Link}
+                to="/"
+                onClick={handleListItemClick}
+                selected={location.pathname === '/' ? true : false}>
+                <DashboardRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Dashboard</Typography>
+                </ListItemContent>
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem nested>
+              <Toggler
+                renderToggle={({ open, setOpen }) => (
+                  <ListItemButton onClick={() => setOpen(!open)}>
+                    <AssignmentRoundedIcon />
+                    <ListItemContent>
+                      <Typography level="title-sm">Clinic</Typography>
+                    </ListItemContent>
+                    <KeyboardArrowDownIcon
+                      sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                    />
+                  </ListItemButton>
+                )}
+              >
+                <List sx={{ gap: 0.5 }}>
+                  <ListItem>
+                    <ListItemButton
+                      role="menuitem"
+                      component={Link}
+                      to="/patients"
+                      onClick={handleListItemClick}
+                      selected={location.pathname === '/patients' ? true : false}>
+                      Patients
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton
+                      role="menuitem"
+                      component={Link}
+                      to="/staff"
+                      onClick={handleListItemClick}
+                      selected={location.pathname === '/staff' ? true : false}>
+                      Staff List
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton
+                      role="menuitem"
+                      component={Link}
+                      to="/appointments"
+                      onClick={handleListItemClick}
+                      selected={location.pathname === '/appointments' ? true : false}>
+                      Appointments
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton
+                      role="menuitem"
+                      component={Link}
+                      to="/treatments"
+                      onClick={handleListItemClick}
+                      selected={location.pathname === '/treatments' ? true : false}>
+                      Treatments
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton
+                      role="menuitem"
+                      component={Link}
+                      to="/prescriptions"
+                      onClick={handleListItemClick}
+                      selected={location.pathname === '/prescriptions' ? true : false}>
+                      Prescriptions
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </Toggler>
+            </ListItem>
+
+            <ListItem>
+              <ListItemButton
+                role="menuitem"
+                component={Link}
+                to="/messages"
+                onClick={handleListItemClick}
+                selected={location.pathname === '/messages' ? true : false}
+              >
+                <QuestionAnswerRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Messages</Typography>
+                </ListItemContent>
+                <Chip size="sm" color="primary" variant="solid">
+                  4
+                </Chip>
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem nested>
+              <Toggler
+                renderToggle={({ open, setOpen }) => (
+                  <ListItemButton onClick={() => setOpen(!open)}>
+                    <AttachMoneyRoundedIcon />
+                    <ListItemContent>
+                      <Typography level="title-sm">Billing</Typography>
+                    </ListItemContent>
+                    <KeyboardArrowDownIcon
+                      sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
+                    />
+                  </ListItemButton>
+                )}
+              >
+                <List sx={{ gap: 0.5 }}>
+                  <ListItem>
+                    <ListItemButton
+                      role="menuitem"
+                      component={Link}
+                      to="/transactions"
+                      onClick={handleListItemClick}
+                      selected={location.pathname === '/transactions' ? true : false}>
+                      Transactions
+                    </ListItemButton>
+                  </ListItem>
+                  <ListItem>
+                    <ListItemButton
+                      role="menuitem"
+                      component={Link}
+                      to="/invoice"
+                      onClick={handleListItemClick}
+                      selected={location.pathname === '/invoice' ? true : false}>
+                      Invoice
+                    </ListItemButton>
+                  </ListItem>
+                </List>
+              </Toggler>
+            </ListItem>
+
+            <ListItem>
+              <ListItemButton
+                role="menuitem"
+                component={Link}
+                to="/profile"
+                onClick={handleListItemClick}
+                selected={location.pathname === '/profile' ? true : false}>
+                <PersonRoundedIcon />
+                <ListItemContent>
+                  <Typography level="title-sm">Profile</Typography>
+                </ListItemContent>
+              </ListItemButton>
+            </ListItem>
+          </>
+        );
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <Sheet
       className="Sidebar"
@@ -132,16 +375,16 @@ export default function Sidebar() {
     >
       <GlobalStyles
         styles={(theme) => ({
-          ':root': {
-            '--Sidebar-width': '220px',
-            [theme.breakpoints.up('lg')]: {
-              '--Sidebar-width': '240px',
+          [`.${listItemButtonClasses.root}`]: {
+            borderRadius: theme.radius.sm,
+            '&:hover': {
+              bgcolor: theme.palette.background.level1,
             },
           },
         })}
       />
-     
-     <Box
+
+<Box
         className="Sidebar-overlay"
         sx={{
           position: 'fixed',
@@ -160,198 +403,29 @@ export default function Sidebar() {
         }}
         onClick={() => closeSidebar()}
       />
-    
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
-        <IconButton variant="soft" color="primary" size="sm">
-          <BrightnessAutoRoundedIcon />
-        </IconButton>
-        <Typography level="title-lg">Logo</Typography>
-        <ColorSchemeToggle sx={{ ml: 'auto' }} />
-      </Box>
-      <Input size="sm" startDecorator={<SearchRoundedIcon />} placeholder="Search" />
-      <Box
-        sx={{
-          minHeight: 0,
-          overflow: 'hidden auto',
-          flexGrow: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          [`& .${listItemButtonClasses.root}`]: {
-            gap: 1.5,
-          },
-        }}
-      >
-        <List
-          size="sm"
-          sx={{
-            gap: 1,
-            '--List-nestedInsetStart': '30px',
-            '--ListItem-radius': (theme) => theme.vars.radius.sm,
-          }}
-        >
-           <ListItem>
-            <ListItemButton
-              role="menuitem"
-              component={Link}
-              to="/"
-              onClick={handleListItemClick}
-              selected={location.pathname === '/' ? true : false}>
-              <DashboardRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Dashboard</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
 
-          <ListItem nested>
-            <Toggler
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <AssignmentRoundedIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">Clinic</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDownIcon
-                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                  />
-                </ListItemButton>
-              )}
-            >
-              <List sx={{ gap: 0.5 }}>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton
-                    role="menuitem"
-                    component={Link}
-                    to="/patients"
-                    
-                    onClick={handleListItemClick}
-                    selected={location.pathname === '/patients' ? true : false}>Patients</ListItemButton>
-                </ListItem>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton
-                    role="menuitem"
-                    component={Link}
-                    to="/staff"
-                    onClick={handleListItemClick}
-                    selected={location.pathname === '/staff' ? true : false}>Staff List</ListItemButton>
-                </ListItem>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton
-                    role="menuitem"
-                    component={Link}
-                    to="/appointments"
-                    onClick={handleListItemClick}
-                    selected={location.pathname === '/appointments' ? true : false}>Appointments</ListItemButton>
-                </ListItem>
-                <ListItem sx={{ mt: 0.5 }}>
-                  <ListItemButton
-                    role="menuitem"
-                    component={Link}
-                    to="/treatments"
-                    onClick={handleListItemClick}
-                    selected={location.pathname === '/treatments' ? true : false}>Treatments</ListItemButton>
-                </ListItem>
-                <ListItem>
-                  <ListItemButton
-                    role="menuitem"
-                    component={Link}
-                    to="/prescriptions"
-                    onClick={handleListItemClick}
-                    selected={location.pathname === '/prescriptions' ? true : false}>Prescriptions</ListItemButton>
-                </ListItem>
-              </List>
-            </Toggler>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton
-              role="menuitem"
-              component={Link}
-              to="/messages"
-              onClick={handleListItemClick}
-              selected={location.pathname === '/messages' ? true : false}
-            >
-              <QuestionAnswerRoundedIcon />
-              <ListItemContent>
-                <Typography level="title-sm">Messages</Typography>
-              </ListItemContent>
-              <Chip size="sm" color="primary" variant="solid">
-                4
-              </Chip>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem nested>
-            <Toggler
-              renderToggle={({ open, setOpen }) => (
-                <ListItemButton onClick={() => setOpen(!open)}>
-                  <AttachMoneyRoundedIcon />
-                  <ListItemContent>
-                    <Typography level="title-sm">Finance</Typography>
-                  </ListItemContent>
-                  <KeyboardArrowDownIcon
-                    sx={{ transform: open ? 'rotate(180deg)' : 'none' }}
-                  />
-                </ListItemButton>
-              )}
-            >
-              <List sx={{ gap: 0.5 }}>
-               
-                <ListItem>
-                  <ListItemButton
-                    role="menuitem"
-                    component={Link}
-                    to="/revenue"
-                    onClick={handleListItemClick}
-                    selected={location.pathname === '/revenue' ? true : false}>Revenue</ListItemButton>
-                </ListItem>
-               
-              </List>
-            </Toggler>
-          </ListItem>
-
-          <ListItem>
-            <ListItemButton
-              role="menuitem"
-              component={Link}
-              to="/profile"
-              onClick={handleListItemClick}
-              selected={location.pathname === '/profile' ? true : false}>
-              <PersonRoundedIcon/>
-              <ListItemContent>
-                <Typography level="title-sm">Profile</Typography>
-              </ListItemContent>
-            </ListItemButton>
-          </ListItem>
-        </List>
-
-        <List
-          size="sm"
-          sx={{
-            mt: 'auto',
-            flexGrow: 0,
-            '--ListItem-radius': (theme) => theme.vars.radius.sm,
-            '--List-gap': '8px',
-            mb: 2,
-          }}
-        >
-          <ListItem>
-            <ListItemButton>
-              <SupportRoundedIcon />
-              Support
-            </ListItemButton>
-          </ListItem>
-          <ListItem>
-            <ListItemButton>
-              <SettingsRoundedIcon />
-              Settings
-            </ListItemButton>
-          </ListItem>
-        </List>
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+          <IconButton variant="soft" color="primary" size="sm">
+            <BrightnessAutoRoundedIcon />
+          </IconButton>
+          <Typography level="title-lg">Logo</Typography>
+          <ColorSchemeToggle sx={{ ml: 'auto' }} />
+        </Box>
         
-      </Box>
-      <Divider />
-      <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+        <Divider />
+        <List
+          sx={{
+            py: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+          }}
+        >
+          {renderSidebarLinks()}
+        </List>
+        <Box/>
+        <Divider />
+        <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
         
           <Box component={Link} to="/profile" sx={{ display: 'flex', textDecoration: 'none', gap: 1, alignItems: 'center' }}>
             <Avatar
@@ -360,8 +434,8 @@ export default function Sidebar() {
               src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
             />
             <Box sx={{ minWidth: 0, boxSizing: 'border-box', flex: 1 }}>
-              <Typography level="title-sm">Yhung Hydrus</Typography>
-              <Typography level="body-xs" sx={{fontSize: '10px'}}>dehydrus223@gmail.com</Typography>
+              <Typography level="title-sm">{user?.firstname} {user?.lastname}</Typography>
+              <Typography level="body-xs" sx={{fontSize: '10px'}}>{user?.email}</Typography>
             </Box>
           </Box>
           <IconButton size="sm" variant="plain" color="neutral" onClick={handleSignout}>
@@ -369,6 +443,7 @@ export default function Sidebar() {
           </IconButton>
         
       </Box>
+    
     </Sheet>
   );
 }

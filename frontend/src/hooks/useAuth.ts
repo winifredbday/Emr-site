@@ -4,6 +4,7 @@ import axios from 'axios';
 interface User {
     id: number;
     firstname: string;
+    lastname: string;
     email: string;
     role: string;
 }
