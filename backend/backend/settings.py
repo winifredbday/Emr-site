@@ -72,8 +72,10 @@ REST_FRAMEWORK = {
 AUTHENTICATION_BACKENDS = [
     'accounts.backends.EmailAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
+    
 ]
 
+AUTH_USER_MODEL = 'accounts.UserAccount'
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [

@@ -1,6 +1,6 @@
 from django.db import transaction
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 from .serializers import PatientSerializer, UserAccountSerializer
@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate
 
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def create_patient(request):
     user_serializer = UserAccountSerializer(data=request.data)
     if user_serializer.is_valid():
@@ -46,6 +47,8 @@ class SignInView(ObtainAuthToken):
         email = request.data.get('email')
         password = request.data.get('password')
 
+        print(email)
+        print(password)
         # Authenticate user
         user = authenticate(request, email=email, password=password)
 
