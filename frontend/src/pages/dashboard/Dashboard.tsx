@@ -5,9 +5,15 @@ import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import CashFlow from '../components/dashboard/CashFlow'
+import CashFlow from '../../components/dashboard/CashFlow';
+import useAuth from '../../hooks/useAuth';
 
 export default function Dashboard() {
+  const { user, loading, error } = useAuth();
+
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography>Error fetching user data</Typography>;
+
   return (
     <Box
       component="main"
@@ -53,7 +59,6 @@ export default function Dashboard() {
           >
             Dashboard
           </Link>
-          
         </Breadcrumbs>
       </Box>
       <Box
@@ -68,15 +73,14 @@ export default function Dashboard() {
         }}
       >
         <Typography level="h4" component="h4">
-          Good morning, Yung!
+          Good morning, {user?.firstname || 'User'}!
         </Typography>
         <Typography level="body-sm" component="p">
-          Wednesday, August 14, 2024
+          {new Date().toLocaleDateString()}
         </Typography>
-        
       </Box>
       {/* Dashboard Content */}
-      <CashFlow/>
+      <CashFlow />
     </Box>
   );
 }

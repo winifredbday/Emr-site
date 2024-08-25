@@ -6,7 +6,7 @@ import Typography from '@mui/joy/Typography';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import TreatmentTable from '../../components/treatments/TreatmentTable';
-import TreatmentList from '../../components/treatments/TreatmentList';
+import TreatmentList from '../../components/treatments/MobileList';
 import Divider from '@mui/joy/Divider';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
