@@ -47,8 +47,7 @@ class SignInView(ObtainAuthToken):
         email = request.data.get('email')
         password = request.data.get('password')
 
-        print(email)
-        print(password)
+      
         # Authenticate user
         user = authenticate(request, email=email, password=password)
 
@@ -58,10 +57,11 @@ class SignInView(ObtainAuthToken):
         # Create or get the token
         token, created = Token.objects.get_or_create(user=user)
         
-        return Response({'token': token.key})
+        return Response({
+            'token': token.key,
+            'role': user.role
+            })
     
-
-
 class SignOutView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -72,3 +72,12 @@ class SignOutView(APIView):
             pass  # Token might not exist
         
         return Response({"message": "Successfully logged out."})
+    
+
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializer = UserAccountSerializer(user)
+        return Response(serializer.data)
