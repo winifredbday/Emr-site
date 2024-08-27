@@ -186,7 +186,7 @@ export default function Sidebar() {
           </>
         );
 
-      case 'doctor':
+      case 'admin':
         return (
           <>
             <ListItem>
