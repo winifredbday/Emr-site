@@ -30,4 +30,14 @@ class UserAccountSerializer(serializers.ModelSerializer):
 class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Patient
-        fields = '__all__'
+        fields = ['user', 'gender', 'date_of_birth', 'contact_number', 'address', 'work', 'height', 'ssn']
+
+
+class PatientListSerializer(serializers.ModelSerializer):
+    user = UserAccountSerializer(read_only=True)
+
+    class Meta:
+        model = Patient
+        fields = ['user', 'gender', 'date_of_birth', 'contact_number', 'address', 'work', 'height', 'ssn']
+
+   

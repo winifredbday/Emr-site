@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
-from .serializers import PatientSerializer, UserAccountSerializer
+from .serializers import PatientSerializer, UserAccountSerializer, PatientListSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -11,35 +11,56 @@ from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
-
+from .models import *
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def create_patient(request):
-    user_serializer = UserAccountSerializer(data=request.data)
+    user_data = request.data.get('user')
+    if not user_data:
+        return Response({'non_field_errors': 'User data not provided'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    patient_data = request.data.copy()
+    
+    user_serializer = UserAccountSerializer(data=user_data)
+    
     if user_serializer.is_valid():
         try:
             with transaction.atomic():
                 # Create the user
                 user = user_serializer.save()
                 
-                # Prepare patient data and create the patient
-                patient_data = request.data.copy()
+                # Update patient data to include the user reference
                 patient_data['user'] = user.id
                 patient_serializer = PatientSerializer(data=patient_data)
                 
                 if patient_serializer.is_valid():
                     patient_serializer.save()
-                    return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)
+                    return Response({'message': 'User and patient created successfully'}, status=status.HTTP_201_CREATED)
                 else:
-                    # If patient serializer is invalid, rollback the user creation
-                    user.delete()  # Rollback user creation
+                    # Rollback the user creation if patient creation fails
+                    user.delete()
                     return Response(patient_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            # Handle any unexpected errors
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
-        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+@api_view(['GET'])
+@permission_classes([AllowAny])  # Adjust permissions as needed
+def list_patients(request):
+    try:
+        # Retrieve all patients from the database
+        patients = Patient.objects.all()
+        
+        # Serialize the patient data
+        serializer = PatientListSerializer(patients, many=True)
+        
+        # Return the serialized data
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        # Handle any unexpected errors
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
 class SignInView(ObtainAuthToken):
     permission_classes = [AllowAny]
 

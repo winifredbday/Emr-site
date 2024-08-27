@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User, AbstractBaseUser, BaseUserManager, PermissionsMixin
-
+from django.utils import timezone
 
 class UserAccountManager(BaseUserManager):
     def create_user(self, email, firstname, lastname, password=None, role=None):
@@ -98,8 +98,8 @@ class Patient(models.Model):
     work = models.CharField(db_column='work', max_length=45, blank=True, null=True)
     height = models.FloatField(db_column='height')
     ssn = models.CharField(db_column='ssn', max_length=255, blank=True, null=True)
-    status = models.CharField(db_column='status', choices=STATUS_CHOICES, default='Active', max_length=25, blank=True)
-
+    status = models.CharField(db_column='status', choices=STATUS_CHOICES, null=True, default='Active', max_length=25, blank=True)
+    reg_date = models.DateTimeField(auto_now_add=True)
     class Meta:
         managed = True
         db_table = 'patients'
