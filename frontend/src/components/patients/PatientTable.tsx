@@ -34,225 +34,243 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 
-const rows = [
-  {
-    id: 'INV-1234',
-    date: 'Feb 3, 2023',
-    status: 'Discharged',
-    customer: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1233',
-    date: 'Feb 3, 2023',
-    status: 'Active',
-    customer: {
-      initial: 'S',
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1232',
-    date: 'Feb 3, 2023',
-    status: 'Active',
-    customer: {
-      initial: 'C',
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1231',
-    date: 'Feb 3, 2023',
-    status: 'Discharged',
-    customer: {
-      initial: 'M',
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1230',
-    date: 'Feb 3, 2023',
-    status: 'Observation',
-    customer: {
-      initial: 'C',
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1229',
-    date: 'Feb 3, 2023',
-    status: 'Active',
-    customer: {
-      initial: 'J',
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1228',
-    date: 'Feb 3, 2023',
-    status: 'Active',
-    customer: {
-      initial: 'K',
-      name: 'Krystal Stevens',
-      email: 'k.stevens@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1227',
-    date: 'Feb 3, 2023',
-    status: 'Active',
-    customer: {
-      initial: 'S',
-      name: 'Sachin Flynn',
-      email: 's.flyn@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1226',
-    date: 'Feb 3, 2023',
-    status: 'Discharged',
-    customer: {
-      initial: 'B',
-      name: 'Bradley Rosales',
-      email: 'brad123@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1225',
-    date: 'Feb 3, 2023',
-    status: 'Observation',
-    customer: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1224',
-    date: 'Feb 3, 2023',
-    status: 'Observation',
-    customer: {
-      initial: 'S',
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1223',
-    date: 'Feb 3, 2023',
-    status: 'Active',
-    customer: {
-      initial: 'C',
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1221',
-    date: 'Feb 3, 2023',
-    status: 'Active',
-    customer: {
-      initial: 'M',
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1220',
-    date: 'Feb 3, 2023',
-    status: 'Discharged',
-    customer: {
-      initial: 'C',
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1219',
-    date: 'Feb 3, 2023',
-    status: 'Discharged',
-    customer: {
-      initial: 'J',
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1218',
-    date: 'Feb 3, 2023',
-    status: 'Active',
-    customer: {
-      initial: 'K',
-      name: 'Krystal Stevens',
-      email: 'k.stevens@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1217',
-    date: 'Feb 3, 2023',
-    status: 'Active',
-    customer: {
-      initial: 'S',
-      name: 'Sachin Flynn',
-      email: 's.flyn@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-  {
-    id: 'INV-1216',
-    date: 'Feb 3, 2023',
-    status: 'Observation',
-    customer: {
-      initial: 'B',
-      name: 'Bradley Rosales',
-      email: 'brad123@email.com',
-      phone: '+233244750745',
-      address: 'AD-025-6434, Fawoade'
-    },
-  },
-];
+// const rows = [
+//   {
+//     id: 'INV-1234',
+//     date: 'Feb 3, 2023',
+//     status: 'Discharged',
+//     customer: {
+//       initial: 'O',
+//       name: 'Olivia Ryhe',
+//       email: 'olivia@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1233',
+//     date: 'Feb 3, 2023',
+//     status: 'Active',
+//     customer: {
+//       initial: 'S',
+//       name: 'Steve Hampton',
+//       email: 'steve.hamp@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1232',
+//     date: 'Feb 3, 2023',
+//     status: 'Active',
+//     customer: {
+//       initial: 'C',
+//       name: 'Ciaran Murray',
+//       email: 'ciaran.murray@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1231',
+//     date: 'Feb 3, 2023',
+//     status: 'Discharged',
+//     customer: {
+//       initial: 'M',
+//       name: 'Maria Macdonald',
+//       email: 'maria.mc@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1230',
+//     date: 'Feb 3, 2023',
+//     status: 'Observation',
+//     customer: {
+//       initial: 'C',
+//       name: 'Charles Fulton',
+//       email: 'fulton@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1229',
+//     date: 'Feb 3, 2023',
+//     status: 'Active',
+//     customer: {
+//       initial: 'J',
+//       name: 'Jay Hooper',
+//       email: 'hooper@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1228',
+//     date: 'Feb 3, 2023',
+//     status: 'Active',
+//     customer: {
+//       initial: 'K',
+//       name: 'Krystal Stevens',
+//       email: 'k.stevens@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1227',
+//     date: 'Feb 3, 2023',
+//     status: 'Active',
+//     customer: {
+//       initial: 'S',
+//       name: 'Sachin Flynn',
+//       email: 's.flyn@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1226',
+//     date: 'Feb 3, 2023',
+//     status: 'Discharged',
+//     customer: {
+//       initial: 'B',
+//       name: 'Bradley Rosales',
+//       email: 'brad123@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1225',
+//     date: 'Feb 3, 2023',
+//     status: 'Observation',
+//     customer: {
+//       initial: 'O',
+//       name: 'Olivia Ryhe',
+//       email: 'olivia@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1224',
+//     date: 'Feb 3, 2023',
+//     status: 'Observation',
+//     customer: {
+//       initial: 'S',
+//       name: 'Steve Hampton',
+//       email: 'steve.hamp@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1223',
+//     date: 'Feb 3, 2023',
+//     status: 'Active',
+//     customer: {
+//       initial: 'C',
+//       name: 'Ciaran Murray',
+//       email: 'ciaran.murray@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1221',
+//     date: 'Feb 3, 2023',
+//     status: 'Active',
+//     customer: {
+//       initial: 'M',
+//       name: 'Maria Macdonald',
+//       email: 'maria.mc@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1220',
+//     date: 'Feb 3, 2023',
+//     status: 'Discharged',
+//     customer: {
+//       initial: 'C',
+//       name: 'Charles Fulton',
+//       email: 'fulton@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1219',
+//     date: 'Feb 3, 2023',
+//     status: 'Discharged',
+//     customer: {
+//       initial: 'J',
+//       name: 'Jay Hooper',
+//       email: 'hooper@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1218',
+//     date: 'Feb 3, 2023',
+//     status: 'Active',
+//     customer: {
+//       initial: 'K',
+//       name: 'Krystal Stevens',
+//       email: 'k.stevens@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1217',
+//     date: 'Feb 3, 2023',
+//     status: 'Active',
+//     customer: {
+//       initial: 'S',
+//       name: 'Sachin Flynn',
+//       email: 's.flyn@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+//   {
+//     id: 'INV-1216',
+//     date: 'Feb 3, 2023',
+//     status: 'Observation',
+//     customer: {
+//       initial: 'B',
+//       name: 'Bradley Rosales',
+//       email: 'brad123@email.com',
+//       phone: '+233244750745',
+//       address: 'AD-025-6434, Fawoade'
+//     },
+//   },
+// ];
 
+interface Patient{
+  id: string | number;
+  user: {
+    firstname: string;
+    lastname: string;
+    email: string;
+  }
+  address: string;
+  contact_number: number;
+  gender: 'Male' | 'Female' | 'Other';
+  date_of_birth: string;
+  work: string;
+  height: number;
+  status: 'Discharged' | 'Active' | 'Observation';
+  reg_date: string;
+ 
+  
+}
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -315,8 +333,23 @@ function RowMenu() {
 
 export default function PatientTable() {
   const [order, setOrder] = React.useState<Order>('desc');
-
+  const [patients, setPatients] = React.useState<Patient[]>([]);
   const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    // Fetch patient data from the backend
+    const fetchPatients = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/accounts/patients/'); // Adjust the API endpoint as needed
+        const data = await response.json();
+        setPatients(data);
+      } catch (error) {
+        console.error('Failed to fetch patient data:', error);
+      }
+    };
+
+    fetchPatients();
+  }, []);
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
@@ -458,14 +491,14 @@ export default function PatientTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(rows, getComparator(order, 'id')).map((row) => (
-              <tr key={row.id}>
+            {stableSort(patients, getComparator(order, 'id')).map((patient) => (
+              <tr key={patient.id}>
                 
                 <td>
-                  <Typography level="body-xs">{row.id}</Typography>
+                  <Typography level="body-xs">{patient.id}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs">{row.date}</Typography>
+                  <Typography level="body-xs">{patient.reg_date}</Typography>
                 </td>
                 <td>
                   <Chip
@@ -477,34 +510,34 @@ export default function PatientTable() {
                         Active: <AutorenewRoundedIcon />,
                         Observation: <PreviewIcon />,
                       
-                      }[row.status]
+                      }[patient.status]
                     }
                     color={
                       {
                         Discharged: 'success',
                         Observation: 'neutral',
                         Active: 'warning',
-                      }[row.status] as ColorPaletteProp
+                      }[patient.status] as ColorPaletteProp
                     }
                   >
-                    {row.status}
+                    {patient.status}
                   </Chip>
                 </td>
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Avatar size="sm">{row.customer.initial}</Avatar>
+                    <Avatar size="sm">{patient.user.firstname?.charAt(0)}</Avatar>
                     <div>
-                      <Typography level="body-xs">{row.customer.name}</Typography>
-                      <Typography level="body-xs">{row.customer.email}</Typography>
+                      <Typography level="body-xs">{patient.user.firstname} {patient.user.lastname}</Typography>
+                      <Typography level="body-xs">{patient.user.email}</Typography>
                     </div>
                     
                   </Box>
                 </td>
                 <td>
-                    <Typography level="body-xs">{row.customer.phone}</Typography>
+                    <Typography level="body-xs">{patient.contact_number}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs">{row.customer.address}</Typography>
+                  <Typography level="body-xs">{patient.address}</Typography>
                 </td>
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>

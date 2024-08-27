@@ -21,6 +21,12 @@ interface AddPatientModalProps {
   onClose: () => void;
 }
 
+interface FormElements extends HTMLFormControlsCollection {
+  email: HTMLInputElement;
+  password: HTMLInputElement;
+  confirmPassword: HTMLInputElement;
+  persistent: HTMLInputElement;
+}
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
@@ -51,68 +57,76 @@ const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
 
 export default function AddPatientModal({ open, onClose }: AddPatientModalProps) {
   // State variables to store form data
-  const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
-  const [dob, setDob] = React.useState('');
-  const [gender, setGender] = React.useState('');
+ 
   const [height, setHeight] = React.useState('metres');
   const [heightValue, setHeightValue] = React.useState('');
-  const [address, setAddress] = React.useState('');
-  const [ssn, setSsn] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [email, setEmail] = React.useState('');
 
+  const [formData, setFormData] = React.useState({
+    firstName: '',
+    lastName: '',
+    dateOfBirth: '',
+    address: '',
+    phoneNumber: '',
+    gender: '',
+    work: '',
+    email: '',
+    height: '',
+    ssn: '',
+    password: '',
+    confirmPassword: '',
+  });
 
   const [alert, setAlert] = React.useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSelectChange = (event: any, value: string | null) => {
+    if (typeof value === 'string') {
+      setFormData((prev) => ({ ...prev, gender: value }));
+    }
+  };
   // Function to handle form submission
   const handleSubmit = async () => {
     const patientData = {
-      firstname: firstName,
-      lastname: lastName,
-      date_of_birth: dob,
-      gender,
-      height: heightValue,
-      address,
-      ssn,
-      contact_number: phone,
-      email,
-      password: 'testing321',
-      password_confirm: 'testing321',
+     user: {
+        firstname: formData.firstName,
+        lastname: formData.lastName,
+        email: formData.email,
+        password: 'password123',
+        password_confirm: 'password123',
+        role: 'patient',
+    },
+    
+    gender: formData.gender,
+    date_of_birth: formData.dateOfBirth,
+    contact_number: formData.phoneNumber,
+    address: formData.address,
+    work: formData.work,
+    height: formData.height,
+    ssn: formData.ssn,
+    status: 'Active'
     };
     console.log(patientData)
     try {
-      await axios.post('http://localhost:8000/accounts/signup/', patientData);
-        
-  
-      
-        setAlert({ message: 'Patient added successfully!', type: 'success' });
-        setTimeout(() => {
-          onClose()
-        }, 3000); // Redirect after 3 seconds
-     
-      
-      
-      
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        // This block is for Axios errors
-        if (error.response && error.response.data) {
+      const response = await axios.post('http://localhost:8000/accounts/signup/', patientData);
+      setAlert({ message: 'User and patient created successfully!', type: 'success' });
+  } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
           const errorData = error.response.data;
-          if (errorData && typeof errorData === 'object') {
-            const errorMessages = Object.values(errorData).flat().join(' ');
-            setAlert({ message: `Error: ${errorMessages}`, type: 'error' });
+          console.error('Error data:', errorData); // Log error for debugging
+          if (typeof errorData === 'object') {
+              const errorMessages = Object.entries(errorData).map(([key, value]) => `${key}: ${value}`).join('. ');
+              setAlert({ message: `Error: ${errorMessages}`, type: 'error' });
           } else {
-            setAlert({ message: 'An unexpected error occurred', type: 'error' });
+              setAlert({ message: 'An unexpected error occurred', type: 'error' });
           }
-        } else {
-          setAlert({ message: 'Network error', type: 'error' });
-        }
       } else {
-        // This block is for other types of errors
-        setAlert({ message: 'An unexpected error occurred', type: 'error' });
+          setAlert({ message: 'Network error', type: 'error' });
       }
-    };
+  }
   };
 
   return (
@@ -134,8 +148,8 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
               <Stack spacing={1}>
                 <FormLabel>Name</FormLabel>
                 <FormControl sx={{ display: "flex", flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
-                  <Input size="sm" placeholder="First name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                  <Input size="sm" placeholder="Last name" value={lastName} onChange={(e) => setLastName(e.target.value)} sx={{ flexGrow: 1 }} />
+                  <Input required name="firstName" size="sm" placeholder="First name" value={formData.firstName} onChange={handleChange}  sx={{ flexGrow: 1 }}/>
+                  <Input required name="lastName" size="sm" placeholder="Last name" value={formData.lastName} onChange={handleChange} />
                 </FormControl>
               </Stack>
               <Stack spacing={1} direction={{ sm: 'row' }} sx={{ gap: { xs: 2 } }} flexWrap="wrap" useFlexGap>
@@ -144,8 +158,10 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
                   <Input
                     sx={{ fontSize: "14px" }}
                     type="date"
-                    value={dob}
-                    onChange={(e) => setDob(e.target.value)}
+                    name="dateOfBirth"
+                    required
+                    value={formData.dateOfBirth}
+                    onChange={handleChange}
                     slotProps={{
                       input: {
                         min: '1900-12-31',
@@ -159,9 +175,9 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
                   <Stack spacing={2} alignItems="flex-start">
                     <Select
                       placeholder="Select Gender"
-                      name="Gender"
-                      value={gender}
-                      onChange={(_, value) => setGender(value as string)}
+                      name="gender"
+                      value={formData.gender}
+                      onChange={handleSelectChange}
                       required
                       sx={{ minWidth: 200, fontSize: '14px' }}
                     >
@@ -176,8 +192,10 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
                   <Input
                     type='number'
                     placeholder="1.62"
-                    value={heightValue}
-                    onChange={(e) => setHeightValue(e.target.value)}
+                    value={formData.height}
+                    required
+                    name='height'
+                    onChange={handleChange}
                     sx={{ fontSize: "14px", width: 200 }}
                     startDecorator={{ feet: 'ft', metres: 'm', centimetres: 'cm' }[height]}
                     endDecorator={
@@ -204,19 +222,23 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
                 </FormControl>
               </Stack>
               <Stack spacing={1} direction={{ sm: 'row' }} sx={{ gap: { xs: 2 } }} flexWrap="wrap" useFlexGap>
-                <FormControl>
+                <FormControl sx={{width: '30%', flexGrow: 1}}>
                   <FormLabel>Address</FormLabel>
-                  <Input size="sm" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} sx={{ flexGrow: 1 }} />
+                  <Input required name="address" size="sm" placeholder="Address" value={formData.address} onChange={handleChange}/>
                 </FormControl>
-                <FormControl>
+                <FormControl sx={{width: '30%', flexGrow: 1}}>
                   <FormLabel>Social Security Number</FormLabel>
-                  <Input size="sm" type='text' placeholder="SSN" value={ssn} onChange={(e) => setSsn(e.target.value)} />
+                  <Input required name="ssn" size="sm" type='text' placeholder="SSN" value={formData.ssn} onChange={handleChange} />
+                </FormControl>
+                <FormControl sx={{width: '30%', flexGrow: 1}}>
+                  <FormLabel>Work</FormLabel>
+                  <Input required name="work" size="sm" type='text' placeholder="Work" value={formData.work} onChange={handleChange} />
                 </FormControl>
               </Stack>
               <Stack direction={{ sm: 'row', xs: 'column' }} spacing={2} flexWrap="wrap" useFlexGap>
                 <FormControl>
                   <FormLabel>Phone number</FormLabel>
-                  <Input size="sm" placeholder="+233 557 31 1180" value={phone} onChange={(e) => setPhone(e.target.value)} slotProps={{
+                  <Input required name="phoneNumber" size="sm" placeholder="+233 557 31 1180" value={formData.phoneNumber} onChange={handleChange} slotProps={{
                     input: {
                       component: NumericFormatAdapter,
                     },
@@ -227,10 +249,12 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
                   <Input
                     size="sm"
                     type="email"
+                    name="email"
+                    required
                     startDecorator={<EmailRoundedIcon />}
                     placeholder="siriwatk@test.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    value={formData.email}
+                    onChange={handleChange}
                   />
                 </FormControl>
               </Stack>
