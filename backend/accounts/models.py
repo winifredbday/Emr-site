@@ -84,7 +84,11 @@ class Patient(models.Model):
         ('male', 'Male'),
         ('female', 'Female'),
         ('other', 'Other')
-       
+    )
+    STATUS_CHOICES = (
+        ('active', 'Active'),
+        ('discharged', 'Discharged'),
+        ('observation', 'Observation')
     )
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='patient_profile')
     date_of_birth = models.DateField(db_column='dateofbirth', blank=True, null=True)
@@ -94,7 +98,7 @@ class Patient(models.Model):
     work = models.CharField(db_column='work', max_length=45, blank=True, null=True)
     height = models.FloatField(db_column='height')
     ssn = models.CharField(db_column='ssn', max_length=255, blank=True, null=True)
-    
+    status = models.CharField(db_column='status', choices=STATUS_CHOICES, default='Active', max_length=25, blank=True)
 
     class Meta:
         managed = True
