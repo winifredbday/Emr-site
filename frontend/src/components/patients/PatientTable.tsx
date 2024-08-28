@@ -28,7 +28,7 @@ import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
-
+import { format } from 'date-fns';
 import AutorenewRoundedIcon from '@mui/icons-material/AutorenewRounded';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
@@ -495,10 +495,10 @@ export default function PatientTable() {
               <tr key={patient.id}>
                 
                 <td>
-                  <Typography level="body-xs">{patient.id}</Typography>
+                  <Typography level="body-xs" sx={{pl: 1}}>{patient.id}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs">{patient.reg_date}</Typography>
+                  <Typography level="body-xs">{format(new Date(patient.reg_date), 'yyyy-MM-dd')}</Typography>
                 </td>
                 <td>
                   <Chip

@@ -107,7 +107,7 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
     work: formData.work,
     height: formData.height,
     ssn: formData.ssn,
-    status: 'Active'
+   
     };
     console.log(patientData)
     try {
