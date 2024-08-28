@@ -22,7 +22,7 @@ const routes = [
   { path: '/messages', component: Messages},
   { path: '/profile', component: Profile},
   { path: '/patients', component: Patients},
-  { path: '/patients/patient/detail', component: PatientDetail},
+  { path: '/patients/:id', component: PatientDetail},
   { path: '/treatments', component: Treatments},
   { path: '/revenue', component: Revenue},
   { path: '/staff', component: StaffList},

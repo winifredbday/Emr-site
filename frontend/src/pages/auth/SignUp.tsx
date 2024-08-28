@@ -182,7 +182,7 @@ export default function SignUp() {
     }
   
     try {
-      await axios.post('http://localhost:8000/accounts/signup/', patientData);
+      await axios.post('http://localhost:8000/accounts/patients/signup/', patientData);
         
   
       

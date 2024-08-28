@@ -1,21 +1,17 @@
 import * as React from 'react';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
+
 import Breadcrumbs from '@mui/joy/Breadcrumbs';
 import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
 
 import PatientDetail from '../../components/patients/PatientDetail';
-import Avatar from '@mui/joy/Avatar';
+
 
 export default function PatientDetailPage() {
-  // const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-
-  // const handleOpen = () => setModalOpen(true);
-  // const handleClose = () => setModalOpen(false);
+  
   return (
     <Box
       component="main"
@@ -65,36 +61,8 @@ export default function PatientDetailPage() {
           </Typography>
         </Breadcrumbs>
       </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          mb: 1,
-          gap: 1,
-          flexDirection: { xs: 'column', sm: 'row' },
-          alignItems: { xs: 'start', sm: 'center' },
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-        }}
-      >
-        {/* Avatar profile  */}
-        <Box sx={{ display: 'flex', minWidth: '300px', alignItems: 'flex-end', gap: 1}}>
-            <Avatar alt="Remy Sharp" src="/user/avatar.jpg" size="lg" sx={{width: 50, height: 50}} />
-            <Box sx={{ml: 1}}>
-                <Typography level="h4">Willie Jennie</Typography>
-                <Typography component='p' sx={{fontSize: '10px', p: .2}}>Patient ID: 123456</Typography>
-            </Box>
-           
-        </Box>
-        <Button
-          color="primary"
-          startDecorator={<AddRoundedIcon />}
-          size="sm"
-          sx={{p: 1.2}}
-          
-        >
-          Create Appointment
-        </Button>
-      </Box>
+      
+        
       {/* Edit Profile */}
       {/* <Button
           color="neutral"
@@ -107,6 +75,7 @@ export default function PatientDetailPage() {
       </Button> */}
       <PatientDetail/>
       {/* <AddPatientModal open={modalOpen} onClose={handleClose} /> */}
+    
     </Box>
   );
 }

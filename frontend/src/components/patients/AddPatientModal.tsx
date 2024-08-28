@@ -111,7 +111,7 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
     };
     console.log(patientData)
     try {
-      const response = await axios.post('http://localhost:8000/accounts/signup/', patientData);
+      const response = await axios.post('http://localhost:8000/accounts/patients/signup/', patientData);
       setAlert({ message: 'User and patient created successfully!', type: 'success' });
   } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

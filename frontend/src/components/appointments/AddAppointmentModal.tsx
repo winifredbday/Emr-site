@@ -17,7 +17,14 @@ import Select from '@mui/joy/Select';
 import Autocomplete from '@mui/joy/Autocomplete';
 
 
-
+interface AddAppointmentModalProps {
+  open: boolean;
+  onClose: () => void;
+  onSubmit: (formData: any) => void;
+  preselectedDoctor?: string | null;
+  patientFirstName?: string; // Add these two new props
+  patientLastName?: string;
+}
 
 
 const doctors = [
@@ -37,57 +44,30 @@ const treatments = [
   { value: 'generalcheckup', label: 'General Checkup', price: 30.0 },
 ];
 
-interface AddAppointmentModalProps{
-    open: boolean;
-    onClose: () => void;
-    onSubmit: (formData: any) => void;
-    preselectedDoctor?: string | null;
-}
 
 
-// interface CustomProps {
-//   onChange: (event: { target: { name: string; value: string } }) => void;
-//   name: string;
-// }
-
-// const NumericFormatAdapter = React.forwardRef<NumericFormatProps, CustomProps>(
-//   function NumericFormatAdapter(props, ref) {
-//     const { onChange, ...other } = props;
-
-//     return (
-//       <NumericFormat
-//         {...other}
-//         getInputRef={ref}
-//         onValueChange={(values) => {
-//           onChange({
-//             target: {
-//               name: props.name,
-//               value: values.value,
-//             },
-//           });
-//         }}
-        
-//         valueIsNumericString
-//         prefix="+"
-//       />
-//     );
-//   },
-// );
-
-export default function AddAppointmentModal({open, onClose, onSubmit, preselectedDoctor}: AddAppointmentModalProps) {
+export default function AddAppointmentModal({open, onClose, onSubmit, preselectedDoctor,  patientFirstName = '',
+  patientLastName = '',}: AddAppointmentModalProps) {
   const [selectedDoctor, setSelectedDoctor] = React.useState<string | null>(preselectedDoctor || null);
   const [selectedTreatment, setSelectedTreatment] = React.useState<string | null>(null);
   const [price, setPrice] = React.useState<number | string>('');
-  const [firstName, setFirstName] = React.useState<string>('');
-  const [lastName, setLastName] = React.useState<string>('');
+  const [firstName, setFirstName] = React.useState<string>(patientFirstName || '');
+  const [lastName, setLastName] = React.useState<string>(patientLastName || '');
 
   const [time, setTime] = React.useState<string>('');
+
+  const isReadOnly = firstName !== '' && lastName !== '';
 
   React.useEffect(() => {
       if (preselectedDoctor) {
           setSelectedDoctor(preselectedDoctor);
       }
   }, [preselectedDoctor]);
+
+  React.useEffect(() => {
+    setFirstName(patientFirstName);
+    setLastName(patientLastName);
+  }, [patientFirstName, patientLastName]);
 
   const handleTreatmentChange = (event: any, newValue: string | null) => {
     setSelectedTreatment(newValue);
@@ -112,7 +92,7 @@ export default function AddAppointmentModal({open, onClose, onSubmit, preselecte
   return (
     <React.Fragment>
     <Modal keepMounted open={open} onClose={onClose} sx={{}}>
-      <ModalDialog sx={{width: {xs: '100%'}, mt: {xs: '5%'}}}>
+      <ModalDialog sx={{width: {xs: '100%', sm: '40%'}, mt: {xs: '5%', sm: 0}}}>
         <DialogTitle sx={{ fontSize: '1.2rem' }}>
           Add Appointment
           <ModalClose variant="plain" sx={{ m: 1 }} />
@@ -122,20 +102,23 @@ export default function AddAppointmentModal({open, onClose, onSubmit, preselecte
           <Stack spacing={2} sx={{ flexGrow: 1 }}>
             <Stack spacing={1}>
               <FormLabel>Patient</FormLabel>
-              <Box sx={{ display: 'flex', flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
-                <FormControl>
+              <Box sx={{ display: 'flex', flexGrow: 1,  flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
+                <FormControl sx={{ flexGrow: 1 }}>
                     <Input
+                        sx={{flexGrow: 1}}
                         size="sm"
                         placeholder="First name"
                         value={firstName}
+                        readOnly={isReadOnly}
                         onChange={(e) => setFirstName(e.target.value)}  // Capture first name
                     />
                 </FormControl>
-                <FormControl>
+                <FormControl sx={{ flexGrow: 1 }}>
                     <Input
                         size="sm"
                         placeholder="Last name"
                         value={lastName}
+                        readOnly={isReadOnly}
                         onChange={(e) => setLastName(e.target.value)}  // Capture last name
                         sx={{ flexGrow: 1 }}
                     />
@@ -181,7 +164,7 @@ export default function AddAppointmentModal({open, onClose, onSubmit, preselecte
                 <FormLabel>Price</FormLabel>
                 <Input startDecorator={'$'} size="sm" value={price} readOnly placeholder="Price" />
               </FormControl>
-              <FormControl>
+              <FormControl sx={{ flexGrow: 1 }}>
                 <FormLabel>Time</FormLabel>
                 <Input size="sm" type="time" placeholder="Time" value={time} onChange={(e) => setTime(e.target.value)} />
               </FormControl>
