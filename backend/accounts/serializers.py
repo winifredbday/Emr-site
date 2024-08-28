@@ -34,10 +34,10 @@ class PatientSerializer(serializers.ModelSerializer):
 
 
 class PatientListSerializer(serializers.ModelSerializer):
-    user = UserAccountSerializer(read_only=True)
+    user = UserAccountSerializer()
 
     class Meta:
         model = Patient
-        fields = ['user', 'gender', 'date_of_birth', 'contact_number', 'address', 'work', 'height', 'ssn']
+        fields = ['id', 'user', 'gender', 'date_of_birth', 'contact_number', 'address', 'work', 'height', 'ssn', 'status', 'reg_date']
 
    
