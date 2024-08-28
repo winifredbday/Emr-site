@@ -50,7 +50,7 @@ interface Patient{
   date_of_birth: string;
   work: string;
   height: number;
-  status: 'Discharged' | 'Active' | 'Observation';
+  status: 'discharged' | 'active' | 'observation';
   reg_date: string;
  
   
@@ -303,21 +303,21 @@ export default function PatientTable() {
                     size="sm"
                     startDecorator={
                       {
-                        Discharged: <CheckRoundedIcon />,
-                        Active: <AutorenewRoundedIcon />,
-                        Observation: <PreviewIcon />,
+                        discharged: <CheckRoundedIcon />,
+                        active: <AutorenewRoundedIcon />,
+                        observation: <PreviewIcon />,
                       
                       }[patient.status]
                     }
                     color={
                       {
-                        Discharged: 'success',
-                        Observation: 'neutral',
-                        Active: 'warning',
+                        discharged: 'success',
+                        observation: 'neutral',
+                        active: 'warning',
                       }[patient.status] as ColorPaletteProp
                     }
                   >
-                    {patient.status}
+                    {patient.status.toUpperCase()}
                   </Chip>
                 </td>
                 <td>
