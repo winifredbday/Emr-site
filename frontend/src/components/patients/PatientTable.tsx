@@ -34,6 +34,8 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { Link as RouterLink } from 'react-router-dom';
+import { arrayBuffer } from 'stream/consumers';
+
 
 interface Patient{
   id: string | number;
@@ -52,6 +54,10 @@ interface Patient{
   reg_date: string;
  
   
+}
+
+interface RowMenuProps {
+  patient: Patient; // Assuming `Patient` is the type with required properties
 }
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -93,7 +99,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   return stabilizedThis.map((el) => el[0]);
 }
 
-function RowMenu() {
+const RowMenu: React.FC<RowMenuProps> = ({patient}) => {
   return (
     <Dropdown>
       <MenuButton
@@ -103,7 +109,16 @@ function RowMenu() {
         <MoreHorizRoundedIcon />
       </MenuButton>
       <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>View</MenuItem>
+        <Link
+        
+          component={RouterLink}
+          to={`/patients/${patient.id}`}
+          
+          
+        >
+          <MenuItem sx={{flexGrow: 1}}>View</MenuItem>
+      
+        </Link>
         
         
         <Divider />
@@ -331,7 +346,7 @@ export default function PatientTable() {
                   >
                     View
                   </Link>
-                    <RowMenu />
+                    <RowMenu patient={patient}/>
                   </Box>
                 </td>
               </tr>

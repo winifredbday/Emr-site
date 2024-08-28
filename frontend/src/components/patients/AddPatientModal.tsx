@@ -115,7 +115,7 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
       setAlert({ message: 'User and patient created successfully!', type: 'success' });
       setTimeout(() => {
         onClose();
-      }, 3000);
+      }, 6000);
       window.location.reload()
   } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
