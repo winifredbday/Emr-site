@@ -113,6 +113,10 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
     try {
       const response = await axios.post('http://localhost:8000/accounts/patients/signup/', patientData);
       setAlert({ message: 'User and patient created successfully!', type: 'success' });
+      setTimeout(() => {
+        onClose();
+      }, 3000);
+      window.location.reload()
   } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
           const errorData = error.response.data;
@@ -149,7 +153,7 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
                 <FormLabel>Name</FormLabel>
                 <FormControl sx={{ display: "flex", flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
                   <Input required name="firstName" size="sm" placeholder="First name" value={formData.firstName} onChange={handleChange}  sx={{ flexGrow: 1 }}/>
-                  <Input required name="lastName" size="sm" placeholder="Last name" value={formData.lastName} onChange={handleChange} />
+                  <Input required name="lastName" size="sm" placeholder="Last name" value={formData.lastName} onChange={handleChange}  sx={{ flexGrow: 1 }}/>
                 </FormControl>
               </Stack>
               <Stack spacing={1} direction={{ sm: 'row' }} sx={{ gap: { xs: 2 } }} flexWrap="wrap" useFlexGap>
@@ -187,7 +191,7 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
                     </Select>
                   </Stack>
                 </FormControl>
-                <FormControl sx={{ Width: 70 }}>
+                <FormControl>
                   <FormLabel>Height</FormLabel>
                   <Input
                     type='number'
@@ -196,7 +200,7 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
                     required
                     name='height'
                     onChange={handleChange}
-                    sx={{ fontSize: "14px", width: 200 }}
+                    sx={{ fontSize: "14px", width: 190, flexGrow: 1 }}
                     startDecorator={{ feet: 'ft', metres: 'm', centimetres: 'cm' }[height]}
                     endDecorator={
                       <React.Fragment>
