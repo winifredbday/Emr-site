@@ -218,14 +218,15 @@ export default function Sidebar() {
                 )}
               >
                 <List sx={{ gap: 0.5 }}>
-                  <ListItem>
+                  <ListItem >
                     <ListItemButton
                       role="menuitem"
                       component={Link}
+                      
                       to="/patients"
                       onClick={handleListItemClick}
                       selected={location.pathname === '/patients' ? true : false}>
-                      Patients
+                      <Typography level='title-sm'>Patients</Typography>
                     </ListItemButton>
                   </ListItem>
                   <ListItem>
@@ -235,7 +236,7 @@ export default function Sidebar() {
                       to="/staff"
                       onClick={handleListItemClick}
                       selected={location.pathname === '/staff' ? true : false}>
-                      Staff List
+                      <Typography level='title-sm'>Staff List</Typography>
                     </ListItemButton>
                   </ListItem>
                   <ListItem>
@@ -245,7 +246,7 @@ export default function Sidebar() {
                       to="/appointments"
                       onClick={handleListItemClick}
                       selected={location.pathname === '/appointments' ? true : false}>
-                      Appointments
+                      <Typography level='title-sm'>Appointments</Typography>
                     </ListItemButton>
                   </ListItem>
                   <ListItem>
@@ -255,7 +256,7 @@ export default function Sidebar() {
                       to="/treatments"
                       onClick={handleListItemClick}
                       selected={location.pathname === '/treatments' ? true : false}>
-                      Treatments
+                      <Typography level='title-sm'>Treatments</Typography>
                     </ListItemButton>
                   </ListItem>
                   <ListItem>
@@ -265,7 +266,7 @@ export default function Sidebar() {
                       to="/prescriptions"
                       onClick={handleListItemClick}
                       selected={location.pathname === '/prescriptions' ? true : false}>
-                      Prescriptions
+                      <Typography level='title-sm'>Prescriptions</Typography>
                     </ListItemButton>
                   </ListItem>
                 </List>
@@ -312,7 +313,7 @@ export default function Sidebar() {
                       to="/transactions"
                       onClick={handleListItemClick}
                       selected={location.pathname === '/transactions' ? true : false}>
-                      Transactions
+                      <Typography level='title-sm'>Transactions</Typography>
                     </ListItemButton>
                   </ListItem>
                   <ListItem>
@@ -322,7 +323,7 @@ export default function Sidebar() {
                       to="/invoice"
                       onClick={handleListItemClick}
                       selected={location.pathname === '/invoice' ? true : false}>
-                      Invoice
+                      <Typography level='title-sm'>Invoice</Typography>
                     </ListItemButton>
                   </ListItem>
                 </List>
