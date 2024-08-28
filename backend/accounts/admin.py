@@ -21,5 +21,5 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(UserAccount, CustomUserAdmin)
 admin.site.register(Patient)
-admin.site.register(Doctor)
+admin.site.register(Staff)
 admin.site.register(Appointment)

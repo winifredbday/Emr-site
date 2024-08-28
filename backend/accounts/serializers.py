@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserAccount, Patient
+from .models import UserAccount, Patient, Staff
 from django.contrib.auth.hashers import make_password
 
 class UserAccountSerializer(serializers.ModelSerializer):
@@ -40,4 +40,9 @@ class PatientListSerializer(serializers.ModelSerializer):
         model = Patient
         fields = ['id', 'user', 'gender', 'date_of_birth', 'contact_number', 'address', 'work', 'height', 'ssn', 'status', 'reg_date']
 
-   
+
+
+class StaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Staff
+        fields = '__all__'

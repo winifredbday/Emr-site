@@ -40,15 +40,16 @@ class UserAccountManager(BaseUserManager):
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     ROLE_CHOICES = (
-        ('doctor', 'Doctor'),
-        ('nurse', 'Nurse'),
-        ('admin', 'Admin'),
-        ('lab_technician', 'Lab Technician'),
-        ('pharmacist', 'Pharmacist'),
         ('patient', 'Patient'),
-        ('specialist', 'Specialist'),
-        ('emergency_responder', 'Emergency Responder'),
-        ('insurance_representative', 'Insurance Representative'),
+        ('medical', 'Medical'),
+        ('nursing', 'Nursing'),
+        ('allied-health', 'Allied Health'),
+        ('support', 'Support'),
+        ('management', 'Management'),
+        ('administrative', 'Administrative'),
+        ('other', 'Other')
+        
+        
     )
 
     firstname = models.CharField(max_length=255, default='')
@@ -108,13 +109,49 @@ class Patient(models.Model):
         return f"{self.user.firstname} {self.user.lastname}"
 
 
-class Doctor(models.Model):
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='doctor_profile')
-    specialization = models.CharField(max_length=100, blank=True, null=True)
+class Staff(models.Model):
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other')
+    )
+    GROUP_CHOICES = (
+        ('medical', 'Medical'),
+        ('nursing', 'Nursing'),
+        ('allied-health', 'Allied Health'),
+        ('support', 'Support'),
+        ('management', 'Management'),
+        ('administrative', 'Administrative'),
+        ('other', 'Other')
+    )
+    WORK_STATUS_CHOICES = (
+        ('full-time', 'Full-Time'),
+        ('part-time', 'Part-Time'),
+        ('consultant', 'Consultant'),
+        ('temporary', 'Temporary')
+    )
+    
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='staff_profile')
+    group = models.CharField(choices=GROUP_CHOICES, max_length=25, blank=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=6)
+    contact_number = models.CharField(unique=True, max_length=20)
+    address = models.CharField(max_length=255)
+    work_status = models.CharField(choices=WORK_STATUS_CHOICES, max_length=20)
+    specialization = models.CharField(max_length=100)
+    assigned_treatment = models.TextField(blank=True)
+    working_days = models.JSONField()
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         managed = True
-        db_table = 'doctors'
+        db_table = 'staff'
+        verbose_name = 'Staff Member'
+        verbose_name_plural = 'Staff Members'
+        indexes = [
+            models.Index(fields=['contact_number']),
+            models.Index(fields=['user']),
+        ]
 
     def __str__(self):
         return f"{self.user.firstname} {self.user.lastname} - {self.specialization}"
@@ -123,8 +160,8 @@ class Appointment(models.Model):
     appointment_id = models.AutoField(primary_key=True)
     patient = models.ForeignKey(
         Patient, on_delete=models.CASCADE, related_name='appointments')
-    doctor = models.ForeignKey(
-        Doctor, on_delete=models.CASCADE, related_name='appointments')
+    staff = models.ForeignKey(
+        Staff, on_delete=models.CASCADE, related_name='appointments')
     appointment_date = models.DateTimeField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
