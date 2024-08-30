@@ -420,7 +420,7 @@ export default function StaffTable() {
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2,  }}>
                       
                       <div>
-                        <Typography level="body-xs">{staffmember.contact_number}</Typography>
+                        <Typography level="body-xs">+{staffmember.contact_number}</Typography>
                         <Typography level="body-xs">{staffmember.user.email}</Typography>
                       </div>
                       
