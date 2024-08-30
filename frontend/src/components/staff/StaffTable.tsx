@@ -248,6 +248,7 @@ export default function StaffTable() {
         const response = await fetch('http://localhost:8000/accounts/staff/'); // Adjust the API endpoint as needed
         const data = await response.json();
         setStaff(data);
+        console.log(data)
       } catch (error) {
         console.error('Failed to fetch staff data:', error);
       }
@@ -428,8 +429,8 @@ export default function StaffTable() {
                 
                 <td>
                   <Typography level="body-xs" sx={{ display: 'flex', gap: 1}}>
-                  {staffmember.working_days?.map((day, index) => (
-                      <Chip key={index} size="sm" color={['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].includes(day) ? 'primary' : 'neutral'} variant="solid">
+                  {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day, index) => (
+                      <Chip key={index} size="sm" color={staffmember.working_days.includes(day) ? 'primary' : 'neutral'} variant="solid">
                         {day.charAt(0)}
                       </Chip>
                     ))}
@@ -448,7 +449,7 @@ export default function StaffTable() {
                       getStatusColor(staffmember.work_status)
                     }
                   >
-                    {staffmember.work_status}
+                    {staffmember.work_status.toUpperCase()}
                   </Chip>
                 </td>
                 
