@@ -8,6 +8,8 @@ urlpatterns = [
     path('patients/', list_patients, name='patient_list'),  
     path('patients/signup/', create_patient, name='create_patient'),
     path('patients/<int:pk>/', PatientDetailView.as_view(), name='patient-detail'),
+    path('staff/', list_staff, name='staff_list'),
     path('staff/create/', create_staff, name='create_staff'),
+    
     
 ]

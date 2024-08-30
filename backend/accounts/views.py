@@ -71,20 +71,30 @@ class PatientDetailView(RetrieveAPIView):
 
 @api_view(['POST'])
 def create_staff(request):
+    # Extract the user data and parse it
     user_data = request.data.get('user')
-    if not user_data:
+    if user_data:
+        import json
+        user_data = json.loads(user_data)  # Convert string to dictionary
+    else:
         return Response({'non_field_errors': 'User data not provided'}, status=status.HTTP_400_BAD_REQUEST)
-    
-    staff_data = request.data.copy()  # Copy request data to manipulate
 
+    # Extract the file (avatar) from the request
+    avatar = request.FILES.get('avatar')
+
+    # Prepare staff data including the avatar
+    staff_data = request.data.copy()
+    staff_data['avatar'] = avatar
+
+    # Initialize serializers
     user_serializer = UserAccountSerializer(data=user_data)
     
     if user_serializer.is_valid():
         try:
             with transaction.atomic():
-                # Create the user
+                # Save the user
                 user = user_serializer.save()
-                
+
                 # Update staff data to include the user reference
                 staff_data['user'] = user.id
                 staff_serializer = StaffSerializer(data=staff_data)
@@ -93,14 +103,23 @@ def create_staff(request):
                     staff_serializer.save()
                     return Response({'message': 'User and staff created successfully'}, status=status.HTTP_201_CREATED)
                 else:
-                    # Rollback the user creation if staff creation fails
+                    # Rollback user creation if staff creation fails
                     user.delete()
                     return Response(staff_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def list_staff(request):
+    try:
+        staff = Staff.objects.all()
+        serializer = StaffSerializer(staff, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 class SignInView(ObtainAuthToken):
     permission_classes = [AllowAny]
 

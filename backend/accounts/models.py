@@ -132,6 +132,7 @@ class Staff(models.Model):
     )
     
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='staff_profile')
+    avatar = models.ImageField(upload_to='avatars/')
     group = models.CharField(choices=GROUP_CHOICES, max_length=25, blank=True)
     date_of_birth = models.DateField(blank=True, null=True)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=6)
