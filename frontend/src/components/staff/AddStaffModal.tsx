@@ -31,6 +31,20 @@ import Divider from '@mui/joy/Divider';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 
+interface FormData {
+  firstName: string;
+  lastName: string;
+  address: string;
+  phoneNumber: string;
+  workStatus: string;
+  email: string;
+  specialization: string;
+  assignedTreatment: string;
+  group: string;
+  gender: string;
+  dateOfBirth: string;
+  avatar: File | null; // Update this line
+}
 interface AddStaffModalProps {
   open: boolean;
   onClose: () => void;
@@ -80,7 +94,7 @@ const steps = ['Staff Info', 'Assigned Services', 'Working Days'];
 export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
   const [activeStep, setActiveStep] = React.useState(0);
   const [completedSteps, setCompletedSteps] = React.useState<boolean[]>(new Array(steps.length).fill(false));
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = React.useState<FormData>({
     firstName: '',
     lastName: '',
     address: '',
@@ -92,6 +106,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
     group: '',
     gender: '',
     dateOfBirth: '',
+    avatar: null,
   });
   const [selectedDays, setSelectedDays] = React.useState<Record<string, boolean>>({
     Monday: false,
@@ -132,6 +147,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
       group: '',
       gender: '',
       dateOfBirth: '',
+      avatar: null,
     });
     setSelectedDays({
       Monday: false,
@@ -177,9 +193,10 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
 
   //Avatar functions
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    if (file) {
-      setSelectedImage(file);
+    const file = e.target.files?.[0];
+    if (e.target.files && file) {
+      setFormData((prev) => ({ ...prev, avatar: file }));
+      setSelectedImage(e.target.files[0]);
     }
   };
 
@@ -214,26 +231,35 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
   };
 
   const handleSubmit = async () => {
-    const formDataToSend = new FormData();
-    formDataToSend.append('first_name', formData.firstName);
-    formDataToSend.append('last_name', formData.lastName);
-    formDataToSend.append('email', formData.email);
-    formDataToSend.append('password', 'testing123'); // Default password (adjust accordingly)
-    formDataToSend.append('password_confirm', 'testing123');
-    formDataToSend.append('address', formData.address);
-    formDataToSend.append('contact_number', formData.phoneNumber);
-    formDataToSend.append('work_status', formData.workStatus);
-    formDataToSend.append('specialization', formData.specialization);
-    formDataToSend.append('assigned_treatment', formData.assignedTreatment);
-    formDataToSend.append('group', formData.group);
-    formDataToSend.append('gender', formData.gender);
-    formDataToSend.append('date_of_birth', formData.dateOfBirth);
-    formDataToSend.append('working_days', JSON.stringify(Object.keys(selectedDays).filter(day => selectedDays[day])));
+   
     
-    if (selectedImage) {
-      formDataToSend.append('avatar', selectedImage); // Append avatar file
-    }
+    const formDataToSend = new FormData();
 
+  // Append nested user fields as a JSON string
+  formDataToSend.append('user', JSON.stringify({
+    firstname: formData.firstName,
+    lastname: formData.lastName,
+    email: formData.email,
+    password: 'testing123',
+    password_confirm: 'testing123',
+    role: formData.group,
+  }));
+
+  // Append other fields
+  formDataToSend.append('address', formData.address);
+  formDataToSend.append('contact_number', formData.phoneNumber);
+  formDataToSend.append('work_status', formData.workStatus);
+  formDataToSend.append('specialization', formData.specialization);
+  formDataToSend.append('assigned_treatment', formData.assignedTreatment);
+  formDataToSend.append('gender', formData.gender);
+  formDataToSend.append('date_of_birth', formData.dateOfBirth);
+    formDataToSend.append('working_days', JSON.stringify(Object.keys(selectedDays).filter(day => selectedDays[day])));
+
+    // Include avatar if present
+    if (formData.avatar) {
+      formDataToSend.append('avatar', formData.avatar);
+    }
+      
     const token = localStorage.getItem('token');
 
     try {
@@ -242,7 +268,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
         {
           headers: {
             'Authorization': `Token ${token}`, // Add your token here
-            'Content-Type': 'multipart/form-data' // Ensure correct content type
+            'Content-Type': 'multipart/form-data', // Ensure correct content type
           },
         });
       setAlert({ message: 'Staff member added successfully!', type: 'success' });

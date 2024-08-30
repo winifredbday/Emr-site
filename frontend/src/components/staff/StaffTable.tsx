@@ -17,7 +17,7 @@ import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import Table from '@mui/joy/Table';
 import Sheet from '@mui/joy/Sheet';
-
+import { Link as RouterLink } from 'react-router-dom';
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import Menu from '@mui/joy/Menu';
@@ -31,105 +31,141 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-const rows = [
-  {
-    id: 'STF1234',
-    date: 'Feb 3, 2023',
-    type: 'PartTime',
-    assigned_treatment: 'Dental Service',
-    staff: {
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-      phone: '+233244750745',
-      portfolio: 'Dentist',
-      working_days: ['M', 'T', 'W']
-    },
-  },
-  {
-    id: 'STF1233',
-    date: 'Feb 3, 2023',
-    type: 'FullTime',
-    assigned_treatment: 'Out-Patient Care',
-    staff: {
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-      phone: '+233244750745',
-      portfolio: 'ER Nurse',
+// const rows = [
+//   {
+//     id: 'STF1234',
+//     date: 'Feb 3, 2023',
+//     type: 'PartTime',
+//     assigned_treatment: 'Dental Service',
+//     staff: {
+//       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
+//       name: 'Olivia Ryhe',
+//       email: 'olivia@email.com',
+//       phone: '+233244750745',
+//       portfolio: 'Dentist',
+//       working_days: ['M', 'T', 'W']
+//     },
+//   },
+//   {
+//     id: 'STF1233',
+//     date: 'Feb 3, 2023',
+//     type: 'FullTime',
+//     assigned_treatment: 'Out-Patient Care',
+//     staff: {
+//       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
+//       name: 'Steve Hampton',
+//       email: 'steve.hamp@email.com',
+//       phone: '+233244750745',
+//       portfolio: 'ER Nurse',
       
-    },
-  },
-  {
-    id: 'STF1232',
-    date: 'Feb 3, 2023',
-    type: 'FullTime',
-    assigned_treatment: 'Brain Tumor Surgery',
-    staff: {
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-      phone: '+233244750745',
-      portfolio: 'Neurologist'
-    },
-  },
-  {
-    id: 'STF1231',
-    date: 'Feb 3, 2023',
-    type: 'Suspended',
-    assigned_treatment: 'Fibroid Surgical Removal',
-    staff: {
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-      phone: '+233244750745',
-      portfolio: 'Surgeon'
-    },
-  },
-  {
-    id: 'STF1230',
-    date: 'Feb 3, 2023',
-    type: 'PartTime',
-    assigned_treatment: 'Injured Rehabilitation',
-    staff: {
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-      phone: '+233244750745',
-      portfolio: 'Homeopathic Specialist'
-    },
-  },
-  {
-    id: 'STF1229',
-    date: 'Feb 3, 2023',
-    type: 'FullTime',
-    assigned_treatment: 'Delivery Ward',
-    staff: {
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-      phone: '+233244750745',
-      portfolio: 'Nurse'
-    },
-  },
-  {
-    id: 'STF1228',
-    date: 'Feb 3, 2023',
-    type: 'PartTime',
-    assigned_treatment: 'Out-Patient Ward',
-    staff: {
-      avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
-      name: 'Jackie Conner',
-      email: 'jackie@email.com',
-      phone: '+233244750745',
-      portfolio: 'Clerk'
-    },
-  }
+//     },
+//   },
+//   {
+//     id: 'STF1232',
+//     date: 'Feb 3, 2023',
+//     type: 'FullTime',
+//     assigned_treatment: 'Brain Tumor Surgery',
+//     staff: {
+//       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
+//       name: 'Ciaran Murray',
+//       email: 'ciaran.murray@email.com',
+//       phone: '+233244750745',
+//       portfolio: 'Neurologist'
+//     },
+//   },
+//   {
+//     id: 'STF1231',
+//     date: 'Feb 3, 2023',
+//     type: 'Suspended',
+//     assigned_treatment: 'Fibroid Surgical Removal',
+//     staff: {
+//       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
+//       name: 'Maria Macdonald',
+//       email: 'maria.mc@email.com',
+//       phone: '+233244750745',
+//       portfolio: 'Surgeon'
+//     },
+//   },
+//   {
+//     id: 'STF1230',
+//     date: 'Feb 3, 2023',
+//     type: 'PartTime',
+//     assigned_treatment: 'Injured Rehabilitation',
+//     staff: {
+//       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
+//       name: 'Charles Fulton',
+//       email: 'fulton@email.com',
+//       phone: '+233244750745',
+//       portfolio: 'Homeopathic Specialist'
+//     },
+//   },
+//   {
+//     id: 'STF1229',
+//     date: 'Feb 3, 2023',
+//     type: 'FullTime',
+//     assigned_treatment: 'Delivery Ward',
+//     staff: {
+//       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
+//       name: 'Jay Hooper',
+//       email: 'hooper@email.com',
+//       phone: '+233244750745',
+//       portfolio: 'Nurse'
+//     },
+//   },
+//   {
+//     id: 'STF1228',
+//     date: 'Feb 3, 2023',
+//     type: 'PartTime',
+//     assigned_treatment: 'Out-Patient Ward',
+//     staff: {
+//       avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286",
+//       name: 'Jackie Conner',
+//       email: 'jackie@email.com',
+//       phone: '+233244750745',
+//       portfolio: 'Clerk'
+//     },
+//   }
   
-];
+// ];
+
+
+interface Staff {
+  id: number;
+  avatar: string | File;
+  user: {
+    firstname: string;
+    lastname: string;
+    email: string;
+    role: string;
+  };
+  address: string;
+  contact_number: string;
+  work_status: string;
+  specialization: string;
+  assigned_treatment: string;
+  gender: string;
+  date_of_birth: string;
+  working_days: string[];
+  created_at: string;
+}
+
+interface RowMenuProps {
+  staffmember: Staff;
+}
+
+const statusColors: { [key: string]: ColorPaletteProp } = {
+  'full-time': 'success',
+  'part-time': 'warning',
+  'consultant': 'danger',
+  'temporary': 'neutral'
+};
+
+
+function getStatusColor(status: string): ColorPaletteProp {
+  return statusColors[status.toLowerCase()] || 'defaultColor'; // 'defaultColor' is a fallback
+}
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -171,7 +207,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   return stabilizedThis.map((el) => el[0]);
 }
 
-function RowMenu() {
+const RowMenu: React.FC<RowMenuProps> = ({staffmember}) => {
   return (
     <Dropdown>
       <MenuButton
@@ -181,7 +217,16 @@ function RowMenu() {
         <MoreVertIcon/>
       </MenuButton>
       <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>View</MenuItem>
+      <Link
+        
+        component={RouterLink}
+        to={`/staff/${staffmember.id}`}
+        
+        
+      >
+        <MenuItem sx={{flexGrow: 1}}>View</MenuItem>
+    
+      </Link>
         
         
         <Divider />
@@ -193,7 +238,25 @@ function RowMenu() {
 
 export default function StaffTable() {
   const [order, setOrder] = React.useState<Order>('desc');
+  const [staff, setStaff] = React.useState<Staff[]>([]);
   const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    // Fetch patient data from the backend
+    const fetchStaff = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/accounts/staff/'); // Adjust the API endpoint as needed
+        const data = await response.json();
+        setStaff(data);
+      } catch (error) {
+        console.error('Failed to fetch staff data:', error);
+      }
+    };
+
+    fetchStaff();
+  }, []);
+
+
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
@@ -336,14 +399,18 @@ export default function StaffTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(rows, getComparator(order, 'id')).map((row) => (
-              <tr key={row.id}>
+            {stableSort(staff, getComparator(order, 'id')).map((staffmember) => (
+              <tr key={staffmember.id}>
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <Avatar size="sm" src={row.staff.avatar}/>
+                    <Avatar size="sm" src={
+                      typeof staffmember.avatar === 'string'
+                      ? staffmember.avatar
+                      : URL.createObjectURL(staffmember.avatar)
+                    }/>
                     <div>
-                      <Typography level="body-xs">{row.staff.name}</Typography>
-                      <Typography level="body-xs" sx={{fontSize: '10px', fontWeight: 'bold'}}>{row.staff.portfolio}</Typography>
+                      <Typography level="body-xs">{staffmember.user.firstname} {staffmember.user.lastname} </Typography>
+                      <Typography level="body-xs" sx={{fontSize: '10px', fontWeight: 'bold'}}>{staffmember.specialization}</Typography>
                     </div>
                     
                   </Box>
@@ -352,8 +419,8 @@ export default function StaffTable() {
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2,  }}>
                       
                       <div>
-                        <Typography level="body-xs">{row.staff.phone}</Typography>
-                        <Typography level="body-xs">{row.staff.email}</Typography>
+                        <Typography level="body-xs">{staffmember.contact_number}</Typography>
+                        <Typography level="body-xs">{staffmember.user.email}</Typography>
                       </div>
                       
                   </Box>
@@ -361,32 +428,16 @@ export default function StaffTable() {
                 
                 <td>
                   <Typography level="body-xs" sx={{ display: 'flex', gap: 1}}>
-                  <Chip size="sm" color="primary" variant="solid">
-                      S
-                    </Chip>
-                    <Chip size="sm" color="primary" variant="solid">
-                      M
-                    </Chip>
-                    <Chip size="sm" color="neutral" variant="solid">
-                      T
-                    </Chip>
-                    <Chip size="sm" color="neutral" variant="solid">
-                      W
-                    </Chip>
-                    <Chip size="sm" color="primary" variant="solid">
-                      T
-                    </Chip>
-                    <Chip size="sm" color="neutral" variant="solid">
-                      F
-                    </Chip>
-                    <Chip size="sm" color="primary" variant="solid">
-                      S
-                    </Chip>
+                  {staffmember.working_days?.map((day, index) => (
+                      <Chip key={index} size="sm" color={['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].includes(day) ? 'primary' : 'neutral'} variant="solid">
+                        {day.charAt(0)}
+                      </Chip>
+                    ))}
                     
                   </Typography>
                 </td>
                 <td>
-                    <Typography level="body-xs">{row.assigned_treatment}</Typography>
+                    <Typography level="body-xs">{staffmember.assigned_treatment}</Typography>
                 </td>
                 <td>
                   <Chip
@@ -394,14 +445,10 @@ export default function StaffTable() {
                     size="sm"
                     
                     color={
-                      {
-                        FullTime: 'success',
-                        PartTime: 'warning',
-                        Suspended: 'danger',
-                      }[row.type] as ColorPaletteProp
+                      getStatusColor(staffmember.work_status)
                     }
                   >
-                    {row.type}
+                    {staffmember.work_status}
                   </Chip>
                 </td>
                 
@@ -410,7 +457,7 @@ export default function StaffTable() {
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                     
-                    <RowMenu />
+                    <RowMenu staffmember={staffmember}/>
                   </Box>
                 </td>
               </tr>
