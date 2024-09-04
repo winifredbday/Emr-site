@@ -1,5 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-import * as React from 'react';
+import React from 'react';
 import { ColorPaletteProp } from '@mui/joy/styles';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Box from '@mui/joy/Box';
@@ -24,11 +23,10 @@ import Menu from '@mui/joy/Menu';
 import MenuButton from '@mui/joy/MenuButton';
 import MenuItem from '@mui/joy/MenuItem';
 import Dropdown from '@mui/joy/Dropdown';
-
+import axios from 'axios';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
@@ -66,10 +64,7 @@ function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
+
 function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
@@ -81,8 +76,26 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   });
   return stabilizedThis.map((el) => el[0]);
 }
+interface TreatmentTableProps {
+  treatments: Treatment[];
+  onOpenModal: () => void;
+  onTreatmentDeleted: (id: number) => void; // Callback to update the state after deletion
+}
 
-function RowMenu() {
+const deleteTreatment = async (id: number) => {
+  await axios.delete(`http://localhost:8000/clinic/treatments/${id}/`);
+};
+
+const RowMenu: React.FC<{ treatmentId: number; onDelete: (id: number) => void }> = ({ treatmentId, onDelete }) => {
+  const handleDelete = async () => {
+    try {
+      await deleteTreatment(treatmentId); // DELETE request to Django API
+      onDelete(treatmentId); // Update the state in the parent component
+    } catch (error) {
+      console.error('Failed to delete treatment:', error);
+    }
+  };
+
   return (
     <Dropdown>
       <MenuButton
@@ -93,39 +106,25 @@ function RowMenu() {
       </MenuButton>
       <Menu size="sm" sx={{ minWidth: 140 }}>
         <MenuItem>Edit</MenuItem>
-       
         <Divider />
-        <MenuItem color="danger">Delete</MenuItem>
+        <MenuItem color="danger" onClick={handleDelete}>Delete</MenuItem>
       </Menu>
     </Dropdown>
   );
-}
+};
 
-export default function TreatmentTable() {
-  const [order, setOrder] = React.useState<Order>('desc');
+const TreatmentTable: React.FC<TreatmentTableProps> = ({ treatments, onTreatmentDeleted, onOpenModal }) => {
+  const [order, setOrder] = React.useState<'asc' | 'desc'>('desc');
   const [selected, setSelected] = React.useState<number[]>([]);
-
   const [open, setOpen] = React.useState(false);
-  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-  const [rows, setTreatments] = React.useState<Treatment[]>([]);
+  // const [modalOpen, setModalOpen] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    // Fetch treatments from the backend
-    const fetchTreatments = async () => {
-      try {
-        const response = await fetch('http://localhost:8000/clinic/treatments/'); // Adjust the API endpoint as needed
-        const data = await response.json();
-        setTreatments(data);
-      } catch (error) {
-        console.error('Failed to fetch treatment data:', error);
-        setTreatments([])
-      }
-    };
+  const handleDelete = (id: number) => {
+    onTreatmentDeleted(id);
+  };
 
-    fetchTreatments();
-  }, []);
-  const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
+  const handleOpen = () => onOpenModal();
+  const handleClose = () => setOpen(false);
 
   const renderFilters = () => (
     <React.Fragment>
@@ -136,21 +135,20 @@ export default function TreatmentTable() {
           placeholder="Filter by visit"
           slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
         >
-          <Option value="paid">singlevisit</Option>
-          <Option value="pending">multiplevisit</Option>
+          <Option value="single">Single Visit</Option>
+          <Option value="multiple">Multiple Visit</Option>
         </Select>
       </FormControl>
-      
     </React.Fragment>
   );
+
   return (
     <React.Fragment>
       <Sheet
         className="SearchAndFilters-mobile"
         sx={{
           display: { xs: 'flex', sm: 'none' },
-          flexWrap: {xs: 'wrap'},
-          
+          flexWrap: { xs: 'wrap' },
           my: 1,
           gap: 1,
         }}
@@ -159,7 +157,7 @@ export default function TreatmentTable() {
           color="primary"
           startDecorator={<AddRoundedIcon />}
           size="sm"
-          sx={{display:"flex", alignItems:"center", mb: {xs: 1}}}
+          sx={{ display: "flex", alignItems: "center", mb: { xs: 1 } }}
           onClick={handleOpen}
         >
           Add Treatment
@@ -208,23 +206,21 @@ export default function TreatmentTable() {
           },
         }}
       >
-        <FormControl sx={{ flex: 1}} size="sm">
+        <FormControl sx={{ flex: 1 }} size="sm">
           <FormLabel>Search for treatment</FormLabel>
-          <Input size="sm" placeholder="Search by treatment name" sx={{ width:{sm: "50%", sx: "100%"}}} startDecorator={<SearchIcon />} />
+          <Input size="sm" placeholder="Search by treatment name" sx={{ width: { sm: "50%", xs: "100%" } }} startDecorator={<SearchIcon />} />
         </FormControl>
-        
         {renderFilters()}
         <Button
           color="primary"
           startDecorator={<AddRoundedIcon />}
           size="sm"
-          sx={{display:"flex", alignItems:"center"}}
+          sx={{ display: "flex", alignItems: "center" }}
           onClick={handleOpen}
         >
           Add Treatment
         </Button>
       </Box>
-      
       <Sheet
         className="RevenueTableContainer"
         variant="outlined"
@@ -254,17 +250,15 @@ export default function TreatmentTable() {
               <th style={{ width: 35, textAlign: 'center', padding: '12px 6px' }}>
                 <Checkbox
                   size="sm"
-                  indeterminate={
-                    selected.length > 0 && selected.length !== rows.length
-                  }
-                  checked={selected.length === rows.length}
+                  indeterminate={selected.length > 0 && selected.length !== treatments.length}
+                  checked={selected.length === treatments.length}
                   onChange={(event) => {
                     setSelected(
-                      event.target.checked ? rows.map((row) => row.id) : [],
+                      event.target.checked ? treatments.map((row) => row.id) : [],
                     );
                   }}
                   color={
-                    selected.length > 0 || selected.length === rows.length
+                    selected.length > 0 || selected.length === treatments.length
                       ? 'primary'
                       : undefined
                   }
@@ -297,7 +291,7 @@ export default function TreatmentTable() {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(rows) && stableSort(rows, getComparator(order, 'id')).map((row) => (
+            {Array.isArray(treatments) && stableSort(treatments, getComparator(order, 'name')).map((row) => (
               <tr key={row.id}>
                 <td style={{ textAlign: 'center', width: 120 }}>
                   <Checkbox
@@ -305,10 +299,10 @@ export default function TreatmentTable() {
                     checked={selected.includes(row.id)}
                     color={selected.includes(row.id) ? 'primary' : undefined}
                     onChange={(event) => {
-                      setSelected((ids: any) =>
+                      setSelected((ids) =>
                         event.target.checked
                           ? ids.concat(row.id)
-                          : ids.filter((itemId: any) => itemId !== row.id),
+                          : ids.filter((itemId) => itemId !== row.id),
                       );
                     }}
                     slotProps={{ checkbox: { sx: { textAlign: 'left' } } }}
@@ -321,37 +315,32 @@ export default function TreatmentTable() {
                 <td>
                   <Typography level="body-xs"> <b>${row.price}</b></Typography>
                 </td>
-
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    
-                    
-                      <Typography level="body-xs">{row.estimated_duration}</Typography>
-                    
+                    <Typography level="body-xs">{row.estimated_duration}</Typography>
                   </Box>
                 </td>
                 <td>
                   <Chip
                     variant="soft"
                     size="sm"
-                    
                     color={
                       {
                         single: 'success',
                         multiple: 'warning',
-                       
                       }[row.visit_type] as ColorPaletteProp
                     }
                   >
-                        {row.visit_type === "single" ? "Single Visit" : "Multiple Visit"}
-                        
-                
+                    {row.visit_type === "single" ? "Single Visit" : "Multiple Visit"}
                   </Chip>
                 </td>
-                
                 <td>
                   <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <RowMenu />
+                    <RowMenu
+                      key={row.id}
+                      treatmentId={row.id}
+                      onDelete={handleDelete}
+                    />
                   </Box>
                 </td>
               </tr>
@@ -379,7 +368,6 @@ export default function TreatmentTable() {
         >
           Previous
         </Button>
-
         <Box sx={{ flex: 1 }} />
         {['1', '2', '3', '…', '8', '9', '10'].map((page) => (
           <IconButton
@@ -392,7 +380,6 @@ export default function TreatmentTable() {
           </IconButton>
         ))}
         <Box sx={{ flex: 1 }} />
-
         <Button
           size="sm"
           variant="outlined"
@@ -402,7 +389,9 @@ export default function TreatmentTable() {
           Next
         </Button>
       </Box>
-      <AddTreatmentModal open={modalOpen} onClose={handleClose} />
+      
     </React.Fragment>
   );
-}
+};
+
+export default TreatmentTable;

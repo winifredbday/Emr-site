@@ -9,10 +9,51 @@ import TreatmentTable from '../../components/treatments/TreatmentTable';
 import TreatmentList from '../../components/treatments/MobileList';
 import Divider from '@mui/joy/Divider';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import axios from 'axios'
+import AddTreatmentModal from '../../components/treatments/AddTreatmentModal';
 
+interface Treatment {
+  id: number;
+  name: string;
+  price: number;
+  estimated_duration: string;
+  visit_type: string;
+}
 
-export default function Treatment() {
-  
+const Treatments: React.FC = () => {
+  const [treatments, setTreatments] = React.useState<Treatment[]>([]);
+  const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    const fetchTreatments = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/clinic/treatments/');
+        setTreatments(response.data);
+      } catch (error) {
+        console.error('Failed to fetch treatments:', error);
+      }
+    };
+
+    fetchTreatments();
+  }, []);
+
+  // const handleAddTreatment = async (newTreatment: any) => {
+  //   try {
+  //     const response = await axios.get('http://localhost:8000/clinic/treatments/');
+  //     console.log(response.data)
+  //     setTreatments((prev) => [...prev, response.data]);
+  //     setModalOpen(false);
+  //   } catch (error) {
+  //     console.error('Failed to add treatment:', error);
+  //   }
+  // };
+
+  const handleDeleteTreatment = (id: number) => {
+    setTreatments((prev) => prev.filter((treatment) => treatment.id !== id));
+  };
+
+  const handleOpenModal = () => setModalOpen(true);
+  const handleCloseModal = () => setModalOpen(false);
   return (
     <Box
       component="main"
@@ -84,9 +125,10 @@ export default function Treatment() {
         <Typography component="h2" level="h2">5</Typography>
         <Typography level="body-sm" fontWeight={600}>Active treatments</Typography>
       </Box>
-      <TreatmentTable />
+      <TreatmentTable treatments={treatments} onTreatmentDeleted={handleDeleteTreatment} onOpenModal={handleOpenModal} />
       <TreatmentList />
-      
+      <AddTreatmentModal open={modalOpen} onClose={() => setModalOpen(false)}  />
     </Box>
   );
-}
+};
+export default Treatments

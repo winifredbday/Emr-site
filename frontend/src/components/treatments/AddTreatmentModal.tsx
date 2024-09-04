@@ -16,9 +16,17 @@ import Select from '@mui/joy/Select';
 import Divider from '@mui/joy/Divider';
 import AlertVariousStates from '../../components/AlertVariousStates';
 
+interface Treatment {
+  id: number;
+  name: string;
+  price: number;
+  estimated_duration: string;
+  visit_type: string;
+}
 interface AddTreatmentProps{
     open: boolean;
     onClose: () => void;
+    //onAddTreatment: (treatmentData: any) => void;
 }
 
 
@@ -72,22 +80,33 @@ export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
     }
   };
 
+  
+
+  
   //function to handle form submission
   const handleSubmit = async () => {
     const treatmentData = {
      name: formData.treatment_name,
      price: formData.price,
-     estimated_duration: formData.estimated_duration + time,
+     estimated_duration: formData.estimated_duration + " " + time,
      visit_type: formData.visit_type
 
     };
     console.log(treatmentData)
     try {
       const response = await axios.post('http://localhost:8000/clinic/treatments/add', treatmentData);
+      // onAddTreatment(response.data);
+
       setAlert({ message: 'Treatment added successfully!', type: 'success' });
       setTimeout(() => {
+        setFormData({
+          treatment_name: '',
+          price: '',
+          estimated_duration: '',
+          visit_type: ''
+        })
         onClose();
-      }, 6000);
+      }, 3000);
       window.location.reload()
   } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
