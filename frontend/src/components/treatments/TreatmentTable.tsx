@@ -33,45 +33,14 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import AddTreatmentModal from './AddTreatmentModal';
-const rows = [
-  {
-    id: 'TRT-01',
-    treatment_name: 'General Checkup',
-    price: '$50',
-    estimated_duration: '<= 1 hour(s)',
-    type_of_visit: 'singlevisit' 
-  },
-  {
-    id: 'TRT-02',
-    treatment_name: 'Teeth Whitening',
-    price: '$200',
-    estimated_duration: '>= 2 hour(s)',
-    type_of_visit: 'multiplevisit'
-  },
-  {
-    id: 'TRT-03',
-    treatment_name: 'Malaria Test',
-    price: '$50',
-    estimated_duration: '<= 1 hour(s)',
-    type_of_visit: 'singlevisit'
-  },
-  {
-    id: 'TRT-04',
-    treatment_name: 'Urine Lab Test',
-    price: '$50',
-    estimated_duration: '<= 3 hour(s)',
-    type_of_visit: 'singlevisit'
-  },
-  {
-    id: 'TRT-05',
-    treatment_name: 'Teeth Cleaning',
-    price: '$500',
-    estimated_duration: '<= 4 hour(s)',
-    type_of_visit: 'multiplevisit'
-  }
-  
-  
-];
+
+interface Treatment {
+  id: number;
+  name: string;
+  price: number;
+  estimated_duration: string;
+  visit_type: string;
+}
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -134,10 +103,27 @@ function RowMenu() {
 
 export default function TreatmentTable() {
   const [order, setOrder] = React.useState<Order>('desc');
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
+  const [selected, setSelected] = React.useState<number[]>([]);
+
   const [open, setOpen] = React.useState(false);
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
+  const [rows, setTreatments] = React.useState<Treatment[]>([]);
 
+  React.useEffect(() => {
+    // Fetch treatments from the backend
+    const fetchTreatments = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/clinic/treatments/'); // Adjust the API endpoint as needed
+        const data = await response.json();
+        setTreatments(data);
+      } catch (error) {
+        console.error('Failed to fetch treatment data:', error);
+        setTreatments([])
+      }
+    };
+
+    fetchTreatments();
+  }, []);
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
@@ -311,7 +297,7 @@ export default function TreatmentTable() {
             </tr>
           </thead>
           <tbody>
-            {stableSort(rows, getComparator(order, 'id')).map((row) => (
+            {Array.isArray(rows) && stableSort(rows, getComparator(order, 'id')).map((row) => (
               <tr key={row.id}>
                 <td style={{ textAlign: 'center', width: 120 }}>
                   <Checkbox
@@ -319,10 +305,10 @@ export default function TreatmentTable() {
                     checked={selected.includes(row.id)}
                     color={selected.includes(row.id) ? 'primary' : undefined}
                     onChange={(event) => {
-                      setSelected((ids) =>
+                      setSelected((ids: any) =>
                         event.target.checked
                           ? ids.concat(row.id)
-                          : ids.filter((itemId) => itemId !== row.id),
+                          : ids.filter((itemId: any) => itemId !== row.id),
                       );
                     }}
                     slotProps={{ checkbox: { sx: { textAlign: 'left' } } }}
@@ -330,10 +316,10 @@ export default function TreatmentTable() {
                   />
                 </td>
                 <td>
-                  <Typography level="body-xs" fontWeight={'bold'}>{row.treatment_name}</Typography>
+                  <Typography level="body-xs" fontWeight={'bold'}>{row.name}</Typography>
                 </td>
                 <td>
-                  <Typography level="body-xs"> <b>{row.price}</b></Typography>
+                  <Typography level="body-xs"> <b>${row.price}</b></Typography>
                 </td>
 
                 <td>
@@ -351,13 +337,13 @@ export default function TreatmentTable() {
                     
                     color={
                       {
-                        singlevisit: 'success',
-                        multiplevisit: 'warning',
+                        single: 'success',
+                        multiple: 'warning',
                        
-                      }[row.type_of_visit] as ColorPaletteProp
+                      }[row.visit_type] as ColorPaletteProp
                     }
                   >
-                        {row.type_of_visit === "singlevisit" ? "Single Visit" : "Multiple Visit"}
+                        {row.visit_type === "single" ? "Single Visit" : "Multiple Visit"}
                         
                 
                   </Chip>
