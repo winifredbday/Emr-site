@@ -18,6 +18,24 @@ class Appointment(models.Model):
         return f"Appointment {self.appointment_id} with {self.doctor.user.firstname} {self.doctor.user.lastname} and {self.patient.user.firstname} {self.patient.user.lastname} on {self.appointment_date}"
 
 
+class Treatment(models.Model):
+    VISIT_CHOICES = (
+        ('multiple', 'Multiple'),
+        ('single', 'Single')
+    )
+    
+    name = models.CharField(db_column='treatment_name', max_length=200)
+    price = models.IntegerField(db_column='price')
+    estimated_duration = models.TextField(db_column='estimated_duration')
+    visit_type = models.CharField(db_column='visit_type', choices=VISIT_CHOICES, max_length=20)
+
+    class Meta:
+        managed = True
+        db_table = 'treatmentss'
+
+    def __str__(self):
+        return f"Treatment: {self.name}"
+
 
 
 # class Exams(models.Model):
