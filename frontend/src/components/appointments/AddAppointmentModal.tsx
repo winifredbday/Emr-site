@@ -23,6 +23,7 @@ interface Patient {
 interface Doctor {
   id: string;
   label: string;
+
 }
 
 interface Treatment {
@@ -34,7 +35,7 @@ interface Treatment {
 interface AddAppointmentModalProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (formData: any) => void;
+  onSubmit: (appointmentData: any) => void;
   preselectedDoctor?: string | null;
   patientFirstName?: string;
   patientLastName?: string;
@@ -58,7 +59,7 @@ export default function AddAppointmentModal({
   const [firstName, setFirstName] = React.useState<string>(patientFirstName || '');
   const [lastName, setLastName] = React.useState<string>(patientLastName || '');
   const [time, setTime] = React.useState<string>('');
-
+  const [alert, setAlert] = React.useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const isReadOnly = firstName !== '' && lastName !== '';
 
   React.useEffect(() => {
@@ -77,7 +78,8 @@ export default function AddAppointmentModal({
     .then(response => {
         setDoctors(response.data.map((doc: any) => ({
             value: doc.id,
-            label: `${doc.user.firstname} ${doc.user.lastname}`,
+            label: `Dr. ${doc.user.firstname} ${doc.user.lastname}`,
+            
         })));
     })
     .catch(error => console.error('Error fetching doctors:', error));
@@ -110,8 +112,8 @@ export default function AddAppointmentModal({
     setPrice(treatment?.price || '');
   };
 
-  const handleFormSubmit = () => {
-    const formData = {
+  const handleFormSubmit = async () => {
+    const appointmentData = {
       doctor: selectedDoctor,
       treatment: selectedTreatment,
       price: price,
@@ -121,7 +123,37 @@ export default function AddAppointmentModal({
         lastName: lastName,
       },
     };
-    onSubmit(formData);
+   
+    try {
+      const response = await axios.post('http://localhost:8000/clinic/appointments/add/', appointmentData);
+      // onAddTreatment(response.data);
+
+      setAlert({ message: 'Treatment added successfully!', type: 'success' });
+      onSubmit(appointmentData);
+      setTimeout(() => {
+        setSelectedDoctor('')
+        setSelectedPatient('')
+        setSelectedTreatment('')
+        setPrice('')
+        setTime('')
+
+        onClose();
+      }, 3000);
+      window.location.reload()
+  } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+          const errorData = error.response.data;
+          console.error('Error data:', errorData); // Log error for debugging
+          if (typeof errorData === 'object') {
+              const errorMessages = Object.entries(errorData).map(([key, value]) => `${key}: ${value}`).join('. ');
+              setAlert({ message: `Error: ${errorMessages}`, type: 'error' });
+          } else {
+              setAlert({ message: 'An unexpected error occurred', type: 'error' });
+          }
+      } else {
+          setAlert({ message: 'Network error', type: 'error' });
+      }
+  }
   };
 
   return (

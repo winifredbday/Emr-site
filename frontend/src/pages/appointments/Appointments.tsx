@@ -64,44 +64,44 @@ const initialListItems = [
           }
       ]
   },
-  {
-      id: 'STF-002',
-      doctor: 'Dr. Harley Quinzel',
-      avatar: '/user/avatar.jpg',
-      available: 'yes',
-      appointments: [
-          {
-              id: 'APT-004',
-              time: '09:00 AM - 10:00 AM', 
-              treatment: 'Full Medical Checkup',
-              price: 150,
-              doctor: 'Dr. Harley Quinzel',
-              patient: { firstName: 'Trudy', lastName: 'Jackson' }
-          },
-          {
-              id: 'APT-005',
-              time: '12:00 PM - 01:00 PM', 
-              treatment: 'Teeth Cleaning',
-              price: 200,
-              doctor: 'Dr. Harley Quinzel',
-              patient: { firstName: 'James', lastName: 'McGriffen' }
-          }
-      ]
-  },
-  {
-      id: 'STF-003',
-      doctor: 'Dr. Michael Kelso',
-      avatar: '/user/avatar.jpg',
-      available: 'no',
-      appointments: []
-  },
-  {
-      id: 'STF-004',
-      doctor: 'Dr. Jackie Burkhart',
-      avatar: '/user/avatar.jpg',
-      available: 'yes',
-      appointments: []
-  }
+  // {
+  //     id: 'STF-002',
+  //     doctor: 'Dr. Harley Quinzel',
+  //     avatar: '/user/avatar.jpg',
+  //     available: 'yes',
+  //     appointments: [
+  //         {
+  //             id: 'APT-004',
+  //             time: '09:00 AM - 10:00 AM', 
+  //             treatment: 'Full Medical Checkup',
+  //             price: 150,
+  //             doctor: 'Dr. Harley Quinzel',
+  //             patient: { firstName: 'Trudy', lastName: 'Jackson' }
+  //         },
+  //         {
+  //             id: 'APT-005',
+  //             time: '12:00 PM - 01:00 PM', 
+  //             treatment: 'Teeth Cleaning',
+  //             price: 200,
+  //             doctor: 'Dr. Harley Quinzel',
+  //             patient: { firstName: 'James', lastName: 'McGriffen' }
+  //         }
+  //     ]
+  // },
+  // {
+  //     id: 'STF-003',
+  //     doctor: 'Dr. Michael Kelso',
+  //     avatar: '/user/avatar.jpg',
+  //     available: 'no',
+  //     appointments: []
+  // },
+  // {
+  //     id: 'STF-004',
+  //     doctor: 'Dr. Jackie Burkhart',
+  //     avatar: '/user/avatar.jpg',
+  //     available: 'yes',
+  //     appointments: []
+  // }
 ];
 
 export default function Appointments(){
@@ -135,7 +135,7 @@ export default function Appointments(){
             updatedItems = [
                 ...prevItems,
                 {
-                  id: newAppointment.doctor + '_id', // Generate or fetch proper ID
+                  id: newAppointment.id + '_id', // Generate or fetch proper ID
                   doctor: newAppointment.doctor,
                   avatar: '', // Provide default or fetched avatar
                   available: '', // Provide default or fetched availability

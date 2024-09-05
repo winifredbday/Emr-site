@@ -100,11 +100,8 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
 
 
     const treatmentLabels: { [key: string]: string} = {
-        'teethcleaning': 'Teeth Cleaning',
-        'urinelabtest': 'Urine Lab Test',
-        'malariatest': 'Malaria Test',
-        'teethwhitening': 'Teeth Whitening',
-        'generalcheckup': 'General Checkup',
+        'notreatment': 'No Treatment Available',
+        
     }
     return (
 
