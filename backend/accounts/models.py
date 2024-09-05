@@ -130,6 +130,12 @@ class Staff(models.Model):
         ('consultant', 'Consultant'),
         ('temporary', 'Temporary')
     )
+
+    AVAILABILITY_CHOICES = (
+        ('yes', 'Yes'),
+        ('no', 'No')
+       
+    )
     
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE, related_name='staff_profile')
     avatar = models.ImageField(upload_to='avatars/')
@@ -142,6 +148,7 @@ class Staff(models.Model):
     specialization = models.CharField(max_length=100)
     assigned_treatment = models.TextField(blank=True)
     working_days = models.JSONField()
+    available = models.CharField(choices=AVAILABILITY_CHOICES, default="yes", blank=True, max_length=20)
     created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:

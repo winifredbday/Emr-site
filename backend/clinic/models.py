@@ -31,7 +31,7 @@ class Treatment(models.Model):
 
     class Meta:
         managed = True
-        db_table = 'treatmentss'
+        db_table = 'treatments'
 
     def __str__(self):
         return f"Treatment: {self.name}"
