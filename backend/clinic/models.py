@@ -1,22 +1,6 @@
 from django.db import models
 from accounts.models import Patient, Staff
 # Create your models here.
-class Appointment(models.Model):
-    appointment_id = models.AutoField(primary_key=True)
-    patient = models.ForeignKey(
-        Patient, on_delete=models.CASCADE, related_name='appointments')
-    staff = models.ForeignKey(
-        Staff, on_delete=models.CASCADE, related_name='appointments')
-    appointment_date = models.DateTimeField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = True
-        db_table = 'appointments'
-
-    def __str__(self):
-        return f"Appointment {self.appointment_id} with {self.doctor.user.firstname} {self.doctor.user.lastname} and {self.patient.user.firstname} {self.patient.user.lastname} on {self.appointment_date}"
-
 
 class Treatment(models.Model):
     VISIT_CHOICES = (
@@ -36,6 +20,23 @@ class Treatment(models.Model):
     def __str__(self):
         return f"Treatment: {self.name}"
 
+class Appointment(models.Model):
+    
+    patient = models.ForeignKey(
+        Patient, on_delete=models.CASCADE, related_name='appointments')
+    staff = models.ForeignKey(
+        Staff, on_delete=models.CASCADE, related_name='staff')
+    treatment = models.ForeignKey(
+        Treatment, on_delete=models.CASCADE, related_name='treatment')
+    appointment_date = models.DateTimeField(blank=True, null=True)
+    price= models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = True
+        db_table = 'appointments'
+
+    def __str__(self):
+        return f"Appointment {self.id} for {self.staff.user.firstname} {self.staff.user.lastname} with {self.patient.user.firstname} {self.patient.user.lastname} on {self.appointment_date}"
 
 
 # class Exams(models.Model):
