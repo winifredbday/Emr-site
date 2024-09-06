@@ -94,7 +94,7 @@ export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
     };
     console.log(treatmentData)
     try {
-      const response = await axios.post('http://localhost:8000/clinic/treatments/add', treatmentData);
+      const response = await axios.post('http://localhost:8000/clinic/treatments/add/', treatmentData);
       // onAddTreatment(response.data);
 
       setAlert({ message: 'Treatment added successfully!', type: 'success' });
@@ -106,7 +106,7 @@ export default function AddTreatmentModal({open, onClose}: AddTreatmentProps) {
           visit_type: ''
         })
         onClose();
-      }, 3000);
+      }, 4000);
       window.location.reload()
   } catch (error) {
       if (axios.isAxiosError(error) && error.response) {

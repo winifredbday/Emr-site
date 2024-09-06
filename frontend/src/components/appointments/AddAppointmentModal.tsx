@@ -118,10 +118,7 @@ export default function AddAppointmentModal({
       treatment: selectedTreatment,
       price: price,
       time: time,
-      patient: {
-        firstName: firstName,
-        lastName: lastName,
-      },
+      patient: selectedPatient
     };
    
     try {

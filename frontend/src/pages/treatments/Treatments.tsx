@@ -122,7 +122,7 @@ const Treatments: React.FC = () => {
       <Divider />
       <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1}}>
         <FormatListBulletedIcon/>
-        <Typography component="h2" level="h2">5</Typography>
+        <Typography component="h2" level="h2">{treatments.length}</Typography>
         <Typography level="body-sm" fontWeight={600}>Active treatments</Typography>
       </Box>
       <TreatmentTable treatments={treatments} onTreatmentDeleted={handleDeleteTreatment} onOpenModal={handleOpenModal} />
