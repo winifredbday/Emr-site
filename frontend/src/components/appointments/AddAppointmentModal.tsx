@@ -36,7 +36,7 @@ interface AddAppointmentModalProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (appointmentData: any) => void;
-  preselectedDoctor?: string | null;
+  preselectedDoctor?: Doctor;
   patientFirstName?: string;
   patientLastName?: string;
 }
@@ -52,13 +52,13 @@ export default function AddAppointmentModal({
   const [patients, setPatients] = React.useState<Patient[]>([]);
   const [doctors, setDoctors] = React.useState<Doctor[]>([]);
   const [treatments, setTreatments] = React.useState<Treatment[]>([]);
-  const [selectedPatient, setSelectedPatient] = React.useState<string | null>('');
-  const [selectedDoctor, setSelectedDoctor] = React.useState<string | null>(preselectedDoctor || null);
+  const [selectedPatient, setSelectedPatient] = React.useState<Patient>();
+  const [selectedDoctor, setSelectedDoctor] = React.useState<Doctor>();
   const [selectedTreatment, setSelectedTreatment] = React.useState<string | null>(null);
   const [price, setPrice] = React.useState<number | string>('');
   const [firstName, setFirstName] = React.useState<string>(patientFirstName || '');
   const [lastName, setLastName] = React.useState<string>(patientLastName || '');
-  const [time, setTime] = React.useState<string>('');
+  const [date, setDate] = React.useState<string>('');
   const [alert, setAlert] = React.useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const isReadOnly = firstName !== '' && lastName !== '';
 
@@ -67,7 +67,7 @@ export default function AddAppointmentModal({
     axios.get('http://localhost:8000/accounts/patients/')
         .then(response => {
             setPatients(response.data.map((patient: any) => ({
-                value: patient.id,
+                id: patient.id,
                 label: `${patient.user.firstname} ${patient.user.lastname}`,
             })));
         })
@@ -77,7 +77,7 @@ export default function AddAppointmentModal({
     axios.get('http://localhost:8000/accounts/staff')
     .then(response => {
         setDoctors(response.data.map((doc: any) => ({
-            value: doc.id,
+            id: doc.id,
             label: `Dr. ${doc.user.firstname} ${doc.user.lastname}`,
             
         })));
@@ -114,13 +114,13 @@ export default function AddAppointmentModal({
 
   const handleFormSubmit = async () => {
     const appointmentData = {
-      doctor: selectedDoctor,
+      staff: selectedDoctor?.id,
       treatment: selectedTreatment,
       price: price,
-      time: time,
-      patient: selectedPatient
+      appointment_date: date,
+      patient: selectedPatient?.id
     };
-   
+    console.log(appointmentData)
     try {
       const response = await axios.post('http://localhost:8000/clinic/appointments/add/', appointmentData);
       // onAddTreatment(response.data);
@@ -128,11 +128,17 @@ export default function AddAppointmentModal({
       setAlert({ message: 'Treatment added successfully!', type: 'success' });
       onSubmit(appointmentData);
       setTimeout(() => {
-        setSelectedDoctor('')
-        setSelectedPatient('')
+        setSelectedDoctor({
+          id: '',
+          label: '',
+        })
+        setSelectedPatient({
+          id: '',
+          label: '',
+        })
         setSelectedTreatment('')
         setPrice('')
-        setTime('')
+        setDate('')
 
         onClose();
       }, 3000);
@@ -172,9 +178,12 @@ export default function AddAppointmentModal({
                     <FormLabel>Patient</FormLabel>
                     <Autocomplete
                       value={selectedPatient}
-                      onChange={(event, newValue) => setSelectedPatient(newValue)}
+                      onChange={(event, newValue : any) => setSelectedPatient({
+                        id: newValue.id,
+                        label: newValue.label
+                      })}
                       size="sm"
-                      options={patients.map((option) => option.label)}
+                      options={patients.map((option) => option)}
                       slotProps={{
                         input: {
                           placeholder: 'Select Patient',
@@ -196,9 +205,12 @@ export default function AddAppointmentModal({
                   <FormLabel>Doctor</FormLabel>
                   <Autocomplete
                     value={selectedDoctor}
-                    onChange={(event, newValue) => setSelectedDoctor(newValue)}
+                    onChange={(event, newValue : any) => setSelectedDoctor({
+                      id: newValue.id,
+                      label: newValue.label
+                    })}
                     size="sm"
-                    options={doctors.map((option) => option.label)}
+                    options={doctors.map((option) => option)}
                     slotProps={{
                       input: {
                         placeholder: 'Select doctor',
@@ -231,7 +243,7 @@ export default function AddAppointmentModal({
                 </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Time</FormLabel>
-                  <Input size="sm" type="time" placeholder="Time" value={time} onChange={(e) => setTime(e.target.value)} />
+                  <Input size="sm" type="datetime-local" placeholder="Date" value={date} onChange={(e) => setDate(e.target.value)} />
                 </FormControl>
               </Stack>
 

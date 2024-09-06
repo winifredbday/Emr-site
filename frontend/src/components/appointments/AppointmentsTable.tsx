@@ -22,7 +22,11 @@ import Divider from '@mui/joy/Divider';
 import EventBusyRoundedIcon from '@mui/icons-material/EventBusyRounded';
 import AddAppointmentModal from './AddAppointmentModal';
 
-
+interface Doctor {
+    id: string;
+    label: string;
+  
+  }
 interface Patient {
     firstName: string;
     lastName: string;
@@ -76,22 +80,27 @@ interface AppointmentsTableProps {
 export default function AppointmentsTable({ listItems, onSubmitAppointment }: AppointmentsTableProps) {
    
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
+    const [selectedDoctor, setSelectedDoctor] = useState<Doctor>();
 
     const handleAddAppointment = (doctor: string) => {
-        setSelectedDoctor(doctor);
+        setSelectedDoctor({
+            id: doctor,
+            label: doctor});
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setSelectedDoctor(null);
+        setSelectedDoctor({
+            id: '',
+            label: ''
+        });
     };
 
-    const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    //const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
     const handleSubmitAppointment = (newAppointment: Appointment) => {
-        newAppointment.id = generateId();
+        // newAppointment.id = generateId();
         
         onSubmitAppointment(newAppointment);
 

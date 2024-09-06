@@ -135,7 +135,7 @@ export default function Appointments(){
             updatedItems = [
                 ...prevItems,
                 {
-                  id: newAppointment.id + '_id', // Generate or fetch proper ID
+                  id: newAppointment.id, // Generate or fetch proper ID
                   doctor: newAppointment.doctor,
                   avatar: '', // Provide default or fetched avatar
                   available: '', // Provide default or fetched availability
