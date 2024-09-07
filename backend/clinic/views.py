@@ -70,3 +70,10 @@ def create_appointment(request):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response(appointment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def list_appointments(request):
+    appointments = Appointment.objects.all()
+    serializer = AppointmentSerializer(appointments, many=True)
+    return Response(serializer.data)

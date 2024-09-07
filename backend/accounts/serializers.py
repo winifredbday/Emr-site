@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import UserAccount, Patient, Staff
 from django.contrib.auth.hashers import make_password
-
+from clinic.serializers import AppointmentSerializer
 class UserAccountSerializer(serializers.ModelSerializer):
     password_confirm = serializers.CharField(write_only=True)
 
@@ -45,6 +45,26 @@ class PatientListSerializer(serializers.ModelSerializer):
 class StaffSerializer(serializers.ModelSerializer):
     user = UserAccountSerializer()
     avatar = serializers.SerializerMethodField()
+    appointments = AppointmentSerializer(many=True)
+    class Meta:
+        model = Staff
+        fields = '__all__'
+        extra_kwargs = {
+            'avatar': {'required': True}
+        }
+    
+    def get_avatar(self, obj):
+        if obj.avatar:
+            request = self.context.get('request')
+            if request is not None:
+                return request.build_absolute_uri(obj.avatar.url)
+            return obj.avatar.url
+        return None
+    
+class DoctorSerializer(serializers.ModelSerializer):
+    user = UserAccountSerializer()
+    avatar = serializers.SerializerMethodField()
+    appointments = AppointmentSerializer(many=True)
     class Meta:
         model = Staff
         fields = '__all__'

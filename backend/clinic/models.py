@@ -23,7 +23,7 @@ class Treatment(models.Model):
 class Appointment(models.Model):
     
     patient = models.ForeignKey(
-        Patient, on_delete=models.CASCADE, related_name='appointments')
+        Patient, on_delete=models.CASCADE, related_name='patients')
     staff = models.ForeignKey(
         Staff, on_delete=models.CASCADE, related_name='staff')
     treatment = models.ForeignKey(

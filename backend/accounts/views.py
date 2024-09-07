@@ -120,6 +120,18 @@ def list_staff(request):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def list_doctors(request):
+    try:
+        staff = Staff.objects.filter(group__in=['medical', 'allied-health'])
+        print(staff)
+        serializer = DoctorSerializer(staff, many=True, context={'request': request})
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 class SignInView(ObtainAuthToken):
     permission_classes = [AllowAny]
 
