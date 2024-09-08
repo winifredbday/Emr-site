@@ -10,13 +10,13 @@ import AppointmentsTable from '../../components/appointments/AppointmentsTable';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddAppointmentModal from '../../components/appointments/AddAppointmentModal';
-
+import axios from 'axios'
 interface Appointment {
   id: string;
-  time: string;
+  appointment_date: string;
   treatment: string;
   price: number;
-  doctor: string;
+  staff: string;
   patient: {
     firstName: string;
     lastName: string;
@@ -25,89 +25,58 @@ interface Appointment {
 
 interface Doctor {
   id: string;
-  doctor: string;
+  staff: string;
   avatar: string;
   available: string;
   appointments: Appointment[];
 }
 
-const initialListItems = [
-  {
-      id: 'STF-001',
-      doctor: 'Dr. James Hayford',
-      avatar: '/user/avatar.jpg',
-      available: 'yes',
-      appointments: [
-          {
-              id: 'APT-001',
-              time: '09:00 AM - 10:00 AM', 
-              treatment: 'Full Medical Checkup',
-              price: 150,
-              doctor: 'Dr. James Hayford',
-              patient: { firstName: 'Trudy', lastName: 'Jackson' }
-          },
-          {
-              id: 'APT-002',
-              time: '12:00 PM - 01:00 PM', 
-              treatment: 'Teeth Cleaning',
-              price: 200,
-              doctor: 'Dr. James Hayford',
-              patient: { firstName: 'James', lastName: '' }
-          },
-          {
-              id: 'APT-003',
-              time: '12:00 PM - 01:00 PM', 
-              treatment: 'Lab Analysis',
-              price: 300,
-              doctor: 'Dr. James Hayford',
-              patient: { firstName: 'James', lastName: 'McGriffen' }
-          }
-      ]
-  },
-  // {
-  //     id: 'STF-002',
-  //     doctor: 'Dr. Harley Quinzel',
-  //     avatar: '/user/avatar.jpg',
-  //     available: 'yes',
-  //     appointments: [
-  //         {
-  //             id: 'APT-004',
-  //             time: '09:00 AM - 10:00 AM', 
-  //             treatment: 'Full Medical Checkup',
-  //             price: 150,
-  //             doctor: 'Dr. Harley Quinzel',
-  //             patient: { firstName: 'Trudy', lastName: 'Jackson' }
-  //         },
-  //         {
-  //             id: 'APT-005',
-  //             time: '12:00 PM - 01:00 PM', 
-  //             treatment: 'Teeth Cleaning',
-  //             price: 200,
-  //             doctor: 'Dr. Harley Quinzel',
-  //             patient: { firstName: 'James', lastName: 'McGriffen' }
-  //         }
-  //     ]
-  // },
-  // {
-  //     id: 'STF-003',
-  //     doctor: 'Dr. Michael Kelso',
-  //     avatar: '/user/avatar.jpg',
-  //     available: 'no',
-  //     appointments: []
-  // },
-  // {
-  //     id: 'STF-004',
-  //     doctor: 'Dr. Jackie Burkhart',
-  //     avatar: '/user/avatar.jpg',
-  //     available: 'yes',
-  //     appointments: []
-  // }
-];
+
 
 export default function Appointments(){
     const [modalOpen, setModalOpen] = React.useState<boolean>(false);
-    const [listItems, setListItems] = React.useState<Doctor[]>(initialListItems);
+    const [listItems, setListItems] = React.useState<Doctor[]>([]);
 
+     // Fetch data from the backend on component mount
+    React.useEffect(() => {
+    axios.get('http://localhost:8000/accounts/doctors/')
+        .then(response => {
+            const fetchedAppointments: Doctor[] = response.data.map((doctor: any) => ({
+                id: doctor.id,
+                staff: `Dr. ${doctor.user.firstname} ${doctor.user.lastname}`,
+                avatar: doctor.avatar || '/user/default-avatar.jpg', // Assuming the API returns an avatar or fallback to a default
+                available: doctor.available,
+                appointments: doctor.appointments.map((appointment: any) => {
+                  const formattedDate = new Date(appointment.appointment_date).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  });
+
+                  const formattedTime = new Date(appointment.appointment_date).toLocaleTimeString('en-US', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true,  // Use 'false' for 24-hour format
+                  });
+                  return {
+                    id: appointment.id,
+                    appointment_date: `${formattedDate} at ${formattedTime}`,
+                    treatment: appointment.treatment.name,
+                    price: appointment.price,
+                    staff: `Dr. ${doctor.user.firstname} ${doctor.user.lastname}`,
+                    patient: {
+                        firstName: appointment.patient.firstName,
+                        lastName: appointment.patient.lastName,
+                    },
+                }
+            }),
+            }));
+            setListItems(fetchedAppointments);
+        })
+        .catch(error => console.error('Error fetching appointments:', error));
+    }, []);
+    console.log("Hydrus", listItems)
     const handleOpen = () => setModalOpen(true);
     const handleClose = () => setModalOpen(false);
 
@@ -116,13 +85,13 @@ export default function Appointments(){
       setListItems(prevItems => {
         console.log("Previous Items:", prevItems);
 
-        const doctorExists = prevItems.some(item => item.doctor === newAppointment.doctor);
+        const doctorExists = prevItems.some(item => item.staff === newAppointment.staff);
         let updatedItems;
 
         if (doctorExists) {
           // If doctor exists, update appointments
           updatedItems = prevItems.map(item => {
-              if (item.doctor === newAppointment.doctor) {
+              if (item.staff === newAppointment.doctor) {
                   return {
                       ...item,
                       appointments: [...item.appointments, newAppointment]
@@ -136,7 +105,7 @@ export default function Appointments(){
                 ...prevItems,
                 {
                   id: newAppointment.id, // Generate or fetch proper ID
-                  doctor: newAppointment.doctor,
+                  staff: newAppointment.doctor,
                   avatar: '', // Provide default or fetched avatar
                   available: '', // Provide default or fetched availability
                   appointments: [newAppointment]

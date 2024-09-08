@@ -14,7 +14,7 @@ import DialogContent from '@mui/joy/DialogContent';
 import ModalClose from '@mui/joy/ModalClose';
 import Select from '@mui/joy/Select';
 import Autocomplete from '@mui/joy/Autocomplete';
-
+import AlertVariousStates from '../../components/AlertVariousStates';
 interface Patient {
   id: string;
   label: string;
@@ -53,8 +53,8 @@ export default function AddAppointmentModal({
   const [doctors, setDoctors] = React.useState<Doctor[]>([]);
   const [treatments, setTreatments] = React.useState<Treatment[]>([]);
   const [selectedPatient, setSelectedPatient] = React.useState<Patient>();
-  const [selectedDoctor, setSelectedDoctor] = React.useState<Doctor>();
-  const [selectedTreatment, setSelectedTreatment] = React.useState<string | null>(null);
+  const [selectedDoctor, setSelectedDoctor] = React.useState<Doctor | undefined>(preselectedDoctor);
+  const [selectedTreatment, setSelectedTreatment] = React.useState<Treatment | null>(null);
   const [price, setPrice] = React.useState<number | string>('');
   const [firstName, setFirstName] = React.useState<string>(patientFirstName || '');
   const [lastName, setLastName] = React.useState<string>(patientLastName || '');
@@ -63,7 +63,7 @@ export default function AddAppointmentModal({
   const isReadOnly = firstName !== '' && lastName !== '';
 
   React.useEffect(() => {
-    // Fetch doctors
+    // Fetch patients
     axios.get('http://localhost:8000/accounts/patients/')
         .then(response => {
             setPatients(response.data.map((patient: any) => ({
@@ -74,7 +74,7 @@ export default function AddAppointmentModal({
         .catch(error => console.error('Error fetching patients:', error));
 
     // Fetch doctors
-    axios.get('http://localhost:8000/accounts/staff')
+    axios.get('http://localhost:8000/accounts/doctors/')
     .then(response => {
         setDoctors(response.data.map((doc: any) => ({
             id: doc.id,
@@ -97,6 +97,7 @@ export default function AddAppointmentModal({
   
   React.useEffect(() => {
     if (preselectedDoctor) {
+      console.log(preselectedDoctor)
       setSelectedDoctor(preselectedDoctor);
     }
   }, [preselectedDoctor]);
@@ -107,57 +108,46 @@ export default function AddAppointmentModal({
   }, [patientFirstName, patientLastName]);
 
   const handleTreatmentChange = (event: any, newValue: string | null) => {
-    setSelectedTreatment(newValue);
-    const treatment = treatments.find((t) => t.value === newValue);
-    setPrice(treatment?.price || '');
+    const selected = treatments.find(treatment => treatment.value === newValue) || null;
+    setSelectedTreatment(selected);
+    setPrice(selected?.price || '');
   };
 
   const handleFormSubmit = async () => {
     const appointmentData = {
-      staff: selectedDoctor?.id,
-      treatment: selectedTreatment,
-      price: price,
-      appointment_date: date,
-      patient: selectedPatient?.id
+        staff: selectedDoctor?.id,
+        treatment: selectedTreatment?.value,
+        appointment_date: date,
+        patient: selectedPatient?.id,
+        price: selectedTreatment?.price
     };
     console.log(appointmentData)
     try {
-      const response = await axios.post('http://localhost:8000/clinic/appointments/add/', appointmentData);
-      // onAddTreatment(response.data);
+        const response = await axios.post('http://localhost:8000/clinic/appointments/add/', appointmentData);
+        console.log('Appointment created:', response.data);
 
-      setAlert({ message: 'Treatment added successfully!', type: 'success' });
-      onSubmit(appointmentData);
-      setTimeout(() => {
-        setSelectedDoctor({
-          id: '',
-          label: '',
-        })
-        setSelectedPatient({
-          id: '',
-          label: '',
-        })
-        setSelectedTreatment('')
-        setPrice('')
-        setDate('')
+        // Notify parent or update state here
+        onSubmit(response.data);
+        
+        // Clear form fields
+        setSelectedDoctor(undefined);
+        setSelectedPatient(undefined);
+        setSelectedTreatment(null);
+        setPrice('');
+        setDate('');
 
+        // Close modal
         onClose();
-      }, 3000);
-      window.location.reload()
-  } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-          const errorData = error.response.data;
-          console.error('Error data:', errorData); // Log error for debugging
-          if (typeof errorData === 'object') {
-              const errorMessages = Object.entries(errorData).map(([key, value]) => `${key}: ${value}`).join('. ');
-              setAlert({ message: `Error: ${errorMessages}`, type: 'error' });
-          } else {
-              setAlert({ message: 'An unexpected error occurred', type: 'error' });
-          }
-      } else {
-          setAlert({ message: 'Network error', type: 'error' });
-      }
-  }
-  };
+        window.location.reload()
+    } catch (error) {
+        console.error('Error creating appointment:', error);
+        setAlert({ 
+            message: 'An error occurred while creating the appointment', 
+            type: 'error' 
+        });
+    }
+};
+
 
   return (
     <React.Fragment>
@@ -167,7 +157,12 @@ export default function AddAppointmentModal({
             Add Appointment
             <ModalClose variant="plain" sx={{ m: 1 }} />
           </DialogTitle>
-
+          {alert && (
+          <AlertVariousStates
+            message={alert.message}
+            type={alert.type}
+          />
+        )}
           <DialogContent sx={{ marginTop: '1rem', pb: { xs: '1rem' } }}>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
               <Stack spacing={1}>
@@ -210,7 +205,7 @@ export default function AddAppointmentModal({
                       label: newValue.label
                     })}
                     size="sm"
-                    options={doctors.map((option) => option)}
+                    options={doctors}
                     slotProps={{
                       input: {
                         placeholder: 'Select doctor',
@@ -224,8 +219,8 @@ export default function AddAppointmentModal({
                   <Select
                     size="sm"
                     placeholder="Select Treatment"
-                    value={selectedTreatment}
-                    onChange={handleTreatmentChange}
+                    value={selectedTreatment?.value || ''}
+                    onChange={(event, newValue) => handleTreatmentChange(event, newValue)}
                   >
                     {treatments.map((treatment) => (
                       <Option key={treatment.value} value={treatment.value}>

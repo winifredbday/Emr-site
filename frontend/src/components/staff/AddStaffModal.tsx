@@ -253,7 +253,8 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
   formDataToSend.append('assigned_treatment', formData.assignedTreatment);
   formDataToSend.append('gender', formData.gender);
   formDataToSend.append('date_of_birth', formData.dateOfBirth);
-    formDataToSend.append('working_days', JSON.stringify(Object.keys(selectedDays).filter(day => selectedDays[day])));
+  formDataToSend.append('group', formData.group);
+  formDataToSend.append('working_days', JSON.stringify(Object.keys(selectedDays).filter(day => selectedDays[day])));
 
     // Include avatar if present
     if (formData.avatar) {
@@ -262,6 +263,7 @@ export default function AddStaffModal({ open, onClose }: AddStaffModalProps) {
       
     const token = localStorage.getItem('token');
 
+    console.log(formDataToSend)
     try {
       const response = await axios.post('http://localhost:8000/accounts/staff/create/', 
         formDataToSend,

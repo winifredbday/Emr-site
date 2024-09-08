@@ -33,23 +33,23 @@ interface Patient {
 }
 interface Appointment {
     id: string;
-    doctor: string;
+    staff: string;
     treatment: string;
     price: number;
-    time: string;
+    appointment_date: string;
     patient: Patient;
 }
   
 interface DoctorItem {
     id: string;
-    doctor: string;
+    staff: string;
     avatar: string;
     available: string;
     appointments: Appointment[];
 }
 
   
-function RowMenu({ onAddAppointment }: { onAddAppointment: () => void }) {
+function RowMenu({ doctor, onAddAppointment }: { doctor: DoctorItem; onAddAppointment: (doctor: DoctorItem) => void }) {
     return (
         <Dropdown>
             <MenuButton
@@ -59,7 +59,7 @@ function RowMenu({ onAddAppointment }: { onAddAppointment: () => void }) {
                 <MoreHorizRoundedIcon />
             </MenuButton>
             <Menu size="sm" sx={{ minWidth: 140 }}>
-                <MenuItem onClick={onAddAppointment}>
+                <MenuItem onClick={() => onAddAppointment(doctor)}>
                     <AddRoundedIcon /> 
                     Add Appointment
                 </MenuItem>
@@ -80,40 +80,32 @@ interface AppointmentsTableProps {
 export default function AppointmentsTable({ listItems, onSubmitAppointment }: AppointmentsTableProps) {
    
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedDoctor, setSelectedDoctor] = useState<Doctor>();
+    const [selectedDoctor, setSelectedDoctor] = useState<Doctor | undefined>(undefined);
 
-    const handleAddAppointment = (doctor: string) => {
+    const handleAddAppointment = (doctor: DoctorItem) => {
+        console.log("Handle Add Appointment Called with Doctor:", doctor);
         setSelectedDoctor({
-            id: doctor,
-            label: doctor});
+            id: doctor.id,
+            label: doctor.staff
+        });
         setIsModalOpen(true);
     };
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setSelectedDoctor({
-            id: '',
-            label: ''
-        });
+        setSelectedDoctor(undefined);
     };
 
-    //const generateId = () => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-
     const handleSubmitAppointment = (newAppointment: Appointment) => {
-        // newAppointment.id = generateId();
-        
+        console.log("New Appointment Submitted:", newAppointment);
         onSubmitAppointment(newAppointment);
-
         handleCloseModal();
     };
 
+    console.log("List Items:", listItems);
+    console.log("Selected Doctor:", selectedDoctor);
 
-    const treatmentLabels: { [key: string]: string} = {
-        'notreatment': 'No Treatment Available',
-        
-    }
     return (
-
         <>
             <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ mt: 1, height: '100%', display: 'flex', flexDirection: 'column'}}>
                 <TabList 
@@ -144,23 +136,22 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                 </TabList>
                 <TabPanel value={0} sx={{ p: 0}}>
                     <Box sx={{ display: 'flex', gap: 1, p: 1, flexWrap: 'wrap', height: '100%'}}>
-                        {listItems.map((listItem) => (
-                            <Box key={listItem.id} sx={{ display: 'flex', flexDirection: 'column', minWidth: '295px', width: {xs: '100%', sm: 'fit-content'}, p: 1, maxHeight: '50vh', position: 'relative' }}>
+                        {listItems.map((doctor) => (
+                            <Box key={doctor.id} sx={{ display: 'flex', flexDirection: 'column', minWidth: '295px', width: {xs: '100%', sm: 'fit-content'}, p: 1, maxHeight: '50vh', position: 'relative' }}>
                                 <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                                    <Avatar size="sm" src={listItem.avatar} />
+                                    <Avatar size="sm" src={doctor.avatar} />
                                     <div>
-                                        <Typography sx={{ fontSize: '14px', fontWeight: 'bold' }}>{listItem.doctor}</Typography>
+                                        <Typography sx={{ fontSize: '14px', fontWeight: 'bold' }}>{doctor.staff}</Typography>
                                         <Typography sx={{ fontSize: '10px' }}>
-                                            Today's appointments: <Typography component="b">{listItem.appointments.length} patient(s)</Typography>
+                                            Today's appointments: <Typography component="b">{doctor.appointments.length} patient(s)</Typography>
                                         </Typography>
                                     </div>
-                                    <RowMenu onAddAppointment={() => handleAddAppointment(listItem.doctor)} />
+                                    <RowMenu doctor={doctor} onAddAppointment={handleAddAppointment} />
                                 </Box>
                                 <Box 
                                     sx={{
                                         mt: 1, 
                                         height: '100%', 
-                                       
                                         overflowY: 'scroll', 
                                         position: 'relative',
                                         pr: 2,
@@ -171,26 +162,26 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                                             backgroundColor: 'transparent', 
                                         },
                                         '&::-webkit-scrollbar-thumb': {
-                                            backgroundColor: '#888', // Customize the scrollbar thumb color
-                                            borderRadius: '10px', // Make the scrollbar thumb rounded
+                                            backgroundColor: '#888',
+                                            borderRadius: '10px',
                                         },
                                         '&::-webkit-scrollbar-thumb:hover': {
-                                            backgroundColor: '#555', // Darker color on hover
+                                            backgroundColor: '#555',
                                         },
                                     }}
                                 >
-                                    {listItem.available === 'no' ? (
+                                    {doctor.available === 'no' ? (
                                         <Box sx={{ background: 'rgba(0,41,150,0.2)', p: 1, mt: 1, borderRadius: '10px', height: '98px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             <Typography level="body-md" sx={{ fontWeight: 'bold' }}>NOT AVAILABLE</Typography>
                                         </Box>
                                     ) : (
-                                        listItem.appointments.map((appointment, index) => (
+                                        doctor.appointments.map((appointment, index) => (
                                             <Box key={appointment.id} sx={{ p: 1, mt: 1, background: index % 2 === 0 ? 'rgba(155,220,150,0.36)' : 'rgba(223,84,150,0.11)', borderRadius: '10px' }}>
                                                 <Box>
                                                     <Typography sx={{ fontSize: '13px', fontWeight: 'bold' }}>{appointment.patient.firstName} {appointment.patient.lastName}</Typography>
                                                 </Box>
-                                                <Typography level="body-xs">{appointment.time}</Typography>
-                                                <Typography sx={{ p: 0.8, fontWeight: 'bold', color: 'black', mt: 2, width: 'fit-content', borderRadius: '50px', background: 'white', fontSize: '10px' }}>{treatmentLabels[appointment.treatment] || appointment.treatment}</Typography>
+                                                <Typography level="body-xs">{appointment.appointment_date}</Typography>
+                                                <Typography sx={{ p: 0.8, fontWeight: 'bold', color: 'black', mt: 2, width: 'fit-content', borderRadius: '50px', background: 'white', fontSize: '10px' }}>{appointment.treatment}</Typography>
                                             </Box>
                                         ))
                                     )}
@@ -222,7 +213,6 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                                 size="sm"
                                 sx={{
                                     '--ListItem-paddingX': 0,
-                                    
                                 }}
                             >
                                 <ListItem
@@ -234,7 +224,7 @@ export default function AppointmentsTable({ listItems, onSubmitAppointment }: Ap
                                     <Typography level="body-xs" sx={{ minWidth: 10 }}>{index + 1}</Typography>
                                     <ListItemContent sx={{display: {sm: 'flex'}, gap: 2}}>
                                         <Typography level="body-xs" sx={{ minWidth: {sm : 200} }}>{new Date().toLocaleDateString()}</Typography>
-                                        <Typography level="body-xs" sx={{ minWidth: {sm : 200}, fontWeight: 'bold' }}>{listItem.doctor}</Typography>
+                                        <Typography level="body-xs" sx={{ minWidth: {sm : 200}, fontWeight: 'bold' }}>{listItem.staff}</Typography>
                                         <Typography level="body-xs" sx={{ minWidth: {sm : 200} }}>{listItem.appointments[listItem.appointments.length - 1]?.treatment}</Typography>
                                     </ListItemContent>
                                 </ListItem>

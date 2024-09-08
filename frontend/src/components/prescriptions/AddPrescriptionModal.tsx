@@ -14,16 +14,19 @@ import ModalClose from '@mui/joy/ModalClose';
 import Autocomplete from '@mui/joy/Autocomplete';
 import IconButton from '@mui/joy/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import axios from 'axios'
 
-const doctors = [
-  { value: 'olivia', label: 'Dr. Olivia Rhye' },
-  { value: 'steve', label: 'Dr. Steve Hampton' },
-  { value: 'ciaran', label: 'Dr. Ciaran Murray' },
-  { value: 'marina', label: 'Dr. Marina Macdonald' },
-  { value: 'charles', label: 'Dr. Charles Fulton' },
-  { value: 'jay', label: 'Dr. Jay Hoper' },
-];
 
+interface Patient {
+  id: string;
+  label: string;
+}
+
+interface Doctor {
+  id: string;
+  label: string;
+
+}
 interface Prescription {
   name: string;
   direction: string;
@@ -32,11 +35,13 @@ interface Prescription {
   total_price: number;
 }
 
-interface AddAppointmentModalProps {
+interface AddPrescriptionModalProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (formData: any) => void;
-  preselectedDoctor?: string | null;
+  preselectedDoctor?: Doctor;
+  patientFirstName?: string;
+  patientLastName?: string;
 }
 
 export default function AddPrescriptionModal({
@@ -44,8 +49,13 @@ export default function AddPrescriptionModal({
   onClose,
   onSubmit,
   preselectedDoctor,
-}: AddAppointmentModalProps) {
-  const [selectedDoctor, setSelectedDoctor] = React.useState<string | null>(preselectedDoctor || null);
+  patientFirstName = '',
+  patientLastName = ''
+}: AddPrescriptionModalProps) {
+  const [patients, setPatients] = React.useState<Patient[]>([]);
+  const [doctors, setDoctors] = React.useState<Doctor[]>([]);
+  const [selectedPatient, setSelectedPatient] = React.useState<Patient>();
+  const [selectedDoctor, setSelectedDoctor] = React.useState<Doctor | undefined>(preselectedDoctor);
   const [firstName, setFirstName] = React.useState<string>('');
   const [lastName, setLastName] = React.useState<string>('');
   const [name, setName] = React.useState<string>('');
@@ -53,12 +63,42 @@ export default function AddPrescriptionModal({
   const [quantity, setQuantity] = React.useState<number>(1);
   const [unitPrice, setUnitPrice] = React.useState<number>(0);
   const [prescriptions, setPrescriptions] = React.useState<Prescription[]>([]);
+  const [alert, setAlert] = React.useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  React.useEffect(() => {
+    // Fetch patients
+    axios.get('http://localhost:8000/accounts/patients/')
+        .then(response => {
+            setPatients(response.data.map((patient: any) => ({
+                id: patient.id,
+                label: `${patient.user.firstname} ${patient.user.lastname}`,
+            })));
+        })
+        .catch(error => console.error('Error fetching patients:', error));
+
+    // Fetch doctors
+    axios.get('http://localhost:8000/accounts/doctors/')
+    .then(response => {
+        setDoctors(response.data.map((doc: any) => ({
+            id: doc.id,
+            label: `Dr. ${doc.user.firstname} ${doc.user.lastname}`,
+            
+        })));
+    })
+    .catch(error => console.error('Error fetching doctors:', error));
+    
+  }, []);
 
   React.useEffect(() => {
     if (preselectedDoctor) {
       setSelectedDoctor(preselectedDoctor);
     }
   }, [preselectedDoctor]);
+
+  React.useEffect(() => {
+    setFirstName(patientFirstName);
+    setLastName(patientLastName);
+  }, [patientFirstName, patientLastName]);
 
   const handleAddPrescription = () => {
     if (name && direction && quantity > 0 && unitPrice > 0) {
@@ -89,17 +129,49 @@ export default function AddPrescriptionModal({
 
   const isAddButtonDisabled = !name || !direction || quantity <= 0 || unitPrice <= 0;
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
+    // Prepare the form data
     const formData = {
-      doctor: selectedDoctor,
-      patient: {
-        firstName: firstName,
-        lastName: lastName,
-      },
-      prescriptions,
+        doctor: selectedDoctor?.id,  // Assuming you're sending doctor ID
+        patient: selectedPatient?.id, // Assuming you're sending patient ID
+        prescriptions: prescriptions.map(prescription => ({
+            name: prescription.name,
+            direction: prescription.direction,
+            quantity: prescription.quantity,
+            unit_price: prescription.unit_price,
+            total_price: prescription.total_price,
+        })),
     };
-    onSubmit(formData); // Call the onSubmit function with form data
-  };
+
+    try {
+        // Send the form data to the backend
+        const response = await axios.post('http://localhost:8000/clinic/prescriptions/add/', formData);
+        console.log('Prescription created:', response.data);
+
+        // Call the onSubmit prop to notify the parent component (if needed)
+        onSubmit(response.data);
+
+        // Clear form fields and close the modal
+        setSelectedDoctor(undefined);
+        setSelectedPatient(undefined);
+        setPrescriptions([]);
+        setName('');
+        setDirection('');
+        setQuantity(1);
+        setUnitPrice(0);
+        onClose();
+        
+        // Optionally, reload the page or update the UI
+        window.location.reload();
+    } catch (error) {
+        console.error('Error creating prescription:', error);
+        setAlert({
+            message: 'An error occurred while creating the prescription',
+            type: 'error',
+        });
+    }
+};
+
 
   return (
     <React.Fragment>
@@ -112,38 +184,35 @@ export default function AddPrescriptionModal({
 
           <DialogContent sx={{ marginTop: '1rem' }}>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <Stack spacing={1}>
-                <FormLabel>Patient</FormLabel>
-                <Box sx={{ display: 'flex', flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
-                  <FormControl sx={{flexGrow: 1}}>
-                    <Input
-                      size="sm"
-                      placeholder="First name"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)} // Capture first name
-                    />
-                  </FormControl>
-                  <FormControl sx={{flexGrow: 1}}>
-                    <Input
-                      size="sm"
-                      placeholder="Last name"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)} // Capture last name
-                      sx={{ flexGrow: 1 }}
-                    />
-                  </FormControl>
-                </Box>
-              </Stack>
-
-              <Stack spacing={1} direction={{ sm: 'row' }} flexWrap="wrap" sx={{ gap: 2 }}>
+              <Stack sx={{ display: 'flex', flexGrow: 1, flexDirection: { sm: 'row', xs: 'column', md: 'row' }, gap: 2 }}>
+                <FormControl sx={{ flexGrow: 1 }}>
+                  <FormLabel>Patient</FormLabel>
+                  <Autocomplete
+                        value={selectedPatient}
+                        onChange={(event, newValue : any) => setSelectedPatient({
+                          id: newValue.id,
+                          label: newValue.label
+                        })}
+                        size="sm"
+                        options={patients.map((option) => option)}
+                        slotProps={{
+                          input: {
+                            placeholder: 'Select Patient',
+                          },
+                        }}
+                      />
+                </FormControl>
                 <FormControl sx={{ flexGrow: 1 }}>
                   <FormLabel>Doctor</FormLabel>
                   <Autocomplete
                     value={selectedDoctor}
-                    onChange={(event, newValue) => setSelectedDoctor(newValue)}
+                    onChange={(event, newValue: any) => setSelectedDoctor({
+                      id: newValue.id,
+                      label: newValue.label
+                    })}
                     size="sm"
-                    sx={{ width: '48%' }}
-                    options={doctors.map((option) => option.label)}
+                    
+                    options={doctors}
                     slotProps={{
                       input: {
                         placeholder: 'Select doctor',
@@ -151,6 +220,10 @@ export default function AddPrescriptionModal({
                     }}
                   />
                 </FormControl>
+              </Stack>
+
+              <Stack spacing={1} direction={{ sm: 'row' }} flexWrap="wrap" sx={{ gap: 2 }}>
+                
               </Stack>
 
               {/* Prescription Box */}
