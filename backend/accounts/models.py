@@ -149,7 +149,7 @@ class Staff(models.Model):
     assigned_treatment = models.TextField(blank=True)
     working_days = models.JSONField()
     available = models.CharField(choices=AVAILABILITY_CHOICES, default="yes", blank=True, max_length=20)
-    appointments = models.ManyToManyField('clinic.Appointment', related_name='doctors')
+    appointments = models.ManyToManyField('clinic.Appointment', related_name='appointments', blank=True)
     created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:

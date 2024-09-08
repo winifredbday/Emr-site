@@ -5,6 +5,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 from .models import *
 from .serializers import *
+from django.http import JsonResponse
 
 # Treatments 
 @api_view(['POST'])
@@ -55,21 +56,45 @@ def delete_treatment(request, id):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def create_appointment(request):
-    appointment_data = request.data
+    try:
+        # Extract patient and treatment data from the request
+        patient_data = request.data.get('patient')
+        treatment_data = request.data.get('treatment')
+        staff_data = request.data.get('staff')
+        appointment_date = request.data.get('appointment_date')
+        # Assuming patient_data contains the patient's ID or some unique identifier
+        if not patient_data or not treatment_data:
+            return Response({"detail": "Patient and treatment data are required."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Retrieve the patient and treatment instances from the database
+        patient = Patient.objects.get(id=patient_data)  # Use the appropriate field to retrieve the patient
+        treatment = Treatment.objects.get(id=treatment_data)  # Use the appropriate field to retrieve the treatment
+        staff = Staff.objects.get(id=staff_data)
+        # Create the Appointment instance
+        appointment = Appointment.objects.create(
+            patient=patient,
+            treatment=treatment,
+            staff=staff,
+            appointment_date=appointment_date,
+            price=treatment.price
+        )
 
-    # Serialize the treatment data
-    appointment_serializer = AppointmentSerializer(data=appointment_data)
+        staff.appointments.add(appointment)
+        staff.save()
+        # Serialize the appointment for the response
+        return Response({"detail": "Appointment created successfully."}, status=status.HTTP_201_CREATED)
     
-    if appointment_serializer.is_valid():
-        try:
-            with transaction.atomic():
-                # Create the Appointment.
-                appointment_serializer.save()
-                return Response({'message': 'Appointment. created successfully'}, status=status.HTTP_201_CREATED)
-        except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    else:
-        return Response(appointment_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Patient.DoesNotExist:
+        return Response({"detail": "Patient not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    except Treatment.DoesNotExist:
+        return Response({"detail": "Treatment not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    except Staff.DoesNotExist:
+        return Response({"detail": "Staff member not found."}, status=status.HTTP_404_NOT_FOUND)
+    
+    except Exception as e:
+        return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['GET'])
 @permission_classes([AllowAny])
@@ -77,3 +102,46 @@ def list_appointments(request):
     appointments = Appointment.objects.all()
     serializer = AppointmentSerializer(appointments, many=True)
     return Response(serializer.data)
+
+
+#Prescriptions
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def create_prescription(request):
+    try:
+        data = request.data
+        
+        # Extract and validate doctor and patient
+        doctor_id = data.get('doctor')
+        patient_id = data.get('patient')
+
+        if not doctor_id or not patient_id:
+            return JsonResponse({'error': 'Doctor and Patient fields are required.'}, status=400)
+        
+        try:
+            doctor = Staff.objects.get(id=doctor_id)
+            patient = Patient.objects.get(id=patient_id)
+        except (Staff.DoesNotExist, Patient.DoesNotExist) as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        
+        # Begin atomic transaction
+        with transaction.atomic():
+            # Create the Prescription
+            prescription = Prescription.objects.create(doctor=doctor, patient=patient)
+            
+            # Extract and create Drug objects
+            drugs_data = data.get('prescriptions', [])
+            for drug_data in drugs_data:
+                Drug.objects.create(
+                    prescription=prescription,
+                    name=drug_data['name'],
+                    direction=drug_data['direction'],
+                    quantity=drug_data['quantity'],
+                    unit_price=drug_data['unit_price'],
+                    total_price=drug_data['total_price']
+                )
+        
+        return JsonResponse({'message': 'Prescription created successfully'}, status=201)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

@@ -9,6 +9,7 @@ urlpatterns = [
     path('treatments/<int:id>/', delete_treatment, name='delete_treatment'), 
     #Appointment endpoints
     path('appointments/', list_appointments, name="list_appointments"),
-    
     path('appointments/add/', create_appointment, name='add_appointments'),
+    #Prescription endpoints
+    path('prescriptions/add/', create_prescription, name="add_prescription")
 ]

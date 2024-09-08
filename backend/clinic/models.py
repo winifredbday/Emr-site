@@ -23,11 +23,11 @@ class Treatment(models.Model):
 class Appointment(models.Model):
     
     patient = models.ForeignKey(
-        Patient, on_delete=models.CASCADE, related_name='patients')
+        Patient, on_delete=models.CASCADE, related_name='appointments')
     staff = models.ForeignKey(
-        Staff, on_delete=models.CASCADE, related_name='staff')
+        Staff, on_delete=models.CASCADE, related_name='appointments_set')
     treatment = models.ForeignKey(
-        Treatment, on_delete=models.CASCADE, related_name='treatment')
+        Treatment, on_delete=models.CASCADE, related_name='appointments')
     appointment_date = models.DateTimeField(blank=True, null=True)
     price= models.IntegerField(blank=True, null=True)
 
@@ -38,6 +38,25 @@ class Appointment(models.Model):
     def __str__(self):
         return f"Appointment {self.id} for {self.staff.user.firstname} {self.staff.user.lastname} with {self.patient.user.firstname} {self.patient.user.lastname} on {self.appointment_date}"
 
+
+class Prescription(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='prescriptions')
+    doctor = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='prescriptions')
+    date_prescribed = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Prescription for {self.patient} by {self.doctor} on {self.date_prescribed}"
+
+class Drug(models.Model):
+    prescription = models.ForeignKey(Prescription, on_delete=models.CASCADE, related_name='drugs')
+    name = models.CharField(max_length=255)
+    direction = models.TextField()
+    quantity = models.IntegerField()
+    unit_price = models.DecimalField(max_digits=10, decimal_places=2)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.name} ({self.quantity}) for {self.prescription.patient}"
 
 # class Exams(models.Model):
 #     examid = models.AutoField(db_column='examid', primary_key=True)

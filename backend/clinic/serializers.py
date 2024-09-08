@@ -8,6 +8,7 @@ class TreatmentSerializer(serializers.ModelSerializer):
 
         
 
+
 class AppointmentSerializer(serializers.ModelSerializer):
     patient = serializers.SerializerMethodField()
     treatment = TreatmentSerializer()  # Include nested treatment data
@@ -21,3 +22,24 @@ class AppointmentSerializer(serializers.ModelSerializer):
             "lastName": obj.patient.user.lastname,
             # Add more fields if needed
         }
+    
+    
+class DrugSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Drug
+        fields = ['name', 'direction', 'quantity', 'unit_price', 'total_price']
+
+class PrescriptionSerializer(serializers.ModelSerializer):
+    drugs = DrugSerializer(many=True)
+
+    class Meta:
+        model = Prescription
+        fields = ['patient', 'doctor', 'date_prescribed', 'drugs']
+        read_only_fields = ['date_prescribed']
+
+    def create(self, validated_data):
+        drugs_data = validated_data.pop('drugs')
+        prescription = Prescription.objects.create(**validated_data)
+        for drug_data in drugs_data:
+            Drug.objects.create(prescription=prescription, **drug_data)
+        return prescription

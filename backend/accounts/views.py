@@ -94,18 +94,27 @@ def create_staff(request):
             with transaction.atomic():
                 # Save the user
                 user = user_serializer.save()
-
+                print(user.id)
                 # Update staff data to include the user reference
                 staff_data['user'] = user.id
-                staff_serializer = StaffSerializer(data=staff_data)
-                
-                if staff_serializer.is_valid():
-                    staff_serializer.save()
-                    return Response({'message': 'User and staff created successfully'}, status=status.HTTP_201_CREATED)
-                else:
-                    # Rollback user creation if staff creation fails
-                    user.delete()
-                    return Response(staff_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                staff = Staff.objects.create(
+                    user=user,
+                    avatar=avatar,
+                    group=staff_data.get('group'),
+                    date_of_birth=staff_data.get('date_of_birth'),
+                    gender=staff_data.get('gender'),
+                    work_status=staff_data.get('work_status'),
+                    specialization=staff_data.get('specialization'),
+                    assigned_treatment=staff_data.get('assigned_treatment'),
+                    working_days=staff_data.get('working_days'),
+                    
+                    address=staff_data.get('address'),
+                    contact_number=staff_data.get('contact_number'),
+                   
+                    
+                )
+
+                return Response({'message': 'User and staff created successfully'}, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
@@ -126,8 +135,7 @@ def list_staff(request):
 def list_doctors(request):
     try:
         staff = Staff.objects.filter(group__in=['medical', 'allied-health'])
-        print(staff)
-        serializer = DoctorSerializer(staff, many=True, context={'request': request})
+        serializer = StaffSerializer(staff, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
