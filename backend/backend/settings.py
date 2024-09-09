@@ -29,8 +29,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-#CSRF_TRUSTED_ORIGINS = ['https://kkp-luggage.up.railway.app']
+ALLOWED_HOSTS = ["emr-site.vercel.app"]
+CSRF_TRUSTED_ORIGINS = ['https://emr-site.vercel.app']
 
 # Application definition
 
@@ -41,15 +41,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
     'rest_framework',
     'rest_framework.authtoken',
     'accounts',
     'clinic',
-    'corsheaders'
+    'corsheaders',
+    'whitenoise'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -148,14 +152,21 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'hydrus',
+    'API_KEY': '142126968585516',
+    'API_SECRET': 'qt7Miz7sblrP7it9ISViSBVXe8U'
+}
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles', 'static')
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
