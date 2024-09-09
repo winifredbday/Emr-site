@@ -36,7 +36,7 @@ class Appointment(models.Model):
         db_table = 'appointments'
 
     def __str__(self):
-        return f"Appointment {self.id} for {self.staff.user.firstname} {self.staff.user.lastname} with {self.patient.user.firstname} {self.patient.user.lastname} on {self.appointment_date}"
+        return f"Appointment {self.pk} for {self.staff.user.firstname} {self.staff.user.lastname} with {self.patient.user.firstname} {self.patient.user.lastname} on {self.appointment_date}"
 
 
 class Prescription(models.Model):
