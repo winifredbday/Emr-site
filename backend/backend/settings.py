@@ -29,8 +29,8 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["emr-site.vercel.app"]
-CSRF_TRUSTED_ORIGINS = ['https://emr-site.vercel.app']
+ALLOWED_HOSTS = ["emr-site.vercel.app", "emr-backend.up.railway.app"]
+CSRF_TRUSTED_ORIGINS = ['https://emr-site.vercel.app', 'https://emr-backend.up.railway.app']
 
 # Application definition
 
