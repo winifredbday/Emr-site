@@ -83,7 +83,7 @@ interface TreatmentTableProps {
 }
 
 const deleteTreatment = async (id: number) => {
-  await axios.delete(`http://localhost:8000/clinic/treatments/${id}/`);
+  await axios.delete(`https://emr-backend.up.railway.app:8080/clinic/treatments/${id}/`);
 };
 
 const RowMenu: React.FC<{ treatmentId: number; onDelete: (id: number) => void }> = ({ treatmentId, onDelete }) => {

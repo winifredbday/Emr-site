@@ -39,7 +39,7 @@ export default function Appointments(){
 
      // Fetch data from the backend on component mount
     React.useEffect(() => {
-    axios.get('http://localhost:8000/accounts/doctors/')
+    axios.get('https://emr-backend.up.railway.app:8080/accounts/doctors/')
         .then(response => {
             const fetchedAppointments: Doctor[] = response.data.map((doctor: any) => ({
                 id: doctor.id,

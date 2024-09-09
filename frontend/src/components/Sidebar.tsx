@@ -76,7 +76,7 @@ export default function Sidebar() {
       }
 
       const response = await axios.post(
-        'http://localhost:8000/accounts/signout/',
+        'https://emr-backend.up.railway.app:8080/accounts/signout/',
         {},
         {
           headers: {

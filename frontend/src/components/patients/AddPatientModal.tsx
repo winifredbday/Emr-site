@@ -111,7 +111,7 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
     };
     console.log(patientData)
     try {
-      const response = await axios.post('http://localhost:8000/accounts/patients/signup/', patientData);
+      const response = await axios.post('https://emr-backend.up.railway.app:8080/accounts/patients/signup/', patientData);
       setAlert({ message: 'User and patient created successfully!', type: 'success' });
       setTimeout(() => {
         onClose();

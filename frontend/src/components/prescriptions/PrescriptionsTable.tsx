@@ -154,7 +154,7 @@ export default function PrescriptionsTable() {
   const [rows, setRows] = useState<RowData[]>([]);
 
   useEffect(() => {
-    axios.get('http://localhost:8000/clinic/prescriptions/')
+    axios.get('https://emr-backend.up.railway.app:8080/clinic/prescriptions/')
       .then(response => {
         const prescriptions = response.data.map((prescription: any) => {
           const totalAmount = prescription.drugs.reduce((sum: number, drug: any) => sum + parseFloat(drug.total_price), 0);

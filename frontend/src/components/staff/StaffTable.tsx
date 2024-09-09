@@ -245,7 +245,7 @@ export default function StaffTable() {
     // Fetch patient data from the backend
     const fetchStaff = async () => {
       try {
-        const response = await fetch('http://localhost:8000/accounts/staff/'); // Adjust the API endpoint as needed
+        const response = await fetch('https://emr-backend.up.railway.app:8080/accounts/staff/'); // Adjust the API endpoint as needed
         const data = await response.json();
         setStaff(data);
         console.log(data)

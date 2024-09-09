@@ -182,7 +182,7 @@ export default function SignUp() {
     }
   
     try {
-      await axios.post('http://localhost:8000/accounts/patients/signup/', patientData);
+      await axios.post('https://emr-backend.up.railway.app:8080/accounts/patients/signup/', patientData);
         
   
       

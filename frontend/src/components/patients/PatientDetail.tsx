@@ -192,7 +192,7 @@ export default function PatientDetail(){
         const fetchPatientDetail = async () => {
           try {
             const token = localStorage.getItem('token'); // or wherever you store your token
-            const response = await fetch(`http://localhost:8000/accounts/patients/${id}/`, {
+            const response = await fetch(`https://emr-backend.up.railway.app:8080/accounts/patients/${id}/`, {
               method: 'GET',
               headers: {
                 'Authorization': `Token ${token}`, // Add the token in the Authorization header

@@ -23,7 +23,7 @@ const useAuth = () => {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          const response = await axios.get<User>('http://localhost:8000/accounts/me/', {
+          const response = await axios.get<User>('https://emr-backend.up.railway.app:8080/accounts/me/', {
             headers: { Authorization: `Token ${token}` },
           });
           setUser(response.data);
