@@ -7,7 +7,9 @@ Django==5.0.7
 django-cloudinary-storage==0.3.0
 django-cors-headers==4.4.0
 djangorestframework==3.15.2
+gunicorn==23.0.0
 idna==3.8
+packaging==24.1
 pillow==10.4.0
 psycopg==3.1.16
 psycopg2-binary==2.9.9
