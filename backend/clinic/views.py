@@ -145,3 +145,10 @@ def create_prescription(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def list_prescriptions(request):
+    prescriptions = Prescription.objects.all()
+    serializer = PrescriptionSerializer(prescriptions, many=True)
+    return Response(serializer.data)

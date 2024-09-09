@@ -11,5 +11,6 @@ urlpatterns = [
     path('appointments/', list_appointments, name="list_appointments"),
     path('appointments/add/', create_appointment, name='add_appointments'),
     #Prescription endpoints
+    path('prescriptions/', list_prescriptions, name="list_prescriptions"),
     path('prescriptions/add/', create_prescription, name="add_prescription")
 ]

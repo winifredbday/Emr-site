@@ -30,12 +30,28 @@ class DrugSerializer(serializers.ModelSerializer):
         fields = ['name', 'direction', 'quantity', 'unit_price', 'total_price']
 
 class PrescriptionSerializer(serializers.ModelSerializer):
+    patient = serializers.SerializerMethodField()
+    doctor = serializers.SerializerMethodField()
     drugs = DrugSerializer(many=True)
 
     class Meta:
         model = Prescription
         fields = ['patient', 'doctor', 'date_prescribed', 'drugs']
         read_only_fields = ['date_prescribed']
+
+    def get_patient(self, obj):
+        return {
+            "firstName": obj.patient.user.firstname,
+            "lastName": obj.patient.user.lastname,
+            # Add more fields if needed
+        }
+    
+    def get_doctor(self, obj):
+        return {
+            "firstName": obj.doctor.user.firstname,
+            "lastName": obj.doctor.user.lastname,
+            # Add more fields if needed
+        }
 
     def create(self, validated_data):
         drugs_data = validated_data.pop('drugs')
