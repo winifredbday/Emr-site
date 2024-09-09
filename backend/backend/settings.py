@@ -62,6 +62,7 @@ MIDDLEWARE = [
 # Allow requests from specific origins
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://emr-site.vercel.app"
 ]
 
 REST_FRAMEWORK = {
