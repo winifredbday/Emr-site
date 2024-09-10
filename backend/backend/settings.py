@@ -71,16 +71,18 @@ MIDDLEWARE = [
 # Allow requests from specific origins
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://emr-site.vercel.app"
+    "https://emr-site.vercel.app",
+    "https://emr-backend.up.railway.app"
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://emr-site.vercel.app',
-]
+
 
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r'^https://emr-site\.vercel\.app$',
+    r'^https://emr-backend\.up\.railway\.app$'
 ]
+
+CORS_ALLOW_CREDENTIALS = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
