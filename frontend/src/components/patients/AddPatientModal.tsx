@@ -118,12 +118,8 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
     };
     console.log(patientData)
     try {
-      const response = await axios.post('https://emr-backend.up.railway.app/accounts/patients/signup/', patientData, {
-        withCredentials: true, 
-        headers: {
-          'X-CSRFToken': getCookie('csrftoken'),  // Fetch your CSRF token and attach it to the request
-        }
-      });
+      const response = await axios.post('https://emr-backend.up.railway.app/accounts/patients/signup/', patientData
+      );
       setAlert({ message: 'User and patient created successfully!', type: 'success' });
       setTimeout(() => {
         onClose();
