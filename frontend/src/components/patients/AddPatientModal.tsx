@@ -118,7 +118,7 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
     };
     console.log(patientData)
     try {
-      const response = await axios.post('https://emr-backend.up.railway.app:8080/accounts/patients/signup/', patientData, {
+      const response = await axios.post('https://emr-backend.up.railway.app/accounts/patients/signup/', patientData, {
         withCredentials: true, 
         headers: {
           'X-CSRFToken': getCookie('csrftoken'),  // Fetch your CSRF token and attach it to the request
