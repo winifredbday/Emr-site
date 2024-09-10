@@ -70,13 +70,19 @@ export default function SignIn() {
   const [password, setPassword] = useState('');
   const [alert, setAlert] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
+  const getCookie = (name: any) => {
+    const cookieValue = document.cookie.split('; ').find(row => row.startsWith(`${name}=`));
+    return cookieValue ? cookieValue.split('=')[1] : null;
+  };
+  
+  axios.defaults.headers.common['X-CSRFToken'] = getCookie('csrftoken');
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       const response = await axios.post('https://emr-backend.up.railway.app/accounts/signin/', {
         email,
         password,
-      });
+      }, {withCredentials: true});
       localStorage.setItem('token', response.data.token); // Adjust based on the response structure
       setAlert({ message: 'Signin successful!', type: 'success' });
       navigate('/')
