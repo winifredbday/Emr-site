@@ -51,6 +51,11 @@ INSTALLED_APPS = [
     'whitenoise'
 ]
 
+CSRF_COOKIE_SAMESITE = 'Lax'  # or 'None' if you are using cross-site requests
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
