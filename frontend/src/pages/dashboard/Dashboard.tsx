@@ -8,8 +8,17 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import PatientDashboard from '../../components/dashboard/PatientDashboard';
 import DoctorDashboard from '../../components/dashboard/DoctorDashboard';
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 export default function Dashboard() {
+  const navigate = useNavigate(); 
+  React.useEffect(() => {
+    // Check localStorage or context for authentication state
+    const token = localStorage.getItem('token'); // Adjust based on your auth implementation
+    if (!token) {
+      navigate('/signin'); // Redirect to dashboard if token exists
+    }
+  }, [navigate]);
   const { user, loading, error } = useAuth();
 
   if (loading) return <Typography>Loading...</Typography>;
