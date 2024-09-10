@@ -137,7 +137,7 @@ export default function PatientTable() {
     // Fetch patient data from the backend
     const fetchPatients = async () => {
       try {
-        const response = await fetch('https://emr-backend.up.railway.app:8080/accounts/patients/'); // Adjust the API endpoint as needed
+        const response = await fetch('https://emr-backend.up.railway.app/accounts/patients/'); // Adjust the API endpoint as needed
         const data = await response.json();
         setPatients(data);
       } catch (error) {
