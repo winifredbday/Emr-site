@@ -73,7 +73,7 @@ export default function SignIn() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await axios.post('https://emr-backend.up.railway.app:8080/accounts/signin/', {
+      const response = await axios.post('https://emr-backend.up.railway.app/accounts/signin/', {
         email,
         password,
       });
