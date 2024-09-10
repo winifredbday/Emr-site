@@ -88,6 +88,13 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
       setFormData((prev) => ({ ...prev, gender: value }));
     }
   };
+
+  function getCookie(name: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || null;
+    return null;
+  }
   // Function to handle form submission
   const handleSubmit = async () => {
     const patientData = {
@@ -111,7 +118,12 @@ export default function AddPatientModal({ open, onClose }: AddPatientModalProps)
     };
     console.log(patientData)
     try {
-      const response = await axios.post('https://emr-backend.up.railway.app:8080/accounts/patients/signup/', patientData);
+      const response = await axios.post('https://emr-backend.up.railway.app:8080/accounts/patients/signup/', patientData, {
+        withCredentials: true, 
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken'),  // Fetch your CSRF token and attach it to the request
+        }
+      });
       setAlert({ message: 'User and patient created successfully!', type: 'success' });
       setTimeout(() => {
         onClose();
